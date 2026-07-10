@@ -1,102 +1,151 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import React, { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useUiStore } from "@/stores/useUiStore";
+import { useToastStore } from "@/stores/useToastStore";
+import { UserRole } from "@/domain/user.entity";
+import { AwakeningHero } from "@/components/landing/awakening-hero";
+import { FamilyJourney } from "@/components/landing/family-journey";
+import { MatchdayJourney } from "@/components/landing/matchday-journey";
+import { HumanStories } from "@/components/landing/human-stories";
+import { AIBrainPipeline } from "@/components/landing/ai-brain-pipeline";
+import { ReplayPreview } from "@/components/landing/replay-preview";
+import { CommandCenterCTA } from "@/components/landing/command-center-cta";
+import { LivingBackground } from "@/components/ui/living-background";
+import { CinematicTransition } from "@/components/ui/cinematic-transition";
+import { OpsLogOverlay } from "@/components/ui/ops-log-overlay";
+import { Button } from "@/components/ui/button";
+import { Activity, User, ChevronDown, Wifi, Sparkles } from "lucide-react";
+
+export default function LandingPage() {
+  const router = useRouter();
+  const { currentRole, setRole } = useUiStore();
+  const { addToast } = useToastStore();
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const handleRoleChange = (role: UserRole) => {
+    setRole(role);
+    setDropdownOpen(false);
+    addToast(`Landing page modified to ${role.toUpperCase()} perspective`, "success");
+  };
+
+  const startDemo = () => {
+    setIsTransitioning(true);
+  };
+
+  const roleColors: Record<UserRole, string> = {
+    fan: "border-cyber-green text-cyber-green bg-cyber-green/10",
+    volunteer: "border-victory-gold text-victory-gold bg-victory-gold/10",
+    organizer: "border-stadium-blue text-stadium-blue bg-stadium-blue/10",
+    security: "border-pulsing-coral text-pulsing-coral bg-pulsing-coral/10",
+    staff: "border-electric-cyan text-electric-cyan bg-electric-cyan/10",
+  };
+
+  if (isTransitioning) {
+    return <CinematicTransition onComplete={() => router.push("/dashboard")} />;
+  }
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-[#030303] text-neutral-50 flex flex-col font-sans overflow-x-hidden selection:bg-cyber-green selection:text-black relative">
+      
+      {/* Dynamic Telemetry Particles Background */}
+      <LivingBackground />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Real-time Ticking Operations Log Ticker */}
+      <OpsLogOverlay />
+
+      {/* 1. Cinematic Header Bar with Role Selector */}
+      <header className="sticky top-0 z-45 w-full border-b border-neutral-900 bg-neutral-950/80 backdrop-blur-md px-6 h-16 flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Link href="/" className="flex items-center gap-2.5">
+            <Activity className="h-5 w-5 text-cyber-green animate-pulse" />
+            <span className="font-display font-bold text-base tracking-wider text-white uppercase">
+              StadiumPulse <span className="text-cyber-green font-sans font-light text-xs align-super border border-cyber-green/20 px-1.5 py-0.5 rounded-full">AI</span>
+            </span>
+          </Link>
         </div>
+
+        <div className="flex items-center gap-4">
+          {/* Active Live Telemetry Status indicator */}
+          <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-neutral-900 bg-neutral-950/40 text-xs font-semibold">
+            <Wifi className="h-4 w-4 text-cyber-green" />
+            <span className="text-cyber-green">Simulation Active</span>
+          </div>
+
+          {/* Interactive Role Personalization Dropdown */}
+          <div className="relative z-50">
+            <button
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border font-bold text-[10px] uppercase transition-all tracking-wider focus:outline-none focus:ring-1 focus:ring-white ${roleColors[currentRole]}`}
+            >
+              <User className="h-3.5 w-3.5" />
+              <span>{currentRole} Mode</span>
+              <ChevronDown className="h-3 w-3" />
+            </button>
+
+            {dropdownOpen && (
+              <div className="absolute right-0 mt-2 w-48 rounded-xl border border-neutral-880 bg-neutral-950 p-1.5 shadow-2xl z-50 pointer-events-auto">
+                <div className="px-2.5 py-1 text-[9px] font-bold text-neutral-500 uppercase tracking-wider flex items-center gap-1">
+                  <Sparkles className="h-3 w-3 text-victory-gold animate-pulse" />
+                  Select Role View
+                </div>
+                {(["fan", "volunteer", "organizer", "security", "staff"] as UserRole[]).map((r) => (
+                  <button
+                    key={r}
+                    onClick={() => handleRoleChange(r)}
+                    className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-left text-xs font-semibold capitalize transition-colors hover:bg-neutral-900 cursor-pointer relative z-50 ${
+                      currentRole === r ? "text-white bg-neutral-900" : "text-neutral-400"
+                    }`}
+                  >
+                    {r} View
+                    {currentRole === r && <div className="h-1.5 w-1.5 rounded-full bg-cyber-green" />}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <Button 
+            onClick={startDemo}
+            variant="glass" 
+            size="sm" 
+            className="hidden sm:inline-flex rounded-xl font-semibold border-neutral-850"
+          >
+            Start Command Center
+          </Button>
+        </div>
+      </header>
+
+      {/* 2. Sequential Storyboard sections */}
+      <main className="flex-grow">
+        {/* Section 1: The Awakening */}
+        <AwakeningHero onLaunchDemo={startDemo} />
+
+        {/* Section 1.2: Family Journey Storyboard */}
+        <FamilyJourney />
+
+        {/* Section 1.5: Interactive Matchday Journey */}
+        <MatchdayJourney />
+
+        {/* Section 2: The Human Stories */}
+        <HumanStories />
+
+        {/* Section 3: The AI Brain Pipeline */}
+        <AIBrainPipeline />
+
+        {/* Section 4: AI Replay Scrubber Preview */}
+        <ReplayPreview />
+
+        {/* Section 5: The Command Center CTA */}
+        <CommandCenterCTA onLaunchDemo={startDemo} />
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* 3. Cinematic Footer */}
+      <footer className="border-t border-neutral-900 bg-neutral-950/40 py-8 text-center text-xs text-neutral-500 font-sans">
+        <p>© 2026 FIFA World Cup Stadium Operations Center. GenAI Digital Twin Companion.</p>
       </footer>
     </div>
   );
