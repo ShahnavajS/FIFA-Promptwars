@@ -12,6 +12,7 @@ import { MatchdayJourney } from "@/components/landing/matchday-journey";
 import { HumanStories } from "@/components/landing/human-stories";
 import { AIBrainPipeline } from "@/components/landing/ai-brain-pipeline";
 import { ReplayPreview } from "@/components/landing/replay-preview";
+import { LiveCrowdIntelligence } from "@/components/landing/live-crowd-intelligence";
 import { CommandCenterCTA } from "@/components/landing/command-center-cta";
 import { LivingBackground } from "@/components/ui/living-background";
 import { CinematicTransition } from "@/components/ui/cinematic-transition";
@@ -138,6 +139,9 @@ export default function LandingPage() {
 
         {/* Section 4: AI Replay Scrubber Preview */}
         <ReplayPreview />
+
+        {/* Section 4.5: Live Crowd Intelligence */}
+        <LiveCrowdIntelligence />
 
         {/* Section 5: The Command Center CTA */}
         <CommandCenterCTA onLaunchDemo={startDemo} />
