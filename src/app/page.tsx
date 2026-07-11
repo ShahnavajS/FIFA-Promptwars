@@ -9,6 +9,7 @@ import { UserRole } from "@/domain/user.entity";
 import { AwakeningHero } from "@/components/landing/awakening-hero";
 import { FamilyJourney } from "@/components/landing/family-journey";
 import { MatchdayJourney } from "@/components/landing/matchday-journey";
+import { AICompanionExperience } from "@/components/landing/ai-companion-experience";
 import { HumanStories } from "@/components/landing/human-stories";
 import { AIBrainPipeline } from "@/components/landing/ai-brain-pipeline";
 import { ReplayPreview } from "@/components/landing/replay-preview";
@@ -130,6 +131,9 @@ export default function LandingPage() {
 
         {/* Section 1.5: Interactive Matchday Journey */}
         <MatchdayJourney />
+
+        {/* Section 1.8: AI Companion Experience */}
+        <AICompanionExperience />
 
         {/* Section 2: The Human Stories */}
         <HumanStories />
