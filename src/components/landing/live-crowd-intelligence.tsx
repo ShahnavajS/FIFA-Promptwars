@@ -161,7 +161,8 @@ export function LiveCrowdIntelligence() {
                     alt="Operations command room monitoring MetLife stadium exit routes with AR traffic flows"
                     fill
                     loading="lazy"
-                    className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.04]"
+                    className="object-cover object-top transition-transform duration-1000 ease-out group-hover:scale-[1.04]"
+                    style={{ height: "167%" }}
                   />
                 </motion.div>
               </div>

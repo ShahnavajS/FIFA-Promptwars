@@ -231,7 +231,8 @@ export function AIBrainPipeline() {
                 alt="Stadium Operations Control Room showing AI analytics screens"
                 fill
                 loading="lazy"
-                className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] z-0"
+                className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03] z-0"
+                style={{ height: "167%" }}
               />
 
               {/* Soft Cyan/Emerald glowing screen dashboard overlay */}

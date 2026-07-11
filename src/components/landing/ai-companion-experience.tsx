@@ -88,7 +88,8 @@ export function AICompanionExperience() {
                     alt="World Cup fan holding a smartphone showing live AR wayfinding path"
                     fill
                     loading="lazy"
-                    className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.03] z-0"
+                    className="object-cover object-top transition-transform duration-1000 ease-out group-hover:scale-[1.03] z-0"
+                    style={{ height: "167%" }}
                   />
                 </motion.div>
               </div>
