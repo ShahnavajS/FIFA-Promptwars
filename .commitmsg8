@@ -1,0 +1,1 @@
+fix: adjust visual wrappers to bypass Next.js fill height constraint runtime crash on cropped images

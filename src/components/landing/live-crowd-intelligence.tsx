@@ -156,14 +156,15 @@ export function LiveCrowdIntelligence() {
                   }}
                   transition={{ type: "spring", stiffness: 100, damping: 28 }}
                 >
-                  <Image
-                    src="/images/crowd_intelligence.jpg"
-                    alt="Operations command room monitoring MetLife stadium exit routes with AR traffic flows"
-                    fill
-                    loading="lazy"
-                    className="object-cover object-top transition-transform duration-1000 ease-out group-hover:scale-[1.04]"
-                    style={{ height: "167%" }}
-                  />
+                  <div className="absolute top-0 left-0 w-full h-[167%] origin-top transition-transform duration-1000 ease-out group-hover:scale-[1.04]">
+                    <Image
+                      src="/images/crowd_intelligence.jpg"
+                      alt="Operations command room monitoring MetLife stadium exit routes with AR traffic flows"
+                      fill
+                      loading="lazy"
+                      className="object-cover object-top"
+                    />
+                  </div>
                 </motion.div>
               </div>
 

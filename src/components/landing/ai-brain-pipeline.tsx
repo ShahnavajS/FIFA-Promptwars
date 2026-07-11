@@ -226,14 +226,15 @@ export function AIBrainPipeline() {
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0),rgba(3,3,5,0.7))] z-10 pointer-events-none" />
 
               {/* Main Image with Zoom on Hover */}
-              <Image
-                src="/images/operations_command.png"
-                alt="Stadium Operations Control Room showing AI analytics screens"
-                fill
-                loading="lazy"
-                className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03] z-0"
-                style={{ height: "167%" }}
-              />
+              <div className="absolute top-0 left-0 w-full h-[167%] origin-top transition-transform duration-700 ease-out group-hover:scale-[1.03] z-0">
+                <Image
+                  src="/images/operations_command.png"
+                  alt="Stadium Operations Control Room showing AI analytics screens"
+                  fill
+                  loading="lazy"
+                  className="object-cover object-top"
+                />
+              </div>
 
               {/* Soft Cyan/Emerald glowing screen dashboard overlay */}
               <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/0 via-cyan-500/0 to-emerald-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10" />

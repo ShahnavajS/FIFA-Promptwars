@@ -83,14 +83,15 @@ export function AICompanionExperience() {
                   }}
                   transition={{ type: "spring", stiffness: 100, damping: 28 }}
                 >
-                  <Image
-                    src="/images/fan_navigation.jpg"
-                    alt="World Cup fan holding a smartphone showing live AR wayfinding path"
-                    fill
-                    loading="lazy"
-                    className="object-cover object-top transition-transform duration-1000 ease-out group-hover:scale-[1.03] z-0"
-                    style={{ height: "167%" }}
-                  />
+                  <div className="absolute top-0 left-0 w-full h-[167%] origin-top transition-transform duration-1000 ease-out group-hover:scale-[1.03] z-0">
+                    <Image
+                      src="/images/fan_navigation.jpg"
+                      alt="World Cup fan holding a smartphone showing live AR wayfinding path"
+                      fill
+                      loading="lazy"
+                      className="object-cover object-top"
+                    />
+                  </div>
                 </motion.div>
               </div>
 
