@@ -1,241 +1,236 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Card } from "@/components/ui/card";
+import React, { useState, useRef } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import { 
-  History, 
-  Lock,
-  LockOpen
+  TrendingUp, 
+  BrainCircuit, 
+  Activity, 
+  Database,
+  ArrowRight
 } from "lucide-react";
 
-interface CompareAspect {
-  id: number;
-  label: string;
-  beforeTitle: string;
-  beforeDesc: string;
-  beforeMetric: string;
-  afterTitle: string;
-  afterDesc: string;
-  afterMetric: string;
-  benefitPercent: string;
-  metricType: "queue" | "wait" | "transit" | "safety" | "carbon" | "accessibility";
-}
-
 export function ReplayPreview() {
-  const [activeAspect, setActiveAspect] = useState<number>(0);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  const aspects: CompareAspect[] = [
-    {
-      id: 0,
-      label: "Queue (Turnstiles)",
-      beforeTitle: "Gate B Backups",
-      beforeDesc: "Crowd flow is unmonitored. Turnstiles at Gate B experience excessive load, and wait times spike to 28 minutes under heavy ingress.",
-      beforeMetric: "28m Queue",
-      afterTitle: "Dynamic LED Redirect",
-      afterDesc: "StadiumPulse AI detects the ingress rate anomaly and updates outer LED gates boards to route crowd to Gate A North.",
-      afterMetric: "4m Queue",
-      benefitPercent: "85% reduction",
-      metricType: "queue"
-    },
-    {
-      id: 1,
-      label: "Wait (Restrooms)",
-      beforeTitle: "Concourse Gridlock",
-      beforeDesc: "Restrooms in Sector 112 overflow with crowd lines during halftime. Wait times spike to 9m while Sector 103 remains empty.",
-      beforeMetric: "9m wait",
-      afterTitle: "Load Balancing Alerts",
-      afterDesc: "Push notifications prompt fans to nearby, clear restrooms and concessions in Sector 103, optimizing stadium pathways.",
-      afterMetric: "2m wait",
-      benefitPercent: "77% faster",
-      metricType: "wait"
-    },
-    {
-      id: 2,
-      label: "Transit (Express Rail)",
-      beforeTitle: "Mass Exit Blockages",
-      beforeDesc: "Platform 3 rail express train delays block inner egress lanes, while shuttle loop buses get stuck in outer highway jams.",
-      beforeMetric: "24m delay",
-      afterTitle: "Coordinated Dispatches",
-      afterDesc: "AI companion syncs rail departures with local buses, spacing out egress loop exits and reducing platform gridlocks.",
-      afterMetric: "9m delay",
-      benefitPercent: "15m saved",
-      metricType: "transit"
-    },
-    {
-      id: 3,
-      label: "Safety (Medic Dispatch)",
-      beforeTitle: "Blocked Access Ramps",
-      beforeDesc: "A medical emergency in Sector 112 gets delayed as first responders attempt to navigate ramps congested with egress fans.",
-      beforeMetric: "7.8m dispatch",
-      afterTitle: "EMT Corridor Clearance",
-      afterDesc: "Operations dispatcher temporarily redirects pedestrian dispatches to alternate corridors, clearing the ramp for EMT carts.",
-      afterMetric: "2.4m dispatch",
-      benefitPercent: "3.2x faster",
-      metricType: "safety"
-    },
-    {
-      id: 4,
-      label: "Carbon (Solar Dome)",
-      beforeTitle: "Unoptimized Dome Grid",
-      beforeDesc: "Dome roof status and solar battery charging rates are unmonitored. High energy consumption with zero carbon tracking.",
-      beforeMetric: "0g carbon offset",
-      afterTitle: "Solar Offsets Sync",
-      afterDesc: "Active charging trackers log carbon credits, offsetting 1,200g of carbon per family and updating companion diaries.",
-      afterMetric: "1,200g offset",
-      benefitPercent: "100% tracked",
-      metricType: "carbon"
-    },
-    {
-      id: 5,
-      label: "Accessibility (Step-Free)",
-      beforeTitle: "Elevator Outages",
-      beforeDesc: "Wheelchair users arriving at Sector 112 elevators get stranded due to unflagged mechanical outages on concourse lifts.",
-      beforeMetric: "Corridor blocked",
-      afterTitle: "Solve Step-Free Detour",
-      afterDesc: "Maps solver automatically routes accessible detours to Elevator B West, granting immediate step-free passage.",
-      afterMetric: "3m detour",
-      benefitPercent: "Zero barriers",
-      metricType: "accessibility"
-    }
-  ];
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setMousePos({ x, y });
+  };
 
-  const active = aspects[activeAspect];
+  const handleMouseLeave = () => {
+    setMousePos({ x: 0, y: 0 });
+  };
 
   return (
-    <section id="ai-replay-preview" className="py-28 bg-[#030305] border-t border-neutral-900 px-6 scroll-mt-16 relative">
-      <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-neutral-800 to-transparent" />
+    <section 
+      id="ai-replay-preview" 
+      className="py-28 bg-[#020203] border-t border-neutral-900 px-6 scroll-mt-16 relative overflow-hidden text-left"
+    >
       
-      <div className="max-w-6xl mx-auto space-y-16">
+      {/* 1. Glowing timeline connector from previous section (Pipeline -> Learning) */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1.5px] h-24 bg-gradient-to-b from-cyber-green/50 via-emerald-400/30 to-transparent pointer-events-none" />
+
+      {/* Background Radial Gradient & Tech Grid */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.02),transparent_75%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-grid opacity-[0.015] pointer-events-none" />
+
+      {/* Tiny floating background particle sparks */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[20%] left-[15%] w-1 h-1 rounded-full bg-cyber-green/40 animate-pulse" />
+        <div className="absolute top-[60%] left-[80%] w-1.5 h-1.5 rounded-full bg-emerald-400/20 animate-ping [animation-duration:3s]" />
+        <div className="absolute top-[40%] right-[25%] w-1 h-1 rounded-full bg-cyber-green/30 animate-pulse [animation-delay:1.5s]" />
+      </div>
+
+      <div className="max-w-6xl mx-auto space-y-16 relative z-10">
         
-        {/* Header Block */}
-        <div className="max-w-3xl text-left space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-victory-gold/10 border border-victory-gold/20 text-victory-gold text-xs font-semibold uppercase tracking-widest font-mono">
-            <History className="h-3.5 w-3.5 animate-pulse" />
-            <span>Continuous Learning Operations</span>
-          </div>
-          <h2 className="text-4xl sm:text-6xl font-extrabold font-display text-white tracking-tight leading-none">
-            Before vs After
-          </h2>
-          <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
-            StadiumPulse AI optimizes complex matchday systems. Use the timeline slider below to evaluate the measurable impact of cognitive AI orchestration.
-          </p>
-        </div>
-
-        {/* Timeline Slider Cockpit */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        {/* Desktop Split Grid (Desktop 45/55 Split, Tablet stacked, Mobile Image first) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Left panel: Timeline Scrubber (5 Cols) */}
-          <div className="lg:col-span-5 flex flex-col gap-6 text-left">
-            <Card variant="glass" className="p-6 border-neutral-850 bg-neutral-950/60 backdrop-blur-xl flex-grow flex flex-col justify-between">
+          {/* LEFT PANEL: Storytelling & Editorial Copy (45% Width) */}
+          <div className="order-2 lg:order-1 lg:col-span-5 space-y-8 flex flex-col justify-center">
+            
+            <div className="space-y-4">
+              {/* Section Label */}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyber-green/10 border border-cyber-green/20 text-cyber-green text-xs font-semibold uppercase tracking-widest font-mono">
+                <BrainCircuit className="h-3.5 w-3.5" />
+                <span>AI Replay & Continuous Learning</span>
+              </div>
               
-              <div className="space-y-6">
-                <div className="text-[10px] text-neutral-500 font-bold uppercase tracking-widest font-mono border-b border-neutral-900 pb-3 flex items-center justify-between">
-                  <span>METRICS SCRUBBER PANEL</span>
-                  <span className="text-victory-gold font-bold">COCKPIT // INP</span>
-                </div>
-                
-                <div className="space-y-4">
-                  <div className="flex justify-between text-xs text-white font-extrabold uppercase tracking-wide">
-                    <span>{active.label}</span>
-                    <span className="text-victory-gold font-mono font-bold">{active.benefitPercent}</span>
-                  </div>
-                  
-                  {/* Slider Control */}
-                  <div className="relative pt-2">
-                    <input
-                      type="range"
-                      min="0"
-                      max={aspects.length - 1}
-                      value={activeAspect}
-                      onChange={(e) => setActiveAspect(Number(e.target.value))}
-                      className="w-full h-2 bg-neutral-900 rounded-lg appearance-none cursor-pointer accent-victory-gold focus:outline-none"
-                      aria-label="Audit Aspect Slider"
-                      aria-valuemin={0}
-                      aria-valuemax={aspects.length - 1}
-                      aria-valuenow={activeAspect}
-                      aria-valuetext={active.label}
-                    />
-                    <div className="flex justify-between text-[9px] text-neutral-500 font-bold uppercase mt-2 font-mono">
-                      <span>Queue</span>
-                      <span>Wait</span>
-                      <span>Transit</span>
-                      <span>Safety</span>
-                      <span>Carbon</span>
-                      <span>Access</span>
-                    </div>
-                  </div>
-                </div>
+              {/* Heading */}
+              <h2 className="text-4xl sm:text-5xl font-extrabold font-display text-white tracking-tight leading-[1.08] select-none">
+                Every Match Makes <br />
+                The Next One Smarter.
+              </h2>
+              
+              {/* Description */}
+              <p className="text-neutral-400 text-sm leading-relaxed max-w-lg">
+                Unlike traditional stadium systems that forget after every event, StadiumPulse AI continuously learns from every match, crowd movement, emergency, and operational decision.
+              </p>
+              <p className="text-neutral-400 text-sm leading-relaxed max-w-lg">
+                The AI improves routing, resource allocation, crowd prediction, and emergency response over time.
+              </p>
+            </div>
+
+            {/* Premium Metric Cards Stack */}
+            <div className="grid grid-cols-3 gap-4 border-t border-neutral-900 pt-6">
+              
+              {/* Metric 1 */}
+              <div className="space-y-1.5 text-left font-mono">
+                <span className="text-[7.5px] text-neutral-500 font-bold uppercase tracking-wider block">📈 Queue Predict</span>
+                <span className="text-xl sm:text-2xl font-extrabold text-white leading-none">98.2%</span>
+                <span className="text-[7px] text-cyber-green font-bold uppercase block tracking-widest">Accuracy</span>
               </div>
 
-              {/* Bottom statistics display */}
-              <div className="pt-6 border-t border-neutral-900 mt-6 space-y-4">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-neutral-400 font-medium">Impact Category:</span>
-                  <span className="text-white font-bold uppercase font-mono">{active.metricType}</span>
-                </div>
-                <div className="p-4 rounded-2xl bg-victory-gold/5 border border-victory-gold/20 text-victory-gold text-xs leading-relaxed font-medium">
-                  StadiumPulse AI reduces friction across matchday loops. Proactive prediction eliminates bottlenecks before crowd arrivals.
-                </div>
+              {/* Metric 2 */}
+              <div className="space-y-1.5 text-left font-mono">
+                <span className="text-[7.5px] text-neutral-500 font-bold uppercase tracking-wider block">⚡ Emergency Resp</span>
+                <span className="text-xl sm:text-2xl font-extrabold text-cyber-green leading-none">+32%</span>
+                <span className="text-[7px] text-neutral-500 font-bold uppercase block tracking-widest">Improved</span>
               </div>
 
-            </Card>
+              {/* Metric 3 */}
+              <div className="space-y-1.5 text-left font-mono">
+                <span className="text-[7.5px] text-neutral-500 font-bold uppercase tracking-wider block">🚇 Transit Flow</span>
+                <span className="text-xl sm:text-2xl font-extrabold text-white leading-none">+26%</span>
+                <span className="text-[7px] text-neutral-500 font-bold uppercase block tracking-widest">Optimized</span>
+              </div>
+
+            </div>
+
+            {/* CTA Button */}
+            <div className="pt-2 text-left">
+              <Button 
+                variant="glass" 
+                className="rounded-2xl font-semibold border-neutral-850 hover:border-cyber-green/50 text-white flex items-center gap-2 group transition-all"
+              >
+                <span>Explore Replay Center</span>
+                <ArrowRight className="h-4 w-4 text-cyber-green transition-transform duration-300 group-hover:translate-x-1" />
+              </Button>
+            </div>
+
           </div>
 
-          {/* Right panel: Before vs After cards side-by-side (7 Cols) */}
-          <div className="lg:col-span-7 flex flex-col md:flex-row gap-6">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={active.id}
-                initial={{ opacity: 0, x: 15 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -15 }}
-                transition={{ duration: 0.3 }}
-                className="w-full flex flex-col md:flex-row gap-6"
-              >
-                {/* Before Card */}
-                <div className="flex-1 p-6 rounded-3xl border border-rose-950/40 bg-rose-950/5 relative overflow-hidden flex flex-col justify-between text-left gap-8">
-                  <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-rose-500/5 blur-[50px] pointer-events-none" />
-                  
-                  <div className="space-y-4">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-950/40 border border-rose-900/40 text-[10px] text-rose-400 font-extrabold uppercase tracking-wider font-mono">
-                      <Lock className="h-3.5 w-3.5 text-rose-500" />
-                      WITHOUT STADUMPULSE AI
-                    </div>
-                    <h4 className="text-lg font-bold text-white font-display mt-2 leading-tight">{active.beforeTitle}</h4>
-                    <p className="text-neutral-400 text-xs sm:text-sm leading-relaxed">{active.beforeDesc}</p>
-                  </div>
-                  
-                  <div className="text-3xl font-extrabold text-rose-500 font-mono tracking-tight border-t border-neutral-900 pt-4 mt-auto">
-                    {active.beforeMetric}
-                  </div>
-                </div>
+          {/* RIGHT PANEL: Replay Command Center Image (55% Width) */}
+          <div className="order-1 lg:order-2 lg:col-span-7 flex justify-center">
+            
+            {/* Visual Card Container */}
+            <div 
+              ref={containerRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="h-[500px] sm:h-[600px] w-full rounded-[28px] border border-[rgba(255,255,255,0.08)] bg-neutral-950/80 shadow-[0_0_40px_rgba(16,185,129,0.1)] relative overflow-hidden flex flex-col justify-between p-6 group cursor-pointer"
+            >
+              {/* Internal Radial Gradient Glowing overlay */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.03),transparent_70%)] pointer-events-none z-10" />
 
-                {/* After Card */}
-                <div className="flex-1 p-6 rounded-3xl border border-cyber-green/30 bg-cyber-green/5 relative overflow-hidden flex flex-col justify-between text-left gap-8">
-                  <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-cyber-green/5 blur-[50px] pointer-events-none" />
-                  
-                  <div className="space-y-4">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyber-green/10 border border-cyber-green/20 text-[10px] text-cyber-green font-extrabold uppercase tracking-wider font-mono">
-                      <LockOpen className="h-3.5 w-3.5 text-cyber-green" />
-                      WITH STADUMPULSE AI
-                    </div>
-                    <h4 className="text-lg font-bold text-white font-display mt-2 leading-tight">{active.afterTitle}</h4>
-                    <p className="text-neutral-300 text-xs sm:text-sm leading-relaxed">{active.afterDesc}</p>
-                  </div>
-                  
-                  <div className="text-3xl font-extrabold text-cyber-green font-mono tracking-tight border-t border-neutral-900 pt-4 mt-auto flex items-center justify-between">
-                    <span>{active.afterMetric}</span>
-                    <span className="text-[10px] text-victory-gold font-bold uppercase tracking-widest bg-victory-gold/10 px-2 py-0.5 rounded border border-victory-gold/20">Active</span>
-                  </div>
+              {/* Main Visual Image with Parallax & Hover zoom */}
+              <div className="absolute inset-0 overflow-hidden z-0">
+                <motion.div
+                  className="w-[106%] h-[106%] relative -left-[3%] -top-[3%]"
+                  animate={{
+                    x: mousePos.x * -16,
+                    y: mousePos.y * -16,
+                  }}
+                  transition={{ type: "spring", stiffness: 100, damping: 28 }}
+                >
+                  <Image
+                    src="/images/replay_center.jpg"
+                    alt="Stadium Operations Replay Center featuring multi-angle AI insights and pass maps"
+                    fill
+                    loading="lazy"
+                    className="object-cover transition-transform duration-1000 ease-out group-hover:scale-[1.03]"
+                  />
+                </motion.div>
+              </div>
+
+              {/* Soft Cyan/Emerald glowing screen overlay */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/0 via-cyan-500/0 to-emerald-400/4 opacity-10 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10" />
+
+              {/* Holographic Scanline sweeping vertically every 8 seconds */}
+              <div className="absolute inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-cyber-green/40 to-transparent animate-scan z-20 pointer-events-none" />
+
+              {/* FLOATING GLASS PANELS */}
+
+              {/* Top Left: AI Replay */}
+              <div className="absolute top-[8%] left-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300">
+                <div className="p-1.5 rounded-lg bg-cyber-green/15 text-cyber-green">
+                  <BrainCircuit className="h-4 w-4" />
                 </div>
-              </motion.div>
-            </AnimatePresence>
+                <div className="text-left font-mono">
+                  <span className="text-[7px] text-neutral-400 uppercase block font-bold tracking-wider">🧠 AI Replay</span>
+                  <span className="text-[10px] font-extrabold text-white mt-0.5 block">Watching Match #128</span>
+                </div>
+              </div>
+
+              {/* Top Right: Learning Confidence */}
+              <div className="absolute top-[8%] right-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300 delay-75">
+                <div className="p-1.5 rounded-lg bg-stadium-blue/15 text-stadium-blue">
+                  <TrendingUp className="h-4 w-4" />
+                </div>
+                <div className="text-left font-mono">
+                  <span className="text-[7px] text-neutral-400 uppercase block font-bold tracking-wider">📊 Learning Confidence</span>
+                  <span className="text-xs font-extrabold text-white mt-0.5 block">96%</span>
+                </div>
+              </div>
+
+              {/* Bottom Left: Events Processed */}
+              <div className="absolute bottom-[8%] left-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300 delay-100">
+                <div className="p-1.5 rounded-lg bg-victory-gold/15 text-victory-gold">
+                  <Database className="h-4 w-4" />
+                </div>
+                <div className="text-left font-mono">
+                  <span className="text-[7px] text-neutral-400 uppercase block font-bold tracking-wider">⚽ Event Telemetry</span>
+                  <span className="text-[10px] font-extrabold text-white mt-0.5 block">12,840 Events Processed</span>
+                </div>
+              </div>
+
+              {/* Bottom Right: Model Updated */}
+              <div className="absolute bottom-[8%] right-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300 delay-150">
+                <div className="p-1.5 rounded-lg bg-[#00e5ff]/15 text-[#00e5ff]">
+                  <Activity className="h-4 w-4" />
+                </div>
+                <div className="text-left font-mono">
+                  <span className="text-[7px] text-neutral-400 uppercase block font-bold tracking-wider">🔄 Model Updated</span>
+                  <span className="text-[10px] font-extrabold text-white mt-0.5 block">2 mins ago</span>
+                </div>
+              </div>
+
+            </div>
+
           </div>
 
         </div>
 
       </div>
+
+      <style jsx global>{`
+        @keyframes scan {
+          0% {
+            top: 0%;
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+          }
+          90% {
+            opacity: 1;
+          }
+          100% {
+            top: 100%;
+            opacity: 0;
+          }
+        }
+        .animate-scan {
+          animation: scan 8s linear infinite;
+        }
+      `}</style>
     </section>
   );
 }
