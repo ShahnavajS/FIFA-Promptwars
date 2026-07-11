@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Sparkles, 
@@ -12,7 +13,11 @@ import {
   TrendingUp, 
   AlertCircle,
   CheckCircle2,
-  Terminal
+  Terminal,
+  ActivityIcon,
+  Users,
+  Compass,
+  Zap
 } from "lucide-react";
 
 interface PipelineNode {
@@ -34,6 +39,7 @@ interface PipelineNode {
 
 export function AIBrainPipeline() {
   const [selectedNode, setSelectedNode] = useState<string>("gemini");
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const nodes: PipelineNode[] = [
     {
@@ -189,25 +195,124 @@ export function AIBrainPipeline() {
     <section id="ai-brain-pipeline" className="py-28 bg-[#04060c] border-t border-neutral-900 px-6 scroll-mt-16 relative">
       <div className="absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-neutral-800 to-transparent" />
       
-      <div className="max-w-6xl mx-auto space-y-16">
+      <div className="max-w-6xl mx-auto space-y-20">
         
-        {/* Header Title block */}
-        <div className="max-w-3xl text-left space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyber-green/10 border border-cyber-green/20 text-cyber-green text-xs font-semibold uppercase tracking-widest font-mono">
-            <Sparkles className="h-3.5 w-3.5 animate-pulse" />
-            <span>Google Vertex AI Pipeline</span>
+        {/* Split Hero Header (Desktop Side-by-Side, Tablet Stacked, Mobile Image First) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          {/* LEFT: Text Block (Order 2 on Mobile, Order 1 on Desktop) */}
+          <div className="order-2 lg:order-1 lg:col-span-5 space-y-6 text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyber-green/10 border border-cyber-green/20 text-cyber-green text-xs font-semibold uppercase tracking-widest font-mono">
+              <Sparkles className="h-3.5 w-3.5 animate-pulse" />
+              <span>Google Vertex AI Pipeline</span>
+            </div>
+            <h2 className="text-4xl sm:text-5xl font-extrabold font-display text-white tracking-tight leading-tight">
+              Vertex AI Context Pipeline
+            </h2>
+            <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
+              StadiumPulse AI serves as the central operations cockpit, mapping complex stadium telemetry onto live digital twins. Our pipeline ingests sensor feeds, runs real-time maps solving, and dispatches empathetic assistance via Gemini.
+            </p>
           </div>
-          <h2 className="text-4xl sm:text-6xl font-extrabold font-display text-white tracking-tight leading-none">
-            Google Cloud Data Flow
-          </h2>
-          <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
-            StadiumPulse AI connects physical sensors to large language models. Click any pipeline node below to audit the telemetry and prompts passing through Vertex AI.
-          </p>
+
+          {/* RIGHT: Operations Command Center Image (Order 1 on Mobile, Order 2 on Desktop) */}
+          <div className="order-1 lg:order-2 lg:col-span-7 flex justify-center">
+            
+            {/* Visual Image Card Wrapper */}
+            <div 
+              ref={cardRef}
+              className="relative w-full aspect-[16/9] rounded-[28px] border border-[#ffffff12] bg-neutral-950/80 shadow-[0_0_30px_rgba(16,185,129,0.15)] overflow-hidden group"
+            >
+              {/* Dark Radial Gradient Overlay */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0),rgba(3,3,5,0.7))] z-10 pointer-events-none" />
+
+              {/* Main Image with Zoom on Hover */}
+              <Image
+                src="/images/operations_command.png"
+                alt="Stadium Operations Control Room showing AI analytics screens"
+                fill
+                loading="lazy"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03] z-0"
+              />
+
+              {/* Soft Cyan/Emerald glowing screen dashboard overlay */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/0 via-cyan-500/0 to-emerald-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10" />
+
+              {/* Telemetry line overlays (SVG Dash Line Animation) */}
+              <svg className="absolute inset-0 w-full h-full opacity-40 group-hover:opacity-80 transition-opacity duration-500 z-15 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                <path 
+                  d="M 50 100 Q 250 80 400 140 T 650 200" 
+                  fill="none" 
+                  stroke="#00e676" 
+                  strokeWidth="1.5" 
+                  strokeDasharray="5, 10"
+                  className="animate-pulse-dash"
+                />
+                <path 
+                  d="M 100 250 Q 300 220 450 280 T 600 180" 
+                  fill="none" 
+                  stroke="#00e5ff" 
+                  strokeWidth="1.5" 
+                  strokeDasharray="6, 12"
+                  className="animate-pulse-dash"
+                />
+              </svg>
+
+              {/* FLOATING HUD CARDS */}
+              
+              {/* Top Left: Stadium Health */}
+              <div className="absolute top-[8%] left-[6%] z-20 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1.5 transition-transform duration-350">
+                <div className="p-1.5 rounded-lg bg-cyber-green/15 text-cyber-green">
+                  <ActivityIcon className="h-4 w-4" />
+                </div>
+                <div className="text-left font-mono">
+                  <span className="text-[7.5px] text-neutral-400 uppercase tracking-wider block font-bold">🟢 Stadium Health</span>
+                  <span className="text-sm font-extrabold text-white">98%</span>
+                </div>
+              </div>
+
+              {/* Top Right: Crowd Density */}
+              <div className="absolute top-[8%] right-[6%] z-20 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1.5 transition-transform duration-350 delay-75">
+                <div className="p-1.5 rounded-lg bg-stadium-blue/15 text-stadium-blue">
+                  <Users className="h-4 w-4" />
+                </div>
+                <div className="text-left font-mono">
+                  <span className="text-[7.5px] text-neutral-400 uppercase tracking-wider block font-bold">👥 Crowd Density</span>
+                  <span className="text-sm font-extrabold text-white">Normal</span>
+                </div>
+              </div>
+
+              {/* Bottom Left: AI Confidence */}
+              <div className="absolute bottom-[8%] left-[6%] z-20 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1.5 transition-transform duration-350 delay-100">
+                <div className="p-1.5 rounded-lg bg-victory-gold/15 text-victory-gold">
+                  <Zap className="h-4 w-4" />
+                </div>
+                <div className="text-left font-mono">
+                  <span className="text-[7.5px] text-neutral-400 uppercase tracking-wider block font-bold">🤖 AI Confidence</span>
+                  <span className="text-sm font-extrabold text-white">96%</span>
+                </div>
+              </div>
+
+              {/* Bottom Right: Transit Status */}
+              <div className="absolute bottom-[8%] right-[6%] z-20 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1.5 transition-transform duration-350 delay-150">
+                <div className="p-1.5 rounded-lg bg-[#00e5ff]/15 text-[#00e5ff]">
+                  <Compass className="h-4 w-4" />
+                </div>
+                <div className="text-left font-mono">
+                  <span className="text-[7.5px] text-neutral-400 uppercase tracking-wider block font-bold">🚇 Transit Status</span>
+                  <span className="text-xs font-extrabold text-white">All Routes Clear</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
 
-        {/* Pipeline Nodes Map */}
-        <div className="p-8 rounded-3xl border border-neutral-850 bg-neutral-950/40 relative overflow-hidden flex flex-col gap-10 shadow-2xl">
+        {/* Explainability Pipeline Map & Audit Cockpit (Image First, Pipeline Second) */}
+        <div className="p-8 rounded-3xl border border-neutral-855 bg-neutral-950/40 relative overflow-hidden flex flex-col gap-10 shadow-2xl">
           
+          {/* Node Selector Buttons */}
           <div className="grid grid-cols-2 md:grid-cols-6 gap-6 relative z-10">
             {nodes.map((n) => {
               const active = selectedNode === n.id;
@@ -348,6 +453,17 @@ export function AIBrainPipeline() {
         </div>
 
       </div>
+
+      <style jsx global>{`
+        @keyframes pulse-dash {
+          to {
+            stroke-dashoffset: -30;
+          }
+        }
+        .animate-pulse-dash {
+          animation: pulse-dash 3s linear infinite;
+        }
+      `}</style>
     </section>
   );
 }
