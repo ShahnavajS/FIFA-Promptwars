@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useRef } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { 
   Sun, 
@@ -10,10 +11,8 @@ import {
   Heart, 
   Activity, 
   Flame, 
-  Tv, 
   Volume2, 
   VolumeX,
-  CheckCircle,
   Wind
 } from "lucide-react";
 
@@ -39,6 +38,22 @@ export function MatchdayJourney() {
   const [isAudioMuted, setIsAudioMuted] = useState<boolean>(true);
   const [celebrateTrigger, setCelebrateTrigger] = useState<boolean>(false);
   const [confettiArray, setConfettiArray] = useState<{ id: number; left: number; top: number; delay: number }[]>([]);
+  
+  // Parallax Mouse tracking
+  const imageCardRef = useRef<HTMLDivElement>(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!imageCardRef.current) return;
+    const rect = imageCardRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setMousePos({ x, y });
+  };
+
+  const handleMouseLeave = () => {
+    setMousePos({ x: 0, y: 0 });
+  };
 
   const stages: JourneyStage[] = [
     {
@@ -225,7 +240,7 @@ export function MatchdayJourney() {
               <span>Interactive Matchday Simulator</span>
             </div>
             <h2 className="text-4xl sm:text-6xl font-extrabold font-display text-white tracking-tight leading-none">
-              Tournament Journey
+              Empathetic Assistance for Every Role
             </h2>
             <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
               Step through the stages of a complete World Cup matchday. See the stadium atmosphere shift and audit the AI companion support.
@@ -248,13 +263,13 @@ export function MatchdayJourney() {
         {/* Horizontal Navigation Steps */}
         <div className="flex items-center gap-2.5 overflow-x-auto pb-4 border-b border-neutral-900 scrollbar-none">
           {stages.map((s, idx) => {
-            const active = idx === activeStage;
+            const isActive = idx === activeStage;
             return (
               <button
                 key={s.id}
                 onClick={() => setActiveStage(idx)}
                 className={`flex-shrink-0 px-4.5 py-3 rounded-2xl border font-bold text-xs uppercase tracking-wider transition-all focus:outline-none cursor-pointer ${
-                  active 
+                  isActive 
                     ? "bg-neutral-900 border-neutral-700 text-white shadow-xl" 
                     : "bg-neutral-950/20 border-neutral-905 text-neutral-500 hover:text-neutral-300 hover:border-neutral-850"
                 }`}
@@ -265,92 +280,23 @@ export function MatchdayJourney() {
           })}
         </div>
 
-        {/* Stadium Cockpit Display Grid */}
+        {/* Simulator Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
-          {/* Left panel: The Stadium Display screen HUD (7 Cols) */}
-          <div className="lg:col-span-7 p-6 rounded-3xl border border-neutral-900 bg-neutral-950/40 relative overflow-hidden flex flex-col justify-between min-h-[420px]">
-            {/* Visual scanlines overlay */}
-            <div className="absolute inset-0 bg-scanlines pointer-events-none opacity-5" />
-
-            <div className="flex items-center justify-between text-neutral-500 text-[9px] font-bold uppercase tracking-widest font-mono border-b border-neutral-900/60 pb-3">
-              <span className="flex items-center gap-1.5">
-                <Tv className="h-3.5 w-3.5 text-cyber-green" />
-                STADIUM MONITOR CAMERA FEED
-              </span>
-              <span className="text-victory-gold">METLIFE CAMERA FEED // LIVE</span>
-            </div>
-
-            {/* Stadium Visual Content Representation */}
-            <div className="flex-grow flex flex-col items-center justify-center py-10 relative">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={active.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.3 }}
-                  className="text-center space-y-4"
-                >
-                  {active.weather === "sunny" && <Sun className="h-20 w-20 text-amber-500 animate-spin-slow mx-auto" />}
-                  {active.weather === "rainy" && <CloudRain className="h-20 w-20 text-blue-400 animate-bounce mx-auto" />}
-                  {active.weather === "night" && <Flame className="h-20 w-20 text-purple-400 animate-pulse mx-auto" />}
-                  {active.weather === "celebration" && <Sparkles className="h-20 w-20 text-victory-gold animate-bounce mx-auto" />}
-                  {active.weather === "storm" && <Wind className="h-20 w-20 text-rose-500 animate-pulse mx-auto" />}
-                  
-                  <div className="text-sm font-extrabold text-white tracking-widest uppercase font-mono mt-3">
-                    {active.atmosphereTitle}
-                  </div>
-                  <p className="text-neutral-400 text-xs max-w-sm mx-auto italic font-medium">
-                    {active.illustrationDesc}
-                  </p>
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Goal Celebration Interactive Button */}
-              {active.weather === "celebration" && (
-                <button
-                  onClick={triggerCelebration}
-                  className="mt-6 px-6 py-2.5 bg-victory-gold hover:bg-amber-500 text-black font-extrabold text-xs uppercase tracking-widest rounded-xl transition-all shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:scale-105 cursor-pointer"
-                >
-                  Celebrate Goal!
-                </button>
-              )}
-            </div>
-
-            {/* Lower dashboard bar */}
-            <div className="border-t border-neutral-900 pt-4 flex items-center justify-between text-xs">
-              <div>
-                <div className="text-[8px] text-neutral-500 font-bold uppercase tracking-wider font-mono">{active.metricLabel}</div>
-                <div className="text-sm font-extrabold text-white font-mono">{active.metricValue}</div>
-              </div>
-              <button
-                onClick={() => {
-                  if (active.stadiumAction.includes("Celebration") || active.stadiumAction.includes("Goal")) {
-                    triggerCelebration();
-                  }
-                }}
-                className="px-4 py-2 rounded-xl border border-neutral-850 bg-neutral-950/60 font-bold text-neutral-300 hover:text-white transition-all cursor-pointer"
-              >
-                {active.stadiumAction}
-              </button>
-            </div>
-
-          </div>
-
-          {/* Right panel: The Human Persona AI card (5 Cols) */}
-          <div className="lg:col-span-5 flex flex-col justify-between gap-6">
+          {/* LEFT: Persona Details & Selector Controls (Order 2 on Mobile, Order 1 on Desktop) */}
+          <div className="order-2 lg:order-1 lg:col-span-5 flex flex-col gap-6 justify-between">
             
-            {/* User Persona profile */}
             <Card variant="glass" className="p-6 border-neutral-900 bg-neutral-950/40 text-left relative overflow-hidden flex flex-col justify-between flex-grow">
-              <div className="space-y-4">
+              <div className="space-y-6">
+                
+                {/* Persona Header Info */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-full overflow-hidden border border-neutral-850 flex-shrink-0">
-                      <img src={active.avatar} alt={active.persona} className="h-full w-full object-cover" />
+                      <Image src={active.avatar} alt={active.persona} width={40} height={40} className="h-full w-full object-cover" />
                     </div>
                     <div>
-                      <div className="px-2 py-0.5 rounded border border-victory-gold/20 text-victory-gold bg-victory-gold/5 text-[9px] font-bold uppercase tracking-wider">
+                      <div className="px-2 py-0.5 rounded border border-victory-gold/20 text-victory-gold bg-victory-gold/5 text-[9px] font-bold uppercase tracking-wider inline-block">
                         {active.personaTitle}
                       </div>
                       <h4 className="text-white font-bold text-sm mt-1">{active.persona}</h4>
@@ -361,34 +307,197 @@ export function MatchdayJourney() {
                     <span className={`text-xs font-bold font-mono ${active.stressColor}`}>{active.stressLevel}</span>
                   </div>
                 </div>
-              </div>
 
-              {/* SRE AI guidance box */}
-              <div className="p-4 rounded-2xl border border-neutral-900 bg-neutral-950/80 font-sans text-xs text-neutral-300 relative overflow-hidden my-4">
-                <div className="absolute top-0 left-0 w-1 h-full bg-cyber-green" />
-                <div className="text-[8px] text-neutral-500 font-bold uppercase tracking-widest font-mono mb-2 flex items-center gap-1">
-                  <Heart className="h-3.5 w-3.5 text-cyber-green animate-pulse" />
-                  EMPATHETIC AI COMPANION
+                {/* SRE AI guidance box */}
+                <div className="p-4 rounded-2xl border border-neutral-900 bg-neutral-950/80 font-sans text-xs text-neutral-300 relative overflow-hidden my-4">
+                  <div className="absolute top-0 left-0 w-1 h-full bg-cyber-green" />
+                  <div className="text-[8px] text-neutral-500 font-bold uppercase tracking-widest font-mono mb-2 flex items-center gap-1">
+                    <Heart className="h-3.5 w-3.5 text-cyber-green animate-pulse" />
+                    EMPATHETIC AI COMPANION
+                  </div>
+                  <p className="leading-relaxed font-medium italic">
+                    {active.aiDialogue}
+                  </p>
                 </div>
-                <p className="leading-relaxed font-medium italic">
-                  {active.aiDialogue}
-                </p>
+
+                {/* Environment Monitor Box */}
+                <div className="p-4.5 rounded-2xl border border-neutral-900 bg-neutral-950/20 space-y-4">
+                  <div className="flex items-center justify-between text-neutral-500 text-[8px] font-bold uppercase tracking-wider font-mono">
+                    <span>Active Atmosphere Control</span>
+                    <span className="text-cyber-green font-mono">ONLINE</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {active.weather === "sunny" && <Sun className="h-8 w-8 text-amber-500 animate-spin-slow" />}
+                    {active.weather === "rainy" && <CloudRain className="h-8 w-8 text-blue-400 animate-bounce" />}
+                    {active.weather === "night" && <Flame className="h-8 w-8 text-purple-400 animate-pulse" />}
+                    {active.weather === "celebration" && <Sparkles className="h-8 w-8 text-victory-gold animate-bounce" />}
+                    {active.weather === "storm" && <Wind className="h-8 w-8 text-rose-500 animate-pulse" />}
+                    <div>
+                      <div className="text-white text-xs font-bold font-mono">{active.atmosphereTitle}</div>
+                      <p className="text-[10px] text-neutral-500 mt-0.5">{active.illustrationDesc}</p>
+                    </div>
+                  </div>
+                </div>
+
               </div>
 
-              <div className="border-t border-neutral-900 pt-4 flex items-center justify-between text-xs">
-                <span className="text-neutral-500 font-mono text-[9px]">DIARY CHECKPOINT ACTIVE</span>
-                <span className="text-cyber-green font-bold flex items-center gap-1.5">
-                  <CheckCircle className="h-4 w-4" />
-                  Telemetry Synced
-                </span>
+              {/* Lower dashboard bar */}
+              <div className="border-t border-neutral-900 pt-4 mt-6 flex items-center justify-between text-xs">
+                <div>
+                  <div className="text-[8px] text-neutral-500 font-bold uppercase tracking-wider font-mono">{active.metricLabel}</div>
+                  <div className="text-sm font-extrabold text-white font-mono">{active.metricValue}</div>
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      if (active.stadiumAction.includes("Celebration") || active.stadiumAction.includes("Goal")) {
+                        triggerCelebration();
+                      }
+                    }}
+                    className="px-3.5 py-2 rounded-xl border border-neutral-850 bg-neutral-950/60 font-bold text-neutral-300 hover:text-white transition-all cursor-pointer text-xs"
+                  >
+                    {active.stadiumAction}
+                  </button>
+                  
+                  {active.weather === "celebration" && (
+                    <button
+                      onClick={triggerCelebration}
+                      className="px-3.5 py-2 bg-victory-gold hover:bg-amber-500 text-black font-extrabold text-xs uppercase tracking-widest rounded-xl transition-all shadow-[0_0_15px_rgba(245,158,11,0.2)] hover:scale-105 cursor-pointer"
+                    >
+                      Celebration Confetti
+                    </button>
+                  )}
+                </div>
               </div>
             </Card>
+
+          </div>
+
+          {/* RIGHT: The Premium Accessibility Visual Card (Order 1 on Mobile, Order 2 on Desktop) */}
+          <div className="order-1 lg:order-2 lg:col-span-7 flex flex-col">
+            
+            {/* Visual Card Container */}
+            <div 
+              ref={imageCardRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="h-[500px] sm:h-[600px] w-full rounded-[24px] border border-[#ffffff10] bg-neutral-950/80 shadow-2xl relative overflow-hidden flex flex-col justify-between p-6 group cursor-pointer"
+            >
+              {/* Subtle emerald glow behind the card */}
+              <div className="absolute -top-24 -left-24 w-[350px] h-[350px] rounded-full bg-emerald-500/10 blur-[120px] pointer-events-none group-hover:bg-emerald-500/15 transition-colors duration-500" />
+              
+              {/* Internal Radial Gradient Overlay */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.04),transparent_65%)] pointer-events-none z-10" />
+
+              {/* Main Visual Image Wrapper with Parallax */}
+              <div className="absolute inset-0 overflow-hidden z-0">
+                <motion.div
+                  className="w-[106%] h-[106%] relative -left-[3%] -top-[3%]"
+                  animate={{
+                    x: mousePos.x * -20,
+                    y: mousePos.y * -20,
+                  }}
+                  transition={{ type: "spring", stiffness: 90, damping: 25 }}
+                >
+                  <Image
+                    src="/images/accessibility_route.jpg"
+                    alt="Stadium Assist volunteer helping wheelchair user navigate with real-time AR route layout"
+                    fill
+                    loading="lazy"
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                  />
+                </motion.div>
+              </div>
+
+              {/* Dark Gradient Overlay for Typography Readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent pointer-events-none z-10" />
+
+              {/* Animated HUD Overlay Elements */}
+              <div className="absolute inset-0 pointer-events-none z-20">
+                
+                {/* Emerald Light Sweep Animation */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-400/8 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
+                
+                {/* Pulsing SVG path simulation */}
+                <svg className="absolute inset-0 w-full h-full opacity-65 group-hover:opacity-85 transition-opacity duration-500" xmlns="http://www.w3.org/2000/svg">
+                  <path 
+                    d="M 120 450 Q 280 400 320 280 T 480 180" 
+                    fill="none" 
+                    stroke="#10b981" 
+                    strokeWidth="3.5" 
+                    strokeLinecap="round"
+                    className="animate-dash"
+                    style={{
+                      strokeDasharray: "8, 12",
+                    }}
+                  />
+                </svg>
+              </div>
+
+              {/* Top HUD Tag */}
+              <div className="relative z-20 flex items-center justify-between">
+                <span className="text-[9px] font-mono text-emerald-400 font-extrabold uppercase tracking-widest bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
+                  Live Path Overlay
+                </span>
+                
+                <span className="text-[9px] font-mono text-neutral-400 font-bold uppercase tracking-wider">
+                  METLIFE SEC 134 // STEP-FREE
+                </span>
+              </div>
+
+              {/* Bottom Image Overlay Container */}
+              <div className="relative z-20 mt-auto text-left">
+                <h3 className="text-2xl sm:text-3xl font-extrabold font-display text-white tracking-tight leading-none">
+                  Accessible for Everyone
+                </h3>
+                <p className="text-neutral-300 text-xs sm:text-sm font-medium mt-2 max-w-md leading-relaxed">
+                  AI finds the safest, fastest, and fully accessible route in real time.
+                </p>
+
+                {/* Real-time Telemetry Pills */}
+                <div className="flex flex-wrap gap-2 mt-4.5">
+                  <span className="px-2.5 py-1 rounded-full text-[9px] font-bold bg-neutral-900/80 border border-[#ffffff10] text-white flex items-center gap-1">
+                    ♿ Step-Free Route
+                  </span>
+                  <span className="px-2.5 py-1 rounded-full text-[9px] font-bold bg-neutral-900/80 border border-[#ffffff10] text-white flex items-center gap-1">
+                    🛗 Elevator Available
+                  </span>
+                  <span className="px-2.5 py-1 rounded-full text-[9px] font-bold bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center gap-1 font-mono">
+                    ⏱ ETA 2 min
+                  </span>
+                  <span className="px-2.5 py-1 rounded-full text-[9px] font-bold bg-neutral-900/80 border border-[#ffffff10] text-emerald-400 flex items-center gap-1">
+                    🤖 Live AI Guidance
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Accessibility Tagline */}
+            <div className="text-left mt-4 pl-4 border-l-2 border-emerald-500/30 py-1">
+              <p className="text-neutral-300 text-base font-serif italic tracking-wide font-medium">
+                &ldquo;Accessibility isn&apos;t a feature. It&apos;s a promise.&rdquo;
+              </p>
+            </div>
 
           </div>
 
         </div>
 
       </div>
+
+      <style jsx global>{`
+        @keyframes dash {
+          to {
+            stroke-dashoffset: -40;
+          }
+        }
+        .animate-dash {
+          animation: dash 2.5s linear infinite;
+        }
+      `}</style>
     </section>
   );
 }
