@@ -1,4 +1,4 @@
-const CACHE_NAME = "stadium-pulse-cache-v1";
+const CACHE_NAME = "stadium-pulse-cache-v2";
 const OFFLINE_URL = "/offline";
 
 const ASSETS_TO_CACHE = [
@@ -35,6 +35,30 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
+  // Use Network-First strategy for HTML page navigations to allow instant updates
+  if (event.request.mode === "navigate") {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          if (response.status === 200) {
+            const responseClone = response.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseClone);
+            });
+          }
+          return response;
+        })
+        .catch(() => {
+          return caches.match(event.request).then((cachedResponse) => {
+            if (cachedResponse) return cachedResponse;
+            return caches.match(OFFLINE_URL);
+          });
+        })
+    );
+    return;
+  }
+
+  // Use Cache-First strategy for static assets
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
@@ -52,9 +76,6 @@ self.addEventListener("fetch", (event) => {
           return response;
         })
         .catch(() => {
-          if (event.request.mode === "navigate") {
-            return caches.match(OFFLINE_URL);
-          }
           return new Response("Offline resource unavailable", {
             status: 503,
             statusText: "Service Unavailable",

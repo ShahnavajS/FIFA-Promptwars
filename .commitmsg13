@@ -1,1 +1,0 @@
-fix: move win32 native modules to optionalDependencies to support both local Windows dev and Linux container builds
