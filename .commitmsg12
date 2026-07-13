@@ -1,1 +1,0 @@
-fix: add win32 native dependencies explicitly to package.json to guarantee local dev builds on Windows
