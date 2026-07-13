@@ -382,7 +382,7 @@ export function MatchdayJourney() {
               ref={imageCardRef}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              className="h-[500px] sm:h-[600px] w-full rounded-[24px] border border-[#ffffff10] bg-neutral-950/80 shadow-2xl relative overflow-hidden flex flex-col justify-between p-6 group cursor-pointer"
+              className="h-[320px] sm:h-[450px] lg:h-[600px] w-full rounded-[24px] border border-[#ffffff10] bg-neutral-950/80 shadow-2xl relative overflow-hidden flex flex-col justify-between p-6 group cursor-pointer"
             >
               {/* Subtle emerald glow behind the card */}
               <div className="absolute -top-24 -left-24 w-[350px] h-[350px] rounded-full bg-emerald-500/10 blur-[120px] pointer-events-none group-hover:bg-emerald-500/15 transition-colors duration-500" />

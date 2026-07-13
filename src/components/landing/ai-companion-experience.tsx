@@ -65,7 +65,7 @@ export function AICompanionExperience() {
               ref={containerRef}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              className="h-[500px] sm:h-[650px] w-full rounded-[30px] border border-[#ffffff10] bg-neutral-950/80 shadow-[0_0_40px_rgba(16,185,129,0.15)] relative overflow-hidden flex flex-col justify-between p-6 group cursor-pointer animate-float"
+              className="h-[320px] sm:h-[450px] lg:h-[650px] w-full rounded-[30px] border border-[#ffffff10] bg-neutral-950/80 shadow-[0_0_40px_rgba(16,185,129,0.15)] relative overflow-hidden flex flex-col justify-between p-6 group cursor-pointer animate-float"
             >
               {/* Radar pulse effect behind image */}
               <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
@@ -113,52 +113,52 @@ export function AICompanionExperience() {
               {/* FLOATING HUD CARDS */}
               
               {/* Top Left: AI Navigation */}
-              <div className="absolute top-[8%] left-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300">
-                <div className="p-1.5 rounded-lg bg-cyber-green/15 text-cyber-green">
-                  <Compass className="h-4 w-4" />
+              <div className="absolute top-[8%] left-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-2 py-1.5 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300">
+                <div className="p-1 sm:p-1.5 rounded-lg bg-cyber-green/15 text-cyber-green">
+                  <Compass className="h-3 w-3 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[7px] text-neutral-400 uppercase block font-bold tracking-wider">🧭 AI Navigation</span>
-                  <span className="text-xs font-extrabold text-white mt-0.5 block">Active</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">🧭 AI Navigation</span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">Active</span>
                 </div>
               </div>
 
               {/* Top Right: Next Train */}
-              <div className="absolute top-[8%] right-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300 delay-75">
-                <div className="p-1.5 rounded-lg bg-[#00e5ff]/15 text-[#00e5ff]">
-                  <Train className="h-4 w-4" />
+              <div className="absolute top-[8%] right-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-2 py-1.5 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300 delay-75">
+                <div className="p-1 sm:p-1.5 rounded-lg bg-[#00e5ff]/15 text-[#00e5ff]">
+                  <Train className="h-3 w-3 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[7px] text-neutral-400 uppercase block font-bold tracking-wider">🚇 Next Train</span>
-                  <span className="text-xs font-extrabold text-white mt-0.5 block">2 min</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">🚇 Next Train</span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">2 min</span>
                 </div>
               </div>
 
               {/* Bottom Left: Crowd */}
-              <div className="absolute bottom-[8%] left-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300 delay-100">
-                <div className="p-1.5 rounded-lg bg-stadium-blue/15 text-stadium-blue">
-                  <Users className="h-4 w-4" />
+              <div className="absolute bottom-[8%] left-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-2 py-1.5 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300 delay-100">
+                <div className="p-1 sm:p-1.5 rounded-lg bg-stadium-blue/15 text-stadium-blue">
+                  <Users className="h-3 w-3 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[7px] text-neutral-400 uppercase block font-bold tracking-wider">👥 Crowd</span>
-                  <span className="text-xs font-extrabold text-white mt-0.5 block">Moderate</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">👥 Crowd</span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">Moderate</span>
                 </div>
               </div>
 
               {/* Bottom Right: Step-Free */}
-              <div className="absolute bottom-[8%] right-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300 delay-150">
-                <div className="p-1.5 rounded-lg bg-emerald-500/15 text-emerald-400">
-                  <Accessibility className="h-4 w-4" />
+              <div className="absolute bottom-[8%] right-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-2 py-1.5 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300 delay-150">
+                <div className="p-1 sm:p-1.5 rounded-lg bg-emerald-500/15 text-emerald-400">
+                  <Accessibility className="h-3 w-3 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[7px] text-neutral-400 uppercase block font-bold tracking-wider">♿ Step-Free</span>
-                  <span className="text-xs font-extrabold text-white mt-0.5 block">Enabled</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">♿ Step-Free</span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">Enabled</span>
                 </div>
               </div>
 
               {/* Floating Notification Slides In Periodically (6s Loop) */}
-              <div className="absolute top-[22%] left-1/2 -translate-x-1/2 z-30 bg-emerald-950/90 border border-emerald-500/30 backdrop-blur-md px-4 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-xl animate-notification font-mono text-[9px] font-bold text-emerald-400 uppercase tracking-wider">
-                <Bell className="h-4 w-4 text-emerald-400 animate-bounce" />
+              <div className="absolute top-[22%] left-1/2 -translate-x-1/2 z-30 bg-emerald-950/90 border border-emerald-500/30 backdrop-blur-md px-2 py-1.5 sm:px-4 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-xl animate-notification font-mono text-[7px] sm:text-[9px] font-bold text-emerald-400 uppercase tracking-wider">
+                <Bell className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-400 animate-bounce" />
                 <span>Route updated automatically</span>
               </div>
 

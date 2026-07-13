@@ -195,15 +195,15 @@ export function FamilyJourney() {
                       ease: "easeInOut"
                     }
                   }}
-                  className={`absolute p-3 rounded-2xl border backdrop-blur-xl pointer-events-auto flex items-center gap-3 shadow-lg ${card.bgBorder} ${card.posClass}`}
+                  className={`absolute p-1.5 sm:p-3 rounded-xl sm:rounded-2xl border backdrop-blur-xl pointer-events-auto flex items-center gap-1.5 sm:gap-3 shadow-lg ${card.bgBorder} ${card.posClass}`}
                 >
-                  <div className={`p-2 rounded-xl bg-neutral-900/80 border border-neutral-800 ${card.iconColor}`}>
-                    <Icon className="h-4.5 w-4.5" />
+                  <div className={`p-1 sm:p-2 rounded-lg bg-neutral-900/80 border border-neutral-850 ${card.iconColor}`}>
+                    <Icon className="h-3 w-3 sm:h-4.5 sm:w-4.5" />
                   </div>
                   <div className="text-left font-mono">
-                    <div className="text-[7.5px] font-bold text-neutral-500 uppercase tracking-widest">{card.title}</div>
-                    <div className="text-[10px] font-extrabold text-white mt-0.5">{card.label}</div>
-                    <div className="text-[8px] text-neutral-400 font-semibold">{card.value}</div>
+                    <div className="text-[6px] sm:text-[7.5px] font-bold text-neutral-500 uppercase tracking-widest leading-none">{card.title}</div>
+                    <div className="text-[8px] sm:text-[10px] font-extrabold text-white mt-0.5 leading-none">{card.label}</div>
+                    <div className="text-[7px] sm:text-[8px] text-neutral-400 font-semibold mt-0.5 hidden sm:block">{card.value}</div>
                   </div>
                 </motion.div>
               );

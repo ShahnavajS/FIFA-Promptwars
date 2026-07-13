@@ -93,7 +93,7 @@ export function HumanStories() {
         <div className="flex flex-col lg:flex-row gap-12 items-stretch mt-12">
           
           {/* LEFT COLUMN: Large Image (65% width) */}
-          <div className="w-full lg:w-[65%] rounded-3xl border border-neutral-900 bg-neutral-950/40 relative overflow-hidden min-h-[480px] sm:min-h-[580px] shadow-2xl">
+          <div className="w-full lg:w-[65%] rounded-3xl border border-neutral-900 bg-neutral-950/40 relative overflow-hidden min-h-[320px] sm:min-h-[480px] lg:min-h-[580px] shadow-2xl">
             
             {/* Parallax Scaling Image Wrapper */}
             <motion.div 
@@ -143,14 +143,14 @@ export function HumanStories() {
                         ease: "easeInOut"
                       }
                     }}
-                    className={`absolute p-3 rounded-2xl border backdrop-blur-xl pointer-events-auto flex items-center gap-3 shadow-lg ${w.bgBorder} ${w.posClass}`}
+                    className={`absolute p-1.5 sm:p-3 rounded-xl sm:rounded-2xl border backdrop-blur-xl pointer-events-auto flex items-center gap-1.5 sm:gap-3 shadow-lg ${w.bgBorder} ${w.posClass}`}
                   >
-                    <div className="p-2 rounded-xl bg-neutral-900/80 border border-neutral-850">
-                      <Icon className={`h-4.5 w-4.5 ${w.iconColor}`} />
+                    <div className="p-1 sm:p-2 rounded-lg bg-neutral-900/80 border border-neutral-855">
+                      <Icon className={`h-3 w-3 sm:h-4.5 sm:w-4.5 ${w.iconColor}`} />
                     </div>
                     <div className="text-left font-mono">
-                      <div className="text-[7.5px] font-bold text-neutral-500 uppercase tracking-widest">{w.title}</div>
-                      <div className="text-[10px] font-extrabold text-white mt-0.5">{w.value}</div>
+                      <div className="text-[6px] sm:text-[7.5px] font-bold text-neutral-500 uppercase tracking-widest leading-none">{w.title}</div>
+                      <div className="text-[8px] sm:text-[10px] font-extrabold text-white mt-0.5 leading-none">{w.value}</div>
                     </div>
                   </motion.div>
                 );

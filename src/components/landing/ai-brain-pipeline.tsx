@@ -262,46 +262,46 @@ export function AIBrainPipeline() {
               {/* FLOATING HUD CARDS */}
               
               {/* Top Left: Stadium Health */}
-              <div className="absolute top-[8%] left-[6%] z-20 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1.5 transition-transform duration-350">
-                <div className="p-1.5 rounded-lg bg-cyber-green/15 text-cyber-green">
-                  <ActivityIcon className="h-4 w-4" />
+              <div className="absolute top-[8%] left-[6%] z-20 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-2 py-1.5 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-lg group-hover:-translate-y-1.5 transition-transform duration-350">
+                <div className="p-1 sm:p-1.5 rounded-lg bg-cyber-green/15 text-cyber-green">
+                  <ActivityIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[7.5px] text-neutral-400 uppercase tracking-wider block font-bold">🟢 Stadium Health</span>
-                  <span className="text-sm font-extrabold text-white">98%</span>
+                  <span className="text-[5.5px] sm:text-[7.5px] text-neutral-400 uppercase tracking-wider block font-bold leading-none">🟢 Stadium Health</span>
+                  <span className="text-[9px] sm:text-sm font-extrabold text-white mt-0.5 block leading-none">98%</span>
                 </div>
               </div>
 
               {/* Top Right: Crowd Density */}
-              <div className="absolute top-[8%] right-[6%] z-20 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1.5 transition-transform duration-350 delay-75">
-                <div className="p-1.5 rounded-lg bg-stadium-blue/15 text-stadium-blue">
-                  <Users className="h-4 w-4" />
+              <div className="absolute top-[8%] right-[6%] z-20 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-2 py-1.5 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-lg group-hover:-translate-y-1.5 transition-transform duration-350 delay-75">
+                <div className="p-1 sm:p-1.5 rounded-lg bg-stadium-blue/15 text-stadium-blue">
+                  <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[7.5px] text-neutral-400 uppercase tracking-wider block font-bold">👥 Crowd Density</span>
-                  <span className="text-sm font-extrabold text-white">Normal</span>
+                  <span className="text-[5.5px] sm:text-[7.5px] text-neutral-400 uppercase tracking-wider block font-bold leading-none">👥 Crowd Density</span>
+                  <span className="text-[9px] sm:text-sm font-extrabold text-white mt-0.5 block leading-none">Normal</span>
                 </div>
               </div>
 
               {/* Bottom Left: AI Confidence */}
-              <div className="absolute bottom-[8%] left-[6%] z-20 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1.5 transition-transform duration-350 delay-100">
-                <div className="p-1.5 rounded-lg bg-victory-gold/15 text-victory-gold">
-                  <Zap className="h-4 w-4" />
+              <div className="absolute bottom-[8%] left-[6%] z-20 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-2 py-1.5 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-lg group-hover:-translate-y-1.5 transition-transform duration-350 delay-100">
+                <div className="p-1 sm:p-1.5 rounded-lg bg-victory-gold/15 text-victory-gold">
+                  <Zap className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[7.5px] text-neutral-400 uppercase tracking-wider block font-bold">🤖 AI Confidence</span>
-                  <span className="text-sm font-extrabold text-white">96%</span>
+                  <span className="text-[5.5px] sm:text-[7.5px] text-neutral-400 uppercase tracking-wider block font-bold leading-none">🤖 AI Confidence</span>
+                  <span className="text-[9px] sm:text-sm font-extrabold text-white mt-0.5 block leading-none">96%</span>
                 </div>
               </div>
 
               {/* Bottom Right: Transit Status */}
-              <div className="absolute bottom-[8%] right-[6%] z-20 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1.5 transition-transform duration-350 delay-150">
-                <div className="p-1.5 rounded-lg bg-[#00e5ff]/15 text-[#00e5ff]">
-                  <Compass className="h-4 w-4" />
+              <div className="absolute bottom-[8%] right-[6%] z-20 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-2 py-1.5 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-lg group-hover:-translate-y-1.5 transition-transform duration-350 delay-150">
+                <div className="p-1 sm:p-1.5 rounded-lg bg-[#00e5ff]/15 text-[#00e5ff]">
+                  <Compass className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[7.5px] text-neutral-400 uppercase tracking-wider block font-bold">🚇 Transit Status</span>
-                  <span className="text-xs font-extrabold text-white">All Routes Clear</span>
+                  <span className="text-[5.5px] sm:text-[7.5px] text-neutral-400 uppercase tracking-wider block font-bold leading-none">🚇 Transit Status</span>
+                  <span className="text-[8px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">All Routes Clear</span>
                 </div>
               </div>
 

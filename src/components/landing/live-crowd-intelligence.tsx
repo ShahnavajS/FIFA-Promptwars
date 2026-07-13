@@ -141,7 +141,7 @@ export function LiveCrowdIntelligence() {
               ref={containerRef}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              className="h-[500px] sm:h-[650px] w-full rounded-[30px] border border-[#ffffff10] bg-neutral-950/80 shadow-[0_0_40px_rgba(16,185,129,0.15)] relative overflow-hidden flex flex-col justify-between p-6 group cursor-pointer"
+              className="h-[320px] sm:h-[450px] lg:h-[650px] w-full rounded-[30px] border border-[#ffffff10] bg-neutral-950/80 shadow-[0_0_40px_rgba(16,185,129,0.15)] relative overflow-hidden flex flex-col justify-between p-6 group cursor-pointer"
             >
               {/* Internal Radial Gradient */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.02),transparent_70%)] pointer-events-none z-10" />
@@ -189,46 +189,46 @@ export function LiveCrowdIntelligence() {
               {/* FLOATING HUD CARDS */}
               
               {/* Top Left: Stadium Health */}
-              <div className="absolute top-[8%] left-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300">
-                <div className="p-1.5 rounded-lg bg-cyber-green/15 text-cyber-green">
-                  <Activity className="h-4 w-4" />
+              <div className="absolute top-[8%] left-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-2 py-1.5 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300">
+                <div className="p-1 sm:p-1.5 rounded-lg bg-cyber-green/15 text-cyber-green">
+                  <Activity className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[7px] text-neutral-400 uppercase block font-bold tracking-wider">🟢 Stadium Health</span>
-                  <span className="text-xs font-extrabold text-white mt-0.5 block">98%</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">🟢 Stadium Health</span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">98%</span>
                 </div>
               </div>
 
               {/* Top Right: Active Fans */}
-              <div className="absolute top-[8%] right-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300 delay-75">
-                <div className="p-1.5 rounded-lg bg-stadium-blue/15 text-stadium-blue">
-                  <Users className="h-4 w-4" />
+              <div className="absolute top-[8%] right-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-2 py-1.5 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300 delay-75">
+                <div className="p-1 sm:p-1.5 rounded-lg bg-stadium-blue/15 text-stadium-blue">
+                  <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[7px] text-neutral-400 uppercase block font-bold tracking-wider">👥 Active Fans</span>
-                  <span className="text-xs font-extrabold text-white mt-0.5 block">81,234</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">👥 Active Fans</span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">81,234</span>
                 </div>
               </div>
 
               {/* Bottom Left: Best Exit */}
-              <div className="absolute bottom-[8%] left-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300 delay-100">
-                <div className="p-1.5 rounded-lg bg-transport-cyan/15 text-transport-cyan">
-                  <Compass className="h-4 w-4" />
+              <div className="absolute bottom-[8%] left-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-2 py-1.5 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300 delay-100">
+                <div className="p-1 sm:p-1.5 rounded-lg bg-transport-cyan/15 text-transport-cyan">
+                  <Compass className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[7px] text-neutral-400 uppercase block font-bold tracking-wider">🚇 Best Exit</span>
-                  <span className="text-xs font-extrabold text-white mt-0.5 block">Gate D</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">🚇 Best Exit</span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">Gate D</span>
                 </div>
               </div>
 
               {/* Bottom Right: AI Confidence */}
-              <div className="absolute bottom-[8%] right-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300 delay-150">
-                <div className="p-1.5 rounded-lg bg-victory-gold/15 text-victory-gold">
-                  <Zap className="h-4 w-4" />
+              <div className="absolute bottom-[8%] right-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-2 py-1.5 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300 delay-150">
+                <div className="p-1 sm:p-1.5 rounded-lg bg-victory-gold/15 text-victory-gold">
+                  <Zap className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[7px] text-neutral-400 uppercase block font-bold tracking-wider">⚡ AI Confidence</span>
-                  <span className="text-xs font-extrabold text-white mt-0.5 block">97%</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">⚡ AI Confidence</span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">97%</span>
                 </div>
               </div>
 
