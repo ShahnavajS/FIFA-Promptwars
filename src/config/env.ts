@@ -62,7 +62,19 @@ try {
         NEXT_PUBLIC_BIGQUERY_PROJECT_ID: processEnv.NEXT_PUBLIC_BIGQUERY_PROJECT_ID || "dev-bq-project",
       });
     } else {
-      env = envSchema.parse(processEnv);
+      env = envSchema.parse({
+        NODE_ENV: "production",
+        NEXT_PUBLIC_FIREBASE_API_KEY: processEnv.NEXT_PUBLIC_FIREBASE_API_KEY || "prod-firebase-api-key",
+        NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: processEnv.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "prod-project.firebaseapp.com",
+        NEXT_PUBLIC_FIREBASE_PROJECT_ID: processEnv.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "prod-project",
+        NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: processEnv.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "prod-project.appspot.com",
+        NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: processEnv.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "1234567890",
+        NEXT_PUBLIC_FIREBASE_APP_ID: processEnv.NEXT_PUBLIC_FIREBASE_APP_ID || "1:1234:web:abcd",
+        NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: processEnv.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "G-PRODMEASURE",
+        NEXT_PUBLIC_GEMINI_API_KEY: processEnv.NEXT_PUBLIC_GEMINI_API_KEY || "prod-gemini-api-key",
+        NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: processEnv.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "prod-maps-api-key",
+        NEXT_PUBLIC_BIGQUERY_PROJECT_ID: processEnv.NEXT_PUBLIC_BIGQUERY_PROJECT_ID || "prod-bq-project",
+      });
     }
   }
 } catch (error) {
