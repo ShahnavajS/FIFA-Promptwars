@@ -1,1 +1,0 @@
-fix: bump service worker cache version to v2 and use Network-First strategy for navigate requests to prevent page update caching issues

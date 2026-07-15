@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { useMatchStore } from "@/stores/useMatchStore";
 import { useUiStore } from "@/stores/useUiStore";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "./card";
@@ -103,7 +104,7 @@ export function MatchMemory() {
           </CardDescription>
         </div>
         <div className="h-10 w-10 rounded-full overflow-hidden border border-victory-gold/30 flex-shrink-0">
-          <img src="/images/family_avatar.jpg" alt="Family Avatar" className="h-full w-full object-cover" />
+          <Image src="/images/family_avatar.jpg" alt="Family Avatar" width={40} height={40} className="h-full w-full object-cover" />
         </div>
       </CardHeader>
       

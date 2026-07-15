@@ -86,9 +86,12 @@ export function StadiumHero() {
               {timeRemaining}
             </div>
             {activeEmergency && (
-              <div className="px-2 py-0.5 rounded border border-rose-500/30 bg-rose-950/40 text-rose-500 text-[10px] font-bold uppercase tracking-wider animate-pulse flex items-center gap-1">
+              <div 
+                aria-live="assertive"
+                className="px-2 py-0.5 rounded border border-rose-500/30 bg-rose-950/40 text-rose-500 text-[10px] font-bold uppercase tracking-wider animate-pulse flex items-center gap-1"
+              >
                 <ShieldAlert className="h-3 w-3" />
-                {activeEmergency}
+                <span>EMERGENCY ALERT: {activeEmergency}</span>
               </div>
             )}
           </div>

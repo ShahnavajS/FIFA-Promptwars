@@ -1,4 +1,6 @@
 import { MatchPhase } from "@/stores/useMatchStore";
+import { AIService } from "@/services/ai.service";
+import { env } from "@/config/env";
 
 export interface ReplayStep {
   tick: number;
@@ -194,5 +196,172 @@ export class ReplayService {
 
   public static getLearningRecords(): LearningRecord[] {
     return this.learningRecords;
+  }
+
+  /**
+   * Generates a dynamic 5-tick operations simulation timeline using the Gemini API,
+   * falling back to programmatic generation if no API key is present or if the call fails.
+   */
+  public static async generateDynamicTimeline(params: {
+    preset: string;
+    attendance: string;
+    weather: string;
+  }): Promise<ReplayStep[]> {
+    const isRealKey = env.NEXT_PUBLIC_GEMINI_API_KEY && 
+                      env.NEXT_PUBLIC_GEMINI_API_KEY.startsWith("AIzaSy") && 
+                      env.NEXT_PUBLIC_GEMINI_API_KEY.length > 20;
+
+    if (isRealKey) {
+      try {
+        const systemPrompt = 
+          "You are a stadium operations simulator for MetLife Arena during FIFA World Cup 2026. " +
+          "Your task is to generate a custom 5-tick operations timeline. " +
+          "You must output ONLY a valid JSON array of exactly 5 ReplayStep objects. " +
+          "Do not include markdown tags, code block wrappers, or explanation comments. " +
+          "Keys for each ReplayStep MUST be exactly:\n" +
+          "- tick: number (0, 1, 2, 3, 4)\n" +
+          "- label: string (concise title, max 30 chars)\n" +
+          "- time: string (hour format like '14:00', '14:30', etc.)\n" +
+          "- phase: string ('arrival' | 'gate-entry' | 'pre-kickoff' | 'kickoff' | 'halftime' | 'second-half' | 'exit' | 'post-match')\n" +
+          "- density: number (density multiplier, e.g. 0.8 to 1.9)\n" +
+          "- emergency: string | null (short description if active, or null)\n" +
+          "- domeStatus: string ('open' | 'closed')\n" +
+          "- activePersona: string ('fan' | 'family' | 'senior' | 'tourist' | 'wheelchair' | 'volunteer')\n" +
+          "- explanation: string (situation details)\n" +
+          "- recommendedAction: string (action recommendation)\n" +
+          "- agentsLog: string (sub-agent dialogue log)\n" +
+          "Incorporate the following parameters into the timeline:\n" +
+          `- Incident Preset Scenario: ${params.preset}\n` +
+          `- Attendance Capacity: ${params.attendance}\n` +
+          `- Weather: ${params.weather}\n` +
+          "Ensure actions align with the ERGP (Explain, Reassure, Guide, Predict) framework.";
+
+        const prompt = `Generate a 5-step simulation timeline for World Cup MetLife operations under: Preset: ${params.preset}, Attendance: ${params.attendance}, Weather: ${params.weather}. Output JSON list only.`;
+        
+        const rawJsonText = await AIService.generateText(prompt, systemPrompt);
+        
+        // Clean markdown backticks if returned
+        let cleanedJson = rawJsonText.trim();
+        if (cleanedJson.startsWith("```")) {
+          cleanedJson = cleanedJson.replace(/^```(json)?/, "").replace(/```$/, "").trim();
+        }
+
+        const parsedSteps = JSON.parse(cleanedJson) as ReplayStep[];
+        if (Array.isArray(parsedSteps) && parsedSteps.length === 5) {
+          return parsedSteps;
+        }
+      } catch (error) {
+        console.warn("[Gemini Timeline Generator failed, using local programmatic builder]:", error);
+      }
+    }
+
+    // Programmatic Fallback Generator
+    const steps: ReplayStep[] = [];
+    const isStorm = params.weather.includes("Rain") || params.preset.toLowerCase().includes("weather");
+    const isStrike = params.preset.toLowerCase().includes("strike") || params.preset.toLowerCase().includes("transit");
+    const isGateFail = params.preset.toLowerCase().includes("gate") || params.preset.toLowerCase().includes("failure");
+    const densityVal = params.attendance.includes("80") ? 1.8 : params.attendance.includes("60") ? 1.4 : 0.9;
+    const initialDome = isStorm ? "closed" : "open";
+
+    // Tick 0: Arrivals
+    steps.push({
+      tick: 0,
+      label: `Arrivals Open (${params.weather})`,
+      time: "13:00",
+      phase: "arrival",
+      density: Math.round((densityVal * 0.5) * 10) / 10,
+      emergency: null,
+      domeStatus: initialDome as any,
+      activePersona: "fan",
+      explanation: `Ingress portals initializing. Attendance target set to ${params.attendance} under ${params.weather} conditions.`,
+      recommendedAction: "Activate default arrival transit dispatching and turnstile lines.",
+      agentsLog: "Coordinator: Checking gate status. All grids normal."
+    });
+
+    // Tick 1: Ingress
+    steps.push({
+      tick: 1,
+      label: isGateFail ? "Gate Fault Crisis" : "Ingress Inflow Peak",
+      time: "14:15",
+      phase: "gate-entry",
+      density: densityVal,
+      emergency: isGateFail ? "GATE B SENSOR FAULT" : null,
+      domeStatus: initialDome as any,
+      activePersona: "family",
+      explanation: isGateFail 
+        ? "Turnstile Gate B reader offline due to firmware failure. Ingress queues building."
+        : "Standard peak ingress arrivals. Density multiplier rising as kickoff approaches.",
+      recommendedAction: isGateFail 
+        ? "Divert stroller and family queues to stroller-friendly Gate A North (3 min wait)."
+        : "Open all auxiliary entrance check-in lanes.",
+      agentsLog: isGateFail
+        ? "CrowdAgent -> NavigationAgent: Gate B queues rising. Updates pushed to LEDs."
+        : "CrowdAgent: Entry rates normalized."
+    });
+
+    // Tick 2: Match Live
+    steps.push({
+      tick: 2,
+      label: isStorm ? "Storm Closes Dome" : "Kickoff Argentina vs Germany",
+      time: "15:00",
+      phase: "kickoff",
+      density: 1.0,
+      emergency: isStorm ? "SEVERE STORM ALARM" : null,
+      domeStatus: "closed",
+      activePersona: "senior",
+      explanation: isStorm
+        ? `Heavy precipitation detected near MetLife perimeters. Climate control activated under closed roof.`
+        : `Kickoff. Atmosphere stabilized under standard solar grid preset rules.`,
+      recommendedAction: isStorm
+        ? "Alert companion apps of closing dome roof. Mobilize free poncho kiosks."
+        : "Maintain standard temperature boundaries.",
+      agentsLog: isStorm
+        ? "WeatherAgent -> Coordinator: Dome roof closing sequence complete. HVAC on."
+        : "WeatherAgent: Temperature holds 28.5C."
+    });
+
+    // Tick 3: Halftime Refresh / Emergency
+    steps.push({
+      tick: 3,
+      label: isStrike ? "Shuttle Alert" : "Halftime Concession Rush",
+      time: "15:45",
+      phase: "halftime",
+      density: Math.round((densityVal * 0.9) * 10) / 10,
+      emergency: isStrike ? "RAILWAY TERMINATION ACTIVE" : null,
+      domeStatus: "closed",
+      activePersona: "wheelchair",
+      explanation: isStrike
+        ? "Meadowlands Platform 3 express rail suspended. Shuttle requirements rising."
+        : "Halftime concession crowds overloading Sector 112 facilities.",
+      recommendedAction: isStrike
+        ? "Mobilize auxiliary bus fleets. Send rerouting alerts to Platform 5."
+        : "Redirect stroller and wheelchair users to Sector 103 step-free concourse zones.",
+      agentsLog: isStrike
+        ? "TransitAgent -> All: Shuttles dispatched to Platform 5. Commuter warning sent."
+        : "AccessAgent: Elevator Sector 112 active."
+    });
+
+    // Tick 4: Exit Egress
+    steps.push({
+      tick: 4,
+      label: "Egress Dispersals",
+      time: "16:45",
+      phase: "exit",
+      density: Math.round((densityVal * 1.1) * 10) / 10,
+      emergency: isStrike ? "RAIL SYSTEM FAULT" : null,
+      domeStatus: "closed",
+      activePersona: "tourist",
+      explanation: isStrike
+        ? "Egress dispersals peaking. Platforms 3 remains offline. Rail express loops blocked."
+        : "Full egress dispersal loops active. Clearing stadium rings.",
+      recommendedAction: isStrike
+        ? "Direct 4,000 exiting fans to Shuttle bus loops on Sector North-East."
+        : "Maintain maximum express rail dispatch intervals.",
+      agentsLog: isStrike
+        ? "TransitAgent: Shuttles load-balanced."
+        : "Coordinator: Egress concluded successfully."
+    });
+
+    return steps;
   }
 }

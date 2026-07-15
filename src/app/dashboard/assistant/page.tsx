@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { useUiStore } from "@/stores/useUiStore";
 import { useToastStore } from "@/stores/useToastStore";
 import { useMatchStore, MatchPhase } from "@/stores/useMatchStore";
@@ -357,9 +358,9 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
                 <div key={idx} className={`flex items-start gap-3.5 ${isModel ? "" : "flex-row-reverse"}`}>
                   <div className="flex h-8 w-8 rounded-full overflow-hidden border border-neutral-800/80 flex-shrink-0">
                     {isModel ? (
-                      <img src="/images/tourist_avatar.jpg" alt="AI Concierge" className="h-full w-full object-cover" />
+                      <Image src="/images/tourist_avatar.jpg" alt="AI Concierge" width={32} height={32} className="h-full w-full object-cover" />
                     ) : (
-                      <img src="/images/family_avatar.jpg" alt="User Avatar" className="h-full w-full object-cover" />
+                      <Image src="/images/family_avatar.jpg" alt="User Avatar" width={32} height={32} className="h-full w-full object-cover" />
                     )}
                   </div>
 
@@ -377,7 +378,7 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
             {isTyping && (
               <div className="flex items-start gap-3.5">
                 <div className="flex h-8 w-8 rounded-full overflow-hidden border border-neutral-800/80 flex-shrink-0">
-                  <img src="/images/tourist_avatar.jpg" alt="AI Concierge" className="h-full w-full object-cover" />
+                  <Image src="/images/tourist_avatar.jpg" alt="AI Concierge" width={32} height={32} className="h-full w-full object-cover" />
                 </div>
                 <div className="max-w-md w-full p-4 rounded-2xl bg-neutral-900/40 border border-neutral-800/40">
                   <AIShimmer />

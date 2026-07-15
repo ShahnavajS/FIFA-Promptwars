@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { useMatchStore } from "@/stores/useMatchStore";
 import { useUiStore } from "@/stores/useUiStore";
 import { MultiAgentOrchestrator } from "@/services/multi-agent/orchestrator";
@@ -129,7 +130,7 @@ export function OpsDecisionCenter() {
           <CardHeader className="pb-3 flex flex-row items-center justify-between border-b border-neutral-900">
             <div className="flex items-center gap-3">
               <div className="h-10 w-10 rounded-full overflow-hidden border border-cyber-green/30 flex-shrink-0">
-                <img src="/images/coordinator_avatar.jpg" alt="Operations Coordinator" className="h-full w-full object-cover" />
+                <Image src="/images/coordinator_avatar.jpg" alt="Operations Coordinator" width={40} height={40} className="h-full w-full object-cover" />
               </div>
               <div>
                 <div className="flex items-center gap-1.5 text-cyber-green font-bold text-xs uppercase tracking-wider font-display">

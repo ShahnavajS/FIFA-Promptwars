@@ -40,6 +40,83 @@ import {
   Clock
 } from "lucide-react";
 
+const NODES = {
+  start_south: { id: "start_south", x: 50, y: 92, label: "Transit Hub South", isAccessible: true },
+  start_north: { id: "start_north", x: 50, y: 8, label: "Transit Hub North", isAccessible: true },
+  gate_a: { id: "gate_a", x: 18, y: 50, label: "Gate A (Stairs)", isAccessible: false },
+  gate_b: { id: "gate_b", x: 82, y: 50, label: "Gate B (Stairs)", isAccessible: false },
+  gate_a_north: { id: "gate_a_north", x: 30, y: 15, label: "Gate A North (Accessible Ramp)", isAccessible: true },
+  elevator_west: { id: "elevator_west", x: 32, y: 50, label: "Elevator West Core", isAccessible: true },
+  elevator_east: { id: "elevator_east", x: 68, y: 50, label: "Elevator East Core", isAccessible: true },
+  seating_112: { id: "seating_112", x: 44, y: 64, label: "Seat Sector 112", isAccessible: true },
+  restroom_112: { id: "restroom_112", x: 34, y: 72, label: "Restroom Sector 112 (Stairs)", isAccessible: false },
+  restroom_accessible: { id: "restroom_accessible", x: 34, y: 28, label: "Accessible Restroom Sector 103", isAccessible: true }
+};
+
+const EDGES = [
+  // South transit leads to Gate A, Gate B, or Elevator East
+  { from: "start_south", to: "gate_a", cost: 40, isAccessible: false },
+  { from: "start_south", to: "gate_b", cost: 40, isAccessible: false },
+  { from: "start_south", to: "elevator_east", cost: 50, isAccessible: true },
+  
+  // North transit leads to Gate A North or Gate A
+  { from: "start_north", to: "gate_a_north", cost: 20, isAccessible: true },
+  { from: "start_north", to: "gate_a", cost: 40, isAccessible: false },
+  
+  // Gates connections to concourse elevator cores
+  { from: "gate_a", to: "elevator_west", cost: 20, isAccessible: true },
+  { from: "gate_b", to: "elevator_east", cost: 20, isAccessible: true },
+  { from: "gate_a_north", to: "elevator_west", cost: 35, isAccessible: true },
+
+  // Elevator west leads to seating bowl and restrooms
+  { from: "elevator_west", to: "seating_112", cost: 25, isAccessible: true },
+  { from: "elevator_west", to: "restroom_112", cost: 15, isAccessible: false },
+  { from: "elevator_west", to: "restroom_accessible", cost: 30, isAccessible: true },
+
+  // Elevator east leads to seating bowl
+  { from: "elevator_east", to: "seating_112", cost: 30, isAccessible: true }
+];
+
+function findShortestPath(startId: string, endId: string, wheelchairOnly: boolean) {
+  const queue: { node: string; path: string[]; cost: number }[] = [{ node: startId, path: [startId], cost: 0 }];
+  const visited = new Set<string>();
+  let shortest: { path: string[]; cost: number } | null = null;
+
+  while (queue.length > 0) {
+    queue.sort((a, b) => a.cost - b.cost);
+    const curr = queue.shift()!;
+    
+    if (curr.node === endId) {
+      if (!shortest || curr.cost < shortest.cost) {
+        shortest = curr;
+      }
+      continue;
+    }
+
+    if (visited.has(curr.node)) continue;
+    visited.add(curr.node);
+
+    const outgoing = EDGES.filter(e => {
+      const match = e.from === curr.node || e.to === curr.node;
+      const accessibleOk = !wheelchairOnly || e.isAccessible;
+      return match && accessibleOk;
+    });
+
+    for (const edge of outgoing) {
+      const neighbor = edge.from === curr.node ? edge.to : edge.from;
+      if (!visited.has(neighbor)) {
+        queue.push({
+          node: neighbor,
+          path: [...curr.path, neighbor],
+          cost: curr.cost + edge.cost
+        });
+      }
+    }
+  }
+
+  return shortest ? shortest.path.map(id => NODES[id as keyof typeof NODES]) : [];
+}
+
 export default function DigitalTwinPage() {
   const { currentRole, wheelchairRerouting } = useUiStore();
   const { addToast } = useToastStore();
@@ -99,6 +176,15 @@ export default function DigitalTwinPage() {
 
   const isPredictiveAlertActive = forecast.safetyOverflowTimeMins < 10;
   const isGoalSurge = currentPhase === "full-time" || (currentPhase === "kickoff" && crowdDensityMultiplier > 1.3);
+
+  // Dynamic Journey Path Calculation
+  const startNode = currentPhase === "arrival" || currentPhase === "gate-entry" ? "start_south" : "start_north";
+  const endNode = currentPhase === "halftime" ? "restroom_accessible" : "seating_112";
+  const computedPath = findShortestPath(startNode, endNode, wheelchairRerouting);
+  
+  const pathD = computedPath.length > 1 
+    ? `M ${computedPath.map(n => `${n.x} ${n.y}`).join(" L ")}`
+    : "";
 
   return (
     <div className="flex flex-col gap-6 font-sans pb-10">
@@ -291,6 +377,45 @@ export default function DigitalTwinPage() {
                     <line x1="50" y1="26" x2="50" y2="4" stroke="#dc2626" strokeWidth="2" strokeDasharray="2 2" />
                     <line x1="26" y1="50" x2="6" y2="50" stroke="#dc2626" strokeWidth="2" strokeDasharray="2 2" />
                     <circle cx="26" cy="50" r="3" fill="#dc2626" className="animate-ping" />
+                  </g>
+                )}
+
+                {/* Dynamically Solved Journey Path Overlay */}
+                {layers.access && pathD && (
+                  <g>
+                    {/* Glowing outer trace */}
+                    <path
+                      d={pathD}
+                      fill="none"
+                      stroke={wheelchairRerouting ? "#c084fc" : "#22d3ee"}
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      opacity="0.85"
+                      className="animate-pulse"
+                    />
+                    {/* Glowing inner animated trace */}
+                    <path
+                      d={pathD}
+                      fill="none"
+                      stroke="#ffffff"
+                      strokeWidth="1"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeDasharray="4 4"
+                      className="animate-[dash_3s_linear_infinite]"
+                    />
+                    {/* Node points on path */}
+                    {computedPath.map((node, idx) => (
+                      <circle
+                        key={node.id}
+                        cx={node.x}
+                        cy={node.y}
+                        r={idx === 0 || idx === computedPath.length - 1 ? 2.5 : 1.5}
+                        fill={wheelchairRerouting ? "#e9d5ff" : "#e0f2fe"}
+                        className={idx === 0 || idx === computedPath.length - 1 ? "animate-ping" : ""}
+                      />
+                    ))}
                   </g>
                 )}
               </svg>

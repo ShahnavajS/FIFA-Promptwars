@@ -6,6 +6,8 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Button } from "@/components/ui/button";
 import { AILearningEngine } from "@/components/ui/learning-engine";
 import { OperationalInsights } from "@/components/ui/operational-insights";
+import { BigQueryAuditor } from "@/components/ui/bigquery-auditor";
+import { useToastStore } from "@/stores/useToastStore";
 import { 
   Play, 
   Pause, 
@@ -15,13 +17,22 @@ import {
   Cpu,
   ShieldAlert,
   MapPin,
-  CloudSun
+  CloudSun,
+  Sparkles,
+  Loader2
 } from "lucide-react";
 
 export default function ReplayPage() {
-  const steps = ReplayService.getReplaySteps();
+  const { addToast } = useToastStore();
+  const [steps, setSteps] = useState<ReplayStep[]>(ReplayService.getReplaySteps());
   const [currentTick, setCurrentTick] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
+  // Scenario Sandbox Form States
+  const [preset, setPreset] = useState<string>("Normal Ingress Flow");
+  const [attendance, setAttendance] = useState<string>("80,000 (Sold Out Surge)");
+  const [weather, setWeather] = useState<string>("Clear Sky");
+  const [isSimulating, setIsSimulating] = useState<boolean>(false);
 
   // Auto-play interval triggers
   useEffect(() => {
@@ -36,7 +47,27 @@ export default function ReplayPage() {
     };
   }, [isPlaying, steps.length]);
 
-  const activeStep: ReplayStep = ReplayService.getReplayStep(currentTick);
+  const handleGenerateSimulation = async () => {
+    setIsSimulating(true);
+    setIsPlaying(false);
+    addToast("Initializing generative AI simulation...", "info");
+    try {
+      const generated = await ReplayService.generateDynamicTimeline({
+        preset,
+        attendance,
+        weather,
+      });
+      setSteps(generated);
+      setCurrentTick(0);
+      addToast("Dynamic simulation timeline loaded successfully!", "success");
+    } catch (error) {
+      addToast("Failed to generate dynamic simulation", "error");
+    } finally {
+      setIsSimulating(false);
+    }
+  };
+
+  const activeStep: ReplayStep = steps[Math.max(0, Math.min(currentTick, steps.length - 1))] || steps[0];
 
   // Map layer toggles depending on active step settings
   const hasTransit = ["arrival", "exit", "post-match"].includes(activeStep.phase);
@@ -121,6 +152,82 @@ export default function ReplayPage() {
               aria-valuetext={`Tick ${currentTick}: ${activeStep.label}`}
             />
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Generative AI Scenario Sandbox */}
+      <Card variant="glass" className="border-neutral-800 bg-neutral-950/60 backdrop-blur-xl relative overflow-hidden">
+        <CardHeader className="pb-3 border-b border-neutral-900">
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 rounded-lg bg-victory-gold/10 border border-victory-gold/20 text-victory-gold">
+              <Sparkles className="h-4 w-4" />
+            </div>
+            <div>
+              <CardTitle className="text-white text-base">Generative AI Scenario Sandbox</CardTitle>
+              <CardDescription className="text-neutral-400 text-xs">
+                Select parameters to dynamically reconstruct the tournament SRE logs and recommendations using Gemini.
+              </CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="pt-4 grid grid-cols-1 md:grid-cols-4 gap-4 items-end text-xs">
+          {/* Preset Selector */}
+          <div className="flex flex-col gap-1.5 text-left">
+            <label className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider font-mono">Operations Preset</label>
+            <select
+              value={preset}
+              onChange={(e) => setPreset(e.target.value)}
+              className="bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white focus:outline-none focus:border-victory-gold text-xs"
+            >
+              <option value="Normal Ingress Flow">Normal Ingress Flow</option>
+              <option value="Gate B Firmware Failure">Gate B Firmware Failure</option>
+              <option value="Severe Thunderstorm">Severe Thunderstorm</option>
+              <option value="Transit Rail Strike">Transit Rail Strike</option>
+            </select>
+          </div>
+
+          {/* Attendance Selector */}
+          <div className="flex flex-col gap-1.5 text-left">
+            <label className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider font-mono">Attendance Load</label>
+            <select
+              value={attendance}
+              onChange={(e) => setAttendance(e.target.value)}
+              className="bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white focus:outline-none focus:border-victory-gold text-xs"
+            >
+              <option value="40,000 (Low Inflow)">40,000 (Low Inflow)</option>
+              <option value="60,000 (Medium Inflow)">60,000 (Medium Inflow)</option>
+              <option value="80,000 (Sold Out Surge)">80,000 (Sold Out Surge)</option>
+            </select>
+          </div>
+
+          {/* Weather Selector */}
+          <div className="flex flex-col gap-1.5 text-left">
+            <label className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider font-mono">Weather Condition</label>
+            <select
+              value={weather}
+              onChange={(e) => setWeather(e.target.value)}
+              className="bg-neutral-900 border border-neutral-800 rounded-lg p-2 text-white focus:outline-none focus:border-victory-gold text-xs"
+            >
+              <option value="Clear Sky">Clear Sky</option>
+              <option value="Heavy Rain">Heavy Rain</option>
+              <option value="Extreme Summer Heat">Extreme Summer Heat</option>
+            </select>
+          </div>
+
+          {/* Action Button */}
+          <Button
+            variant="glass"
+            disabled={isSimulating}
+            onClick={handleGenerateSimulation}
+            className="w-full text-xs py-2 bg-victory-gold/10 hover:bg-victory-gold/20 border-victory-gold/30 hover:border-victory-gold/50 text-victory-gold font-bold gap-2 flex items-center justify-center h-[36px]"
+          >
+            {isSimulating ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Sparkles className="h-4 w-4" />
+            )}
+            <span>Generate Replay</span>
+          </Button>
         </CardContent>
       </Card>
 
@@ -290,6 +397,9 @@ export default function ReplayPage() {
 
       {/* 4. Operational Performance Trends Dashboard */}
       <OperationalInsights />
+
+      {/* 5. BigQuery Telemetry Pipeline Auditor */}
+      <BigQueryAuditor />
 
     </div>
   );
