@@ -19,12 +19,8 @@ export function EmptyState({
       <div className="flex items-center justify-center h-16 w-16 rounded-full bg-neutral-900 border border-neutral-800 mb-4">
         {icon}
       </div>
-      <h3 className="text-base font-bold font-display text-white mb-1">
-        {title}
-      </h3>
-      <p className="text-xs text-neutral-400 leading-normal mb-4">
-        {description}
-      </p>
+      <h3 className="text-base font-bold font-display text-white mb-1">{title}</h3>
+      <p className="text-xs text-neutral-400 leading-normal mb-4">{description}</p>
       {action && <div className="mt-1">{action}</div>}
     </div>
   );

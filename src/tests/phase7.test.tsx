@@ -7,7 +7,6 @@ import { AgentCollaboration } from "@/components/ui/agent-collaboration";
 import ArchitecturePage from "@/app/dashboard/architecture/page";
 
 describe("Phase 7 AI Stadium Brain & Explainability Test Suite", () => {
-  
   test("StadiumHealthEngineService calculates critical scores during emergencies", () => {
     const health = StadiumHealthEngineService.computeHealth(
       "gate-entry",

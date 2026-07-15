@@ -9,10 +9,10 @@ import { GoogleAnalyticsWrapperService } from "@/services/google/analytics.servi
 import { StoryService, StoryStep } from "@/services/stories/story.service";
 import { Button } from "./button";
 import { Card, CardHeader, CardTitle, CardContent } from "./card";
-import { 
-  Sliders, 
-  Play, 
-  CloudLightning, 
+import {
+  Sliders,
+  Play,
+  CloudLightning,
   RotateCcw,
   Minimize2,
   Maximize2,
@@ -22,37 +22,28 @@ import {
   ArrowRight,
   Sparkles,
   Home,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
 
 export type SimulationScenario =
-  | "opening"
-  | "kickoff_rush"
-  | "goal_surge"
-  | "storm"
-  | "mass_exit"
-  | "medical"
-  | "reset";
+  "opening" | "kickoff_rush" | "goal_surge" | "storm" | "mass_exit" | "medical" | "reset";
 
 export function DemoControl() {
-  const {
-    setPhase,
-    advancePhase,
-    triggerEmergency,
-    setDomeStatus,
-    setDensityMultiplier,
-  } = useMatchStore();
+  const { setPhase, advancePhase, triggerEmergency, setDomeStatus, setDensityMultiplier } =
+    useMatchStore();
 
   const { setLanguage, setWheelchairRerouting, setRole } = useUiStore();
   const { addToast } = useToastStore();
-  
+
   const [isMinimized, setIsMinimized] = useState(false);
   const [activeTab, setActiveTab] = useState<"tactical" | "story">("story");
   const [storyIndex, setStoryIndex] = useState<number | null>(null);
 
   const handleScenario = (type: SimulationScenario) => {
     // Log telemetry analytics
-    GoogleAnalyticsWrapperService.logTelemetryEvent("SHOWCASE_SCENARIO_INJECTED", { scenario: type });
+    GoogleAnalyticsWrapperService.logTelemetryEvent("SHOWCASE_SCENARIO_INJECTED", {
+      scenario: type,
+    });
 
     switch (type) {
       case "opening":
@@ -62,7 +53,10 @@ export function DemoControl() {
         setDensityMultiplier(0.9);
         setLanguage("en");
         addToast("SHOWCASE: Opening Ceremony active. Solar dome grid active.", "success");
-        TelemetryPublisher.publish("CROWD_LEVEL_CHANGED", { type: "opening_ceremony", density: "normal" });
+        TelemetryPublisher.publish("CROWD_LEVEL_CHANGED", {
+          type: "opening_ceremony",
+          density: "normal",
+        });
         break;
 
       case "kickoff_rush":
@@ -88,14 +82,23 @@ export function DemoControl() {
         setPhase("kickoff");
         setDensityMultiplier(1.4);
         addToast("SHOWCASE: Goal surge celebrations! Crowd mood: EXCITED.", "success");
-        TelemetryPublisher.publish("CROWD_LEVEL_CHANGED", { type: "goal_celebration", density: "heavy" });
+        TelemetryPublisher.publish("CROWD_LEVEL_CHANGED", {
+          type: "goal_celebration",
+          density: "heavy",
+        });
         break;
 
       case "storm":
         setDomeStatus("closed");
         triggerEmergency("SEVERE WEATHER WARNING");
-        addToast("SHOWCASE: Storm Warning closing arena dome roof. Poncho distribution active.", "warning");
-        TelemetryPublisher.publish("CROWD_LEVEL_CHANGED", { type: "weather_alert", dome: "closed" });
+        addToast(
+          "SHOWCASE: Storm Warning closing arena dome roof. Poncho distribution active.",
+          "warning"
+        );
+        TelemetryPublisher.publish("CROWD_LEVEL_CHANGED", {
+          type: "weather_alert",
+          dome: "closed",
+        });
         break;
 
       case "mass_exit":
@@ -103,8 +106,14 @@ export function DemoControl() {
         setDomeStatus("open");
         setPhase("exit");
         setDensityMultiplier(1.6);
-        addToast("SHOWCASE: Egress flow active. Platforms rail delays. Bus lines dispatched.", "warning");
-        TelemetryPublisher.publish("CROWD_LEVEL_CHANGED", { type: "transit_strike", rail: "delayed" });
+        addToast(
+          "SHOWCASE: Egress flow active. Platforms rail delays. Bus lines dispatched.",
+          "warning"
+        );
+        TelemetryPublisher.publish("CROWD_LEVEL_CHANGED", {
+          type: "transit_strike",
+          rail: "delayed",
+        });
         break;
 
       case "medical":
@@ -140,7 +149,7 @@ export function DemoControl() {
   const handleNextStoryStep = () => {
     const nextIdx = storyIndex === null ? 0 : storyIndex + 1;
     const length = StoryService.getStoryLength();
-    
+
     if (nextIdx >= length) {
       addToast("Family Matchday story completed successfully!", "success");
       handleScenario("reset");
@@ -149,13 +158,13 @@ export function DemoControl() {
 
     setStoryIndex(nextIdx);
     const step: StoryStep = StoryService.getStoryStep(nextIdx);
-    
+
     // Sync store parameters
     setPhase(step.phase);
     setDensityMultiplier(step.density);
     triggerEmergency(step.emergency);
     setLanguage(step.activeLanguage);
-    
+
     // Synchronize active role based on persona settings
     if (step.activePersona === "volunteer") {
       setRole("volunteer");
@@ -168,11 +177,11 @@ export function DemoControl() {
     }
 
     addToast(`STORY STEP: ${step.label} loaded.`, "info");
-    
+
     GoogleAnalyticsWrapperService.logTelemetryEvent("STORY_STEP_ACTIVATE", {
       stepIndex: nextIdx,
       label: step.label,
-      persona: step.activePersona
+      persona: step.activePersona,
     });
   };
 
@@ -191,7 +200,10 @@ export function DemoControl() {
   const activeStep = storyIndex !== null ? StoryService.getStoryStep(storyIndex) : null;
 
   return (
-    <Card variant="glass" className="fixed bottom-4 left-4 z-50 w-[320px] border-victory-gold/20 bg-neutral-950/95 backdrop-blur-xl glow-gold p-4 text-left shadow-2xl">
+    <Card
+      variant="glass"
+      className="fixed bottom-4 left-4 z-50 w-[320px] border-victory-gold/20 bg-neutral-950/95 backdrop-blur-xl glow-gold p-4 text-left shadow-2xl"
+    >
       <CardHeader className="p-0 pb-3 flex flex-row items-center justify-between border-b border-neutral-900">
         <div>
           <div className="flex items-center gap-1.5 text-victory-gold font-bold text-[10px] uppercase tracking-wider font-display">
@@ -214,7 +226,9 @@ export function DemoControl() {
         <button
           onClick={() => setActiveTab("story")}
           className={`flex-grow py-2 text-center border-b transition-colors ${
-            activeTab === "story" ? "text-victory-gold border-victory-gold" : "text-neutral-500 border-transparent"
+            activeTab === "story"
+              ? "text-victory-gold border-victory-gold"
+              : "text-neutral-500 border-transparent"
           }`}
         >
           Story Mode
@@ -222,7 +236,9 @@ export function DemoControl() {
         <button
           onClick={() => setActiveTab("tactical")}
           className={`flex-grow py-2 text-center border-b transition-colors ${
-            activeTab === "tactical" ? "text-victory-gold border-victory-gold" : "text-neutral-500 border-transparent"
+            activeTab === "tactical"
+              ? "text-victory-gold border-victory-gold"
+              : "text-neutral-500 border-transparent"
           }`}
         >
           Showcases
@@ -230,7 +246,6 @@ export function DemoControl() {
       </div>
 
       <CardContent className="p-0 pt-3 flex flex-col gap-3.5 text-xs">
-        
         {activeTab === "story" ? (
           /* STORY TAB CONTENT */
           <div className="space-y-3">
@@ -239,7 +254,8 @@ export function DemoControl() {
                 <BookOpen className="h-6 w-6 text-victory-gold mx-auto animate-pulse" />
                 <h4 className="text-white font-semibold text-xs">The Family Matchday Story</h4>
                 <p className="text-[10px] text-neutral-400 leading-normal">
-                  Step sequentially through stadium arrivals, crowd surges, emergency lost minor playbooks, and safe transit departure coordinates.
+                  Step sequentially through stadium arrivals, crowd surges, emergency lost minor
+                  playbooks, and safe transit departure coordinates.
                 </p>
                 <Button
                   variant="primary"
@@ -257,10 +273,13 @@ export function DemoControl() {
                   <div className="text-[9px] text-victory-gold font-bold uppercase tracking-wider">
                     Stage {storyIndex + 1} of {StoryService.getStoryLength()}: {activeStep?.label}
                   </div>
-                  <p className="text-white font-semibold text-[11px] leading-normal">{activeStep?.description}</p>
-                  
+                  <p className="text-white font-semibold text-[11px] leading-normal">
+                    {activeStep?.description}
+                  </p>
+
                   <div className="text-[9px] text-neutral-400 pt-1.5 border-t border-neutral-900/50 mt-1.5">
-                    <span className="font-bold text-neutral-300">Target Outcome:</span> {activeStep?.expectedOutcome}
+                    <span className="font-bold text-neutral-300">Target Outcome:</span>{" "}
+                    {activeStep?.expectedOutcome}
                   </div>
                 </div>
 
@@ -375,7 +394,6 @@ export function DemoControl() {
             </div>
           </div>
         )}
-
       </CardContent>
     </Card>
   );

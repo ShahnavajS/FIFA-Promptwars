@@ -3,13 +3,7 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { 
-  Users, 
-  Compass, 
-  ShieldAlert, 
-  Activity, 
-  Zap
-} from "lucide-react";
+import { Users, Compass, ShieldAlert, Activity, Zap } from "lucide-react";
 
 export function LiveCrowdIntelligence() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -33,15 +27,14 @@ export function LiveCrowdIntelligence() {
     "Medical Teams Ready",
     "Weather Stable",
     "Transit Capacity 82%",
-    "Security Normal"
+    "Security Normal",
   ];
 
   return (
-    <section 
-      id="live-crowd-intelligence" 
+    <section
+      id="live-crowd-intelligence"
       className="py-28 bg-[#020204] border-t border-neutral-900 px-6 scroll-mt-16 relative overflow-hidden text-left"
     >
-      
       {/* Visual Section Transitions (Connecting green telemetry lines) */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-24 bg-gradient-to-b from-cyber-green/50 to-transparent pointer-events-none" />
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[2px] h-24 bg-gradient-to-t from-cyber-green/50 to-transparent pointer-events-none" />
@@ -49,7 +42,7 @@ export function LiveCrowdIntelligence() {
       {/* Background Gradients, Grid & Particles */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.015),transparent_75%)] pointer-events-none" />
       <div className="absolute inset-0 bg-grid opacity-[0.012] pointer-events-none" />
-      
+
       {/* Subtle green glow behind image position */}
       <div className="absolute top-1/2 right-[10%] -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-emerald-500/5 blur-[120px] pointer-events-none" />
 
@@ -60,13 +53,10 @@ export function LiveCrowdIntelligence() {
       </div>
 
       <div className="max-w-6xl mx-auto space-y-16 relative z-10">
-        
         {/* Main Grid: Desktop 45/55 Split, Tablet stacked, Mobile Image first */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
           {/* LEFT COLUMN: Text + Three Feature Cards (45% Width) */}
           <div className="order-2 lg:order-1 lg:col-span-5 space-y-8 flex flex-col justify-center">
-            
             <div className="space-y-4">
               {/* Section Label */}
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyber-green/10 border border-cyber-green/20 text-cyber-green text-xs font-semibold uppercase tracking-widest font-mono">
@@ -83,20 +73,23 @@ export function LiveCrowdIntelligence() {
 
               {/* Description */}
               <p className="text-neutral-400 text-sm leading-relaxed max-w-lg">
-                When 80,000 fans leave a stadium simultaneously, every second matters. StadiumPulse AI continuously predicts crowd movement, recommends safer exits, coordinates transport, and prevents congestion before it happens.
+                When 80,000 fans leave a stadium simultaneously, every second matters. StadiumPulse
+                AI continuously predicts crowd movement, recommends safer exits, coordinates
+                transport, and prevents congestion before it happens.
               </p>
             </div>
 
             {/* Feature Cards */}
             <div className="space-y-4">
-              
               {/* Card 1: Crowd Prediction */}
               <div className="p-4.5 rounded-2xl border border-neutral-900 bg-neutral-950/40 flex items-start gap-4 hover:border-neutral-800 transition-colors">
                 <div className="p-2.5 rounded-xl bg-stadium-blue/10 border border-stadium-blue/20 text-stadium-blue mt-0.5">
                   <Users className="h-5 w-5" />
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-sm font-bold text-white uppercase tracking-wider font-mono">Crowd Prediction</h4>
+                  <h4 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+                    Crowd Prediction
+                  </h4>
                   <p className="text-neutral-400 text-xs leading-relaxed">
                     AI forecasts congestion before it happens using live crowd telemetry.
                   </p>
@@ -109,7 +102,9 @@ export function LiveCrowdIntelligence() {
                   <Compass className="h-5 w-5" />
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-sm font-bold text-white uppercase tracking-wider font-mono">Smart Exit Routing</h4>
+                  <h4 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+                    Smart Exit Routing
+                  </h4>
                   <p className="text-neutral-400 text-xs leading-relaxed">
                     Every fan receives personalized exit guidance based on real-time density.
                   </p>
@@ -122,22 +117,21 @@ export function LiveCrowdIntelligence() {
                   <ShieldAlert className="h-5 w-5" />
                 </div>
                 <div className="space-y-1">
-                  <h4 className="text-sm font-bold text-white uppercase tracking-wider font-mono">Emergency Coordination</h4>
+                  <h4 className="text-sm font-bold text-white uppercase tracking-wider font-mono">
+                    Emergency Coordination
+                  </h4>
                   <p className="text-neutral-400 text-xs leading-relaxed">
                     Security, volunteers and medical teams receive synchronized AI recommendations.
                   </p>
                 </div>
               </div>
-
             </div>
-
           </div>
 
           {/* RIGHT COLUMN: Large provided image (55% Width) */}
           <div className="order-1 lg:order-2 lg:col-span-7 flex flex-col justify-center">
-            
             {/* Image Container Card */}
-            <div 
+            <div
               ref={containerRef}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
@@ -175,27 +169,34 @@ export function LiveCrowdIntelligence() {
               <div className="absolute inset-x-0 h-[1.5px] bg-gradient-to-r from-transparent via-cyber-green/30 to-transparent animate-slow-scan z-20 pointer-events-none" />
 
               {/* Telemetry line overlays (SVG Dash Line Animation) */}
-              <svg className="absolute inset-0 w-full h-full opacity-50 group-hover:opacity-90 transition-opacity duration-500 z-15 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
-                <path 
-                  d="M 150 500 Q 300 450 350 300 T 550 200" 
-                  fill="none" 
-                  stroke="#10b981" 
-                  strokeWidth="2.5" 
+              <svg
+                className="absolute inset-0 w-full h-full opacity-50 group-hover:opacity-90 transition-opacity duration-500 z-15 pointer-events-none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M 150 500 Q 300 450 350 300 T 550 200"
+                  fill="none"
+                  stroke="#10b981"
+                  strokeWidth="2.5"
                   strokeDasharray="6, 12"
                   className="animate-dashboard-dash"
                 />
               </svg>
 
               {/* FLOATING HUD CARDS */}
-              
+
               {/* Top Left: Stadium Health */}
               <div className="absolute top-[8%] left-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-2 py-1.5 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300">
                 <div className="p-1 sm:p-1.5 rounded-lg bg-cyber-green/15 text-cyber-green">
                   <Activity className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">🟢 Stadium Health</span>
-                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">98%</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">
+                    🟢 Stadium Health
+                  </span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">
+                    98%
+                  </span>
                 </div>
               </div>
 
@@ -205,8 +206,12 @@ export function LiveCrowdIntelligence() {
                   <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">👥 Active Fans</span>
-                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">81,234</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">
+                    👥 Active Fans
+                  </span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">
+                    81,234
+                  </span>
                 </div>
               </div>
 
@@ -216,8 +221,12 @@ export function LiveCrowdIntelligence() {
                   <Compass className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">🚇 Best Exit</span>
-                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">Gate D</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">
+                    🚇 Best Exit
+                  </span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">
+                    Gate D
+                  </span>
                 </div>
               </div>
 
@@ -227,18 +236,21 @@ export function LiveCrowdIntelligence() {
                   <Zap className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">⚡ AI Confidence</span>
-                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">97%</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">
+                    ⚡ AI Confidence
+                  </span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">
+                    97%
+                  </span>
                 </div>
               </div>
-
             </div>
 
             {/* INFINITE HORIZONTAL SCROLLING TELEMETRY TICKER */}
             <div className="mt-8 border border-neutral-900 bg-neutral-950/60 rounded-2xl py-4.5 overflow-hidden relative flex items-center">
               <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-black to-transparent z-10 pointer-events-none" />
               <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-black to-transparent z-10 pointer-events-none" />
-              
+
               <div className="flex gap-16 whitespace-nowrap animate-ticker font-mono text-xs font-bold text-neutral-400 tracking-wider">
                 {/* Double output for continuous scrolling */}
                 {[...tickerItems, ...tickerItems].map((item, idx) => (
@@ -249,11 +261,8 @@ export function LiveCrowdIntelligence() {
                 ))}
               </div>
             </div>
-
           </div>
-
         </div>
-
       </div>
 
       <style jsx global>{`

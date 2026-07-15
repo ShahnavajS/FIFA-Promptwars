@@ -10,7 +10,7 @@ export interface HumanContextData {
 
 export function getHumanContext(data: HumanContextData): string {
   const prefText = data.preferences.length > 0 ? data.preferences.join(", ") : "None";
-  
+
   return `[HUMAN CONTEXT]:
 - Selected Language: ${data.language.toUpperCase()}
 - Mobility Constraints: ${data.mobility.toUpperCase()}

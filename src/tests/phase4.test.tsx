@@ -5,7 +5,6 @@ import { RecommendationEngine } from "@/services/recommendation.service";
 import { useUiStore } from "@/stores/useUiStore";
 
 describe("Phase 4 Intelligent Features Test Suite", () => {
-  
   test("buildPrompt compiles structured contexts correctly", () => {
     const mockContext: ContextData = {
       role: "fan",
@@ -26,7 +25,9 @@ describe("Phase 4 Intelligent Features Test Suite", () => {
 
     const prompt = buildPrompt("Test question", mockContext);
     expect(prompt).toContain("[USER ROLE]: Active view is set to FAN.");
-    expect(prompt).toContain("[MATCH STATE]: Active match: Argentina vs. Germany. Current lifecycle milestone: ARRIVAL.");
+    expect(prompt).toContain(
+      "[MATCH STATE]: Active match: Argentina vs. Germany. Current lifecycle milestone: ARRIVAL."
+    );
     expect(prompt).toContain("[WEATHER & CLIMATE]: Local temperature: 28.5°C.");
     expect(prompt).toContain('User Prompt: """Test question"""');
   });
@@ -34,12 +35,12 @@ describe("Phase 4 Intelligent Features Test Suite", () => {
   test("Directions service returns wheelchair stepFree steps", async () => {
     const result = await GoogleMapsWrapperService.getDirections("hotel", "seat", "wheelchair");
     expect(result.routeMode).toBe("wheelchair");
-    expect(result.steps.every(s => s.stepFree)).toBe(true);
+    expect(result.steps.every((s) => s.stepFree)).toBe(true);
   });
 
   test("RecommendationEngine generates halftime concessions suggestions", () => {
     const recs = RecommendationEngine.getRecommendations("halftime", null, "open");
-    expect(recs.some(r => r.includes("El Tri Tacos"))).toBe(true);
+    expect(recs.some((r) => r.includes("El Tri Tacos"))).toBe(true);
   });
 
   test("UI store updates language selection state", () => {

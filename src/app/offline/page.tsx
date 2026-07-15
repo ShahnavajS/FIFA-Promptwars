@@ -18,12 +18,13 @@ export default function OfflinePage() {
             Connection Lost
           </h1>
           <p className="text-sm text-neutral-400">
-            Stadium network is congested. StadiumPulse AI is running in local offline-first mode. Your core tools remain active.
+            Stadium network is congested. StadiumPulse AI is running in local offline-first mode.
+            Your core tools remain active.
           </p>
         </div>
 
         <div className="w-full grid grid-cols-2 gap-3 mt-2">
-          <button 
+          <button
             className="flex flex-col items-center gap-3 p-4 rounded-xl border border-neutral-800 bg-neutral-950/40 hover:bg-neutral-800/40 transition-colors text-white focus:outline-none focus:ring-1 focus:ring-amber-500"
             onClick={() => window.location.reload()}
           >
@@ -31,7 +32,7 @@ export default function OfflinePage() {
             <span className="text-xs font-semibold">Offline Maps</span>
           </button>
 
-          <button 
+          <button
             className="flex flex-col items-center gap-3 p-4 rounded-xl border border-neutral-800 bg-neutral-950/40 hover:bg-neutral-800/40 transition-colors text-white focus:outline-none focus:ring-1 focus:ring-amber-500"
             onClick={() => window.location.reload()}
           >
@@ -45,19 +46,23 @@ export default function OfflinePage() {
             <PhoneCall className="h-5 w-5 text-rose-500 flex-shrink-0 mt-0.5" />
             <div>
               <h4 className="text-xs font-bold text-neutral-300">Emergency Support</h4>
-              <p className="text-xs text-neutral-400">Locate closest volunteer or report to medical/security desks without internet.</p>
+              <p className="text-xs text-neutral-400">
+                Locate closest volunteer or report to medical/security desks without internet.
+              </p>
             </div>
           </div>
           <div className="flex items-start gap-3">
             <AlertCircle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
             <div>
               <h4 className="text-xs font-bold text-neutral-300">Live Congestion</h4>
-              <p className="text-xs text-neutral-400">Restrooms and gates will sync automatically once network returns.</p>
+              <p className="text-xs text-neutral-400">
+                Restrooms and gates will sync automatically once network returns.
+              </p>
             </div>
           </div>
         </div>
 
-        <button 
+        <button
           onClick={() => window.location.reload()}
           className="w-full mt-2 py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-neutral-950 font-bold text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-neutral-950 focus:ring-amber-400"
         >

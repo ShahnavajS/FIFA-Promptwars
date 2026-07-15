@@ -23,20 +23,20 @@ export interface ContextData {
   wind: string;
   domeStatus: string;
   activeEmergency: string | null;
-  
+
   // Human-centric extensions
   persona?: PersonaConfig;
   humanContext?: HumanContextData;
 }
 
 export function buildPrompt(userPrompt: string, data: ContextData): string {
-  const emergencyContext = data.activeEmergency 
+  const emergencyContext = data.activeEmergency
     ? `\n[EMERGENCY DISPATCH PROTOCOLS ACTIVE]: Incident reported is: ${data.activeEmergency.toUpperCase()}. Immediately guide fans to emergency paths.`
     : "";
 
   const humanBlock = data.humanContext ? `\n${getHumanContext(data.humanContext)}` : "";
-  const personaBlock = data.persona 
-    ? `\n[PERSONA STYLE MODIFIER]: Persona Label: ${data.persona.label}. Active Tone: ${data.persona.tone.toUpperCase()}. Preferred priorities: ${data.persona.priorityPreferences.join(", ")}.` 
+  const personaBlock = data.persona
+    ? `\n[PERSONA STYLE MODIFIER]: Persona Label: ${data.persona.label}. Active Tone: ${data.persona.tone.toUpperCase()}. Preferred priorities: ${data.persona.priorityPreferences.join(", ")}.`
     : "";
 
   const sanitizedPrompt = userPrompt.replace(/"/g, '\\"');

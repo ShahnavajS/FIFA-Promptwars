@@ -2,7 +2,12 @@ import { analytics } from "@/lib/firebase";
 import { logEvent } from "firebase/analytics";
 
 export interface OperationalMetric {
-  metricType: "crowd_density" | "concession_wait" | "navigation_request" | "translation_engagement" | "incident_report";
+  metricType:
+    | "crowd_density"
+    | "concession_wait"
+    | "navigation_request"
+    | "translation_engagement"
+    | "incident_report";
   stadiumId: string;
   gateId?: string;
   concessionId?: string;
@@ -15,7 +20,10 @@ export class AnalyticsService {
   /**
    * Log standard page views / actions to Firebase Analytics
    */
-  static async logUserAction(eventName: string, params?: Record<string, string | number | boolean>) {
+  static async logUserAction(
+    eventName: string,
+    params?: Record<string, string | number | boolean>
+  ) {
     try {
       const analyticsInstance = await analytics;
       if (analyticsInstance) {

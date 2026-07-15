@@ -28,7 +28,7 @@ describe("Match Timeline Engine & Demo Simulator", () => {
   test("advancing phase progresses sequentially", () => {
     useMatchStore.getState().setPhase("pre-kickoff");
     useMatchStore.getState().advancePhase();
-    
+
     const state = useMatchStore.getState();
     expect(state.currentPhase).toBe("kickoff");
     expect(state.attendance).toBe(82000);
@@ -49,7 +49,7 @@ describe("Match Timeline Engine & Demo Simulator", () => {
 
     // Cockpit title exists
     expect(screen.getByText("Judge Control Cockpit")).toBeInTheDocument();
-    
+
     // Check buttons exist
     expect(screen.getByText("Opening Ceremony")).toBeInTheDocument();
     expect(screen.getByText("Next Step")).toBeInTheDocument();

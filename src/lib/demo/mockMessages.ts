@@ -11,7 +11,10 @@ export const mockSuggestedPrompts = [
 export const mockChatSessions: Record<string, ChatMessage[]> = {
   fan: [
     { role: "system", text: "You are the StadiumPulse AI assistant guiding a Fan." },
-    { role: "user", text: "Hi, I am at Gate A. Where is the nearest wheelchair-accessible toilet?" },
+    {
+      role: "user",
+      text: "Hi, I am at Gate A. Where is the nearest wheelchair-accessible toilet?",
+    },
     {
       role: "model",
       text: "Hello! The closest wheelchair-accessible restroom is in Sector 103. From Gate A, head straight into the North Concourse lobby, turn right at the main visual displays, and the lift core will be on your left. Restroom Sec 103 is located immediately adjacent to Lift Core Level 1.",

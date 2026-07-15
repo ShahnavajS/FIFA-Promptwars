@@ -4,23 +4,15 @@ import React, { useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { 
-  ArrowRight, 
-  Train, 
-  Cpu, 
-  Users, 
-  Accessibility, 
-  Calendar,
-  Sparkles
-} from "lucide-react";
+import { ArrowRight, Train, Cpu, Users, Accessibility, Calendar, Sparkles } from "lucide-react";
 
 export function FamilyJourney() {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   // Hook scroll scrollYProgress relative to this section
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "end start"],
   });
 
   // Very slow scale from 1.0 (100%) to 1.05 (105%) on scroll
@@ -37,7 +29,7 @@ export function FamilyJourney() {
       icon: Train,
       iconColor: "text-electric-cyan",
       bgBorder: "border-electric-cyan/20 bg-neutral-950/70",
-      posClass: "top-[8%] left-[4%]"
+      posClass: "top-[8%] left-[4%]",
     },
     {
       id: 2,
@@ -47,7 +39,7 @@ export function FamilyJourney() {
       icon: Cpu,
       iconColor: "text-purple-400",
       bgBorder: "border-purple-500/20 bg-neutral-950/70",
-      posClass: "top-[28%] left-[8%]"
+      posClass: "top-[28%] left-[8%]",
     },
     {
       id: 3,
@@ -57,7 +49,7 @@ export function FamilyJourney() {
       icon: Users,
       iconColor: "text-victory-gold",
       bgBorder: "border-victory-gold/20 bg-neutral-950/70",
-      posClass: "top-[12%] right-[6%]"
+      posClass: "top-[12%] right-[6%]",
     },
     {
       id: 4,
@@ -67,7 +59,7 @@ export function FamilyJourney() {
       icon: Accessibility,
       iconColor: "text-cyber-green",
       bgBorder: "border-cyber-green/20 bg-neutral-950/70",
-      posClass: "top-[42%] right-[8%]"
+      posClass: "top-[42%] right-[8%]",
     },
     {
       id: 5,
@@ -77,18 +69,17 @@ export function FamilyJourney() {
       icon: Calendar,
       iconColor: "text-stadium-blue",
       bgBorder: "border-stadium-blue/20 bg-neutral-950/70",
-      posClass: "bottom-[8%] left-[22%]"
-    }
+      posClass: "bottom-[8%] left-[22%]",
+    },
   ];
 
   return (
-    <section 
+    <section
       ref={containerRef}
-      id="family-journey" 
+      id="family-journey"
       className="py-28 bg-[#020203] border-t border-neutral-900 px-6 relative overflow-hidden text-left scroll-mt-16"
     >
       <div className="max-w-5xl mx-auto space-y-12 relative z-10">
-        
         {/* Header Block */}
         <div className="max-w-3xl space-y-4">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-victory-gold/10 border border-victory-gold/20 text-victory-gold text-xs font-semibold uppercase tracking-widest font-mono">
@@ -99,18 +90,15 @@ export function FamilyJourney() {
             Every Journey Starts Before the Stadium.
           </h2>
           <p className="text-neutral-400 text-sm sm:text-base max-w-2xl leading-relaxed">
-            From the moment a fan steps off the train, StadiumPulse AI begins guiding, protecting, translating, and optimizing every decision—before they even reach the gate.
+            From the moment a fan steps off the train, StadiumPulse AI begins guiding, protecting,
+            translating, and optimizing every decision—before they even reach the gate.
           </p>
         </div>
 
         {/* Cinematic Screen Cockpit */}
         <div className="relative w-full rounded-3xl border border-neutral-900 bg-neutral-950/40 overflow-hidden aspect-[16/10] sm:aspect-[16/9] shadow-2xl">
-          
           {/* Parallax Scaling Image */}
-          <motion.div 
-            style={{ scale }}
-            className="absolute inset-0 w-full h-full"
-          >
+          <motion.div style={{ scale }} className="absolute inset-0 w-full h-full">
             <Image
               src="/images/family_journey.jpg"
               alt="The Martinez family on the platform looking at MetLife Stadium"
@@ -124,9 +112,9 @@ export function FamilyJourney() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none z-10" />
 
           {/* Glowing Navigation Path Overlay (Traces the green dots on the path) */}
-          <svg 
-            className="absolute inset-0 w-full h-full pointer-events-none z-20" 
-            viewBox="0 0 1000 600" 
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none z-20"
+            viewBox="0 0 1000 600"
             preserveAspectRatio="none"
           >
             <defs>
@@ -146,12 +134,12 @@ export function FamilyJourney() {
               strokeDasharray="8 12"
               style={{ pathLength }}
               animate={{ strokeDashoffset: [0, -40] }}
-              transition={{ 
+              transition={{
                 strokeDashoffset: { duration: 5, repeat: Infinity, ease: "linear" },
-                pathLength: { duration: 1 }
+                pathLength: { duration: 1 },
               }}
             />
-            
+
             {/* Ambient blurred pulse backup path */}
             <motion.path
               d="M 600 550 Q 560 380 580 300 T 630 180"
@@ -183,38 +171,49 @@ export function FamilyJourney() {
                       transition: {
                         delay: 0.2 + i * 0.15,
                         duration: 0.6,
-                        ease: "easeOut"
-                      }
-                    })
+                        ease: "easeOut",
+                      },
+                    }),
                   }}
                   animate={{ y: [0, -5, 0] }}
                   transition={{
                     y: {
                       duration: 4.5 + idx * 0.5,
                       repeat: Infinity,
-                      ease: "easeInOut"
-                    }
+                      ease: "easeInOut",
+                    },
                   }}
                   className={`absolute p-1.5 sm:p-3 rounded-xl sm:rounded-2xl border backdrop-blur-xl pointer-events-auto flex items-center gap-1.5 sm:gap-3 shadow-lg ${card.bgBorder} ${card.posClass}`}
                 >
-                  <div className={`p-1 sm:p-2 rounded-lg bg-neutral-900/80 border border-neutral-850 ${card.iconColor}`}>
+                  <div
+                    className={`p-1 sm:p-2 rounded-lg bg-neutral-900/80 border border-neutral-850 ${card.iconColor}`}
+                  >
                     <Icon className="h-3 w-3 sm:h-4.5 sm:w-4.5" />
                   </div>
                   <div className="text-left font-mono">
-                    <div className="text-[6px] sm:text-[7.5px] font-bold text-neutral-500 uppercase tracking-widest leading-none">{card.title}</div>
-                    <div className="text-[8px] sm:text-[10px] font-extrabold text-white mt-0.5 leading-none">{card.label}</div>
-                    <div className="text-[7px] sm:text-[8px] text-neutral-400 font-semibold mt-0.5 hidden sm:block">{card.value}</div>
+                    <div className="text-[6px] sm:text-[7.5px] font-bold text-neutral-500 uppercase tracking-widest leading-none">
+                      {card.title}
+                    </div>
+                    <div className="text-[8px] sm:text-[10px] font-extrabold text-white mt-0.5 leading-none">
+                      {card.label}
+                    </div>
+                    <div className="text-[7px] sm:text-[8px] text-neutral-400 font-semibold mt-0.5 hidden sm:block">
+                      {card.value}
+                    </div>
                   </div>
                 </motion.div>
               );
             })}
           </div>
-
         </div>
 
         {/* Glowing Navigation Route extending out of the section bottom */}
         <div className="h-20 w-full relative pointer-events-none">
-          <svg className="absolute inset-x-0 -top-8 w-full h-[150%] pointer-events-none z-20" viewBox="0 0 1000 120" preserveAspectRatio="none">
+          <svg
+            className="absolute inset-x-0 -top-8 w-full h-[150%] pointer-events-none z-20"
+            viewBox="0 0 1000 120"
+            preserveAspectRatio="none"
+          >
             <motion.path
               d="M 600 0 Q 560 60 500 120"
               fill="none"
@@ -251,7 +250,6 @@ export function FamilyJourney() {
             </a>
           </motion.div>
         </div>
-
       </div>
     </section>
   );

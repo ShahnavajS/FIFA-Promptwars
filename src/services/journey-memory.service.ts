@@ -12,7 +12,7 @@ export class JourneyMemoryService {
     transportMode: "rail",
     visitedStadiums: ["MetLife Arena", "Estadio Azteca"],
     previousInteractions: [],
-    accessibilityEnabled: false
+    accessibilityEnabled: false,
   };
 
   /**
@@ -28,7 +28,7 @@ export class JourneyMemoryService {
   public static updateMemory(updates: Partial<JourneyMemory>): void {
     this.memory = {
       ...this.memory,
-      ...updates
+      ...updates,
     };
   }
 
@@ -53,7 +53,7 @@ export class JourneyMemoryService {
       transportMode: "rail",
       visitedStadiums: ["MetLife Arena"],
       previousInteractions: [],
-      accessibilityEnabled: false
+      accessibilityEnabled: false,
     };
   }
 }

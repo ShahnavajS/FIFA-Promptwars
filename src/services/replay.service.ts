@@ -38,7 +38,7 @@ export class ReplayService {
       activePersona: "fan",
       explanation: "Ingress checkpoints initializing. Turnstile flows stable.",
       recommendedAction: "Maintain default arrival rail dispatching lines.",
-      agentsLog: "Coordinator: Checking gate status. All grids reporting normal."
+      agentsLog: "Coordinator: Checking gate status. All grids reporting normal.",
     },
     {
       tick: 1,
@@ -51,7 +51,7 @@ export class ReplayService {
       activePersona: "family",
       explanation: "Turnstile Gate B offline due to reader fault. Ingress queue backups.",
       recommendedAction: "Redirect 18% flow north to stroller-friendly Gate A North.",
-      agentsLog: "CrowdAgent -> NavigationAgent: Gate B wait times peak 28 mins. Update LEDs."
+      agentsLog: "CrowdAgent -> NavigationAgent: Gate B wait times peak 28 mins. Update LEDs.",
     },
     {
       tick: 2,
@@ -64,7 +64,7 @@ export class ReplayService {
       activePersona: "senior",
       explanation: "Fans occupying seats. Concourse walkway density normalizes.",
       recommendedAction: "Update companion apps with sector-free elevator options.",
-      agentsLog: "AccessAgent: Elevators Sector 112 clear. Disabled routes prioritised."
+      agentsLog: "AccessAgent: Elevators Sector 112 clear. Disabled routes prioritised.",
     },
     {
       tick: 3,
@@ -77,7 +77,7 @@ export class ReplayService {
       activePersona: "volunteer",
       explanation: "Fan collapse reported in Sector 112 walkway path.",
       recommendedAction: "Clear ambulance vehicle corridor Lane C. Redirect pedestrian crowds.",
-      agentsLog: "EmergencyAgent -> Coordinator: Medical response dispatched. Corridors clear."
+      agentsLog: "EmergencyAgent -> Coordinator: Medical response dispatched. Corridors clear.",
     },
     {
       tick: 4,
@@ -90,7 +90,7 @@ export class ReplayService {
       activePersona: "fan",
       explanation: "Match Argentina vs. Germany live. Solar dome power capture active.",
       recommendedAction: "Preserve climate eco preset boundaries.",
-      agentsLog: "WeatherAgent: Temperature holds 28°C. Wind stable NW 14kmh."
+      agentsLog: "WeatherAgent: Temperature holds 28°C. Wind stable NW 14kmh.",
     },
     {
       tick: 5,
@@ -103,7 +103,7 @@ export class ReplayService {
       activePersona: "fan",
       explanation: "Goal scored! Decibels peak 112dB. Excited crowd vibrations active.",
       recommendedAction: "Trigger gold confetti effects. Activate companion light waves.",
-      agentsLog: "Coordinator -> All: Goal surge. Engage celebrate lighting offsets."
+      agentsLog: "Coordinator -> All: Goal surge. Engage celebrate lighting offsets.",
     },
     {
       tick: 6,
@@ -116,7 +116,7 @@ export class ReplayService {
       activePersona: "family",
       explanation: "Halftime concession queues peak near Sector 112 bathrooms.",
       recommendedAction: "Divert family lines to Sector 103 restrooms (2 min wait).",
-      agentsLog: "CrowdAgent: Bathroom Sector 112 congested. Seat notifications pushed."
+      agentsLog: "CrowdAgent: Bathroom Sector 112 congested. Seat notifications pushed.",
     },
     {
       tick: 7,
@@ -129,7 +129,7 @@ export class ReplayService {
       activePersona: "tourist",
       explanation: "Heavy rain storm passing directly over arena.",
       recommendedAction: "Close dome roof. Mobilize free poncho info kiosks.",
-      agentsLog: "WeatherAgent -> Coordinator: Dome roof closing sequence complete. HVAC on."
+      agentsLog: "WeatherAgent -> Coordinator: Dome roof closing sequence complete. HVAC on.",
     },
     {
       tick: 8,
@@ -142,7 +142,7 @@ export class ReplayService {
       activePersona: "tourist",
       explanation: "Meadowlands Platform 3 offline. exiting rail capacities choked.",
       recommendedAction: "Divert 4,000 fans to Platform 5 Shuttle express lines.",
-      agentsLog: "TransitAgent -> Coordinator: Platforms 3 offline. Dispatched +15 shuttle buses."
+      agentsLog: "TransitAgent -> Coordinator: Platforms 3 offline. Dispatched +15 shuttle buses.",
     },
     {
       tick: 9,
@@ -155,8 +155,8 @@ export class ReplayService {
       activePersona: "fan",
       explanation: "Stadium bowls empty. Egress loops concluding.",
       recommendedAction: "Generate carbon offset stats summary.",
-      agentsLog: "Coordinator: Egress concluded successfully. Restoring default sensors."
-    }
+      agentsLog: "Coordinator: Egress concluded successfully. Restoring default sensors.",
+    },
   ];
 
   private static learningRecords: LearningRecord[] = [
@@ -164,17 +164,19 @@ export class ReplayService {
       id: "learn-01",
       scenario: "Gate Ingress Backups",
       previousCongestion: "Gate B backups peak at 42 mins during high-attendance arrivals.",
-      learnedBehavior: "Identified check-in patterns. Predicts chokepoint 12 mins before limit capacity breaches.",
+      learnedBehavior:
+        "Identified check-in patterns. Predicts chokepoint 12 mins before limit capacity breaches.",
       improvedRouting: "Reroutes 18% flow to Gate A North wide stroller checkpoints.",
-      improvementPercent: 28
+      improvementPercent: 28,
     },
     {
       id: "learn-02",
       scenario: "Transit Rail Failures",
-      previousCongestion: "RailPlatform strikes isolate 8,000 exiting fans in Meadowlands perimeters.",
+      previousCongestion:
+        "RailPlatform strikes isolate 8,000 exiting fans in Meadowlands perimeters.",
       learnedBehavior: "Learned shuttle bus load capacities; predicts bottlenecking times.",
       improvedRouting: "Triggers look-ahead shuttle bus dispatches +15m early.",
-      improvementPercent: 19
+      improvementPercent: 19,
     },
     {
       id: "learn-03",
@@ -182,8 +184,8 @@ export class ReplayService {
       previousCongestion: "Sudden rain storm causes perimeter slippage and stroller congestion.",
       learnedBehavior: "Recognizes weather indicators; closes stadium dome dynamically.",
       improvedRouting: "Triggers proactive poncho kiosk updates on companion wallets.",
-      improvementPercent: 32
-    }
+      improvementPercent: 32,
+    },
   ];
 
   public static getReplaySteps(): ReplayStep[] {
@@ -207,13 +209,14 @@ export class ReplayService {
     attendance: string;
     weather: string;
   }): Promise<ReplayStep[]> {
-    const isRealKey = env.NEXT_PUBLIC_GEMINI_API_KEY && 
-                      env.NEXT_PUBLIC_GEMINI_API_KEY.startsWith("AIzaSy") && 
-                      env.NEXT_PUBLIC_GEMINI_API_KEY.length > 20;
+    const isRealKey =
+      env.NEXT_PUBLIC_GEMINI_API_KEY &&
+      env.NEXT_PUBLIC_GEMINI_API_KEY.startsWith("AIzaSy") &&
+      env.NEXT_PUBLIC_GEMINI_API_KEY.length > 20;
 
     if (isRealKey) {
       try {
-        const systemPrompt = 
+        const systemPrompt =
           "You are a stadium operations simulator for MetLife Arena during FIFA World Cup 2026. " +
           "Your task is to generate a custom 5-tick operations timeline. " +
           "You must output ONLY a valid JSON array of exactly 5 ReplayStep objects. " +
@@ -237,13 +240,16 @@ export class ReplayService {
           "Ensure actions align with the ERGP (Explain, Reassure, Guide, Predict) framework.";
 
         const prompt = `Generate a 5-step simulation timeline for World Cup MetLife operations under: Preset: ${params.preset}, Attendance: ${params.attendance}, Weather: ${params.weather}. Output JSON list only.`;
-        
+
         const rawJsonText = await AIService.generateText(prompt, systemPrompt);
-        
+
         // Clean markdown backticks if returned
         let cleanedJson = rawJsonText.trim();
         if (cleanedJson.startsWith("```")) {
-          cleanedJson = cleanedJson.replace(/^```(json)?/, "").replace(/```$/, "").trim();
+          cleanedJson = cleanedJson
+            .replace(/^```(json)?/, "")
+            .replace(/```$/, "")
+            .trim();
         }
 
         const parsedSteps = JSON.parse(cleanedJson) as ReplayStep[];
@@ -251,16 +257,28 @@ export class ReplayService {
           return parsedSteps;
         }
       } catch (error) {
-        console.warn("[Gemini Timeline Generator failed, using local programmatic builder]:", error);
+        console.warn(
+          "[Gemini Timeline Generator failed, using local programmatic builder]:",
+          error
+        );
       }
     }
 
     // Programmatic Fallback Generator
     const steps: ReplayStep[] = [];
-    const isStorm = params.weather.includes("Rain") || params.preset.toLowerCase().includes("weather");
-    const isStrike = params.preset.toLowerCase().includes("strike") || params.preset.toLowerCase().includes("transit");
-    const isGateFail = params.preset.toLowerCase().includes("gate") || params.preset.toLowerCase().includes("failure");
-    const densityVal = params.attendance.includes("80") ? 1.8 : params.attendance.includes("60") ? 1.4 : 0.9;
+    const isStorm =
+      params.weather.includes("Rain") || params.preset.toLowerCase().includes("weather");
+    const isStrike =
+      params.preset.toLowerCase().includes("strike") ||
+      params.preset.toLowerCase().includes("transit");
+    const isGateFail =
+      params.preset.toLowerCase().includes("gate") ||
+      params.preset.toLowerCase().includes("failure");
+    const densityVal = params.attendance.includes("80")
+      ? 1.8
+      : params.attendance.includes("60")
+        ? 1.4
+        : 0.9;
     const initialDome = isStorm ? "closed" : "open";
 
     // Tick 0: Arrivals
@@ -269,13 +287,13 @@ export class ReplayService {
       label: `Arrivals Open (${params.weather})`,
       time: "13:00",
       phase: "arrival",
-      density: Math.round((densityVal * 0.5) * 10) / 10,
+      density: Math.round(densityVal * 0.5 * 10) / 10,
       emergency: null,
-      domeStatus: initialDome as any,
+      domeStatus: initialDome as "open" | "closed",
       activePersona: "fan",
       explanation: `Ingress portals initializing. Attendance target set to ${params.attendance} under ${params.weather} conditions.`,
       recommendedAction: "Activate default arrival transit dispatching and turnstile lines.",
-      agentsLog: "Coordinator: Checking gate status. All grids normal."
+      agentsLog: "Coordinator: Checking gate status. All grids normal.",
     });
 
     // Tick 1: Ingress
@@ -286,17 +304,17 @@ export class ReplayService {
       phase: "gate-entry",
       density: densityVal,
       emergency: isGateFail ? "GATE B SENSOR FAULT" : null,
-      domeStatus: initialDome as any,
+      domeStatus: initialDome as "open" | "closed",
       activePersona: "family",
-      explanation: isGateFail 
+      explanation: isGateFail
         ? "Turnstile Gate B reader offline due to firmware failure. Ingress queues building."
         : "Standard peak ingress arrivals. Density multiplier rising as kickoff approaches.",
-      recommendedAction: isGateFail 
+      recommendedAction: isGateFail
         ? "Divert stroller and family queues to stroller-friendly Gate A North (3 min wait)."
         : "Open all auxiliary entrance check-in lanes.",
       agentsLog: isGateFail
         ? "CrowdAgent -> NavigationAgent: Gate B queues rising. Updates pushed to LEDs."
-        : "CrowdAgent: Entry rates normalized."
+        : "CrowdAgent: Entry rates normalized.",
     });
 
     // Tick 2: Match Live
@@ -317,7 +335,7 @@ export class ReplayService {
         : "Maintain standard temperature boundaries.",
       agentsLog: isStorm
         ? "WeatherAgent -> Coordinator: Dome roof closing sequence complete. HVAC on."
-        : "WeatherAgent: Temperature holds 28.5C."
+        : "WeatherAgent: Temperature holds 28.5C.",
     });
 
     // Tick 3: Halftime Refresh / Emergency
@@ -326,7 +344,7 @@ export class ReplayService {
       label: isStrike ? "Shuttle Alert" : "Halftime Concession Rush",
       time: "15:45",
       phase: "halftime",
-      density: Math.round((densityVal * 0.9) * 10) / 10,
+      density: Math.round(densityVal * 0.9 * 10) / 10,
       emergency: isStrike ? "RAILWAY TERMINATION ACTIVE" : null,
       domeStatus: "closed",
       activePersona: "wheelchair",
@@ -338,7 +356,7 @@ export class ReplayService {
         : "Redirect stroller and wheelchair users to Sector 103 step-free concourse zones.",
       agentsLog: isStrike
         ? "TransitAgent -> All: Shuttles dispatched to Platform 5. Commuter warning sent."
-        : "AccessAgent: Elevator Sector 112 active."
+        : "AccessAgent: Elevator Sector 112 active.",
     });
 
     // Tick 4: Exit Egress
@@ -347,7 +365,7 @@ export class ReplayService {
       label: "Egress Dispersals",
       time: "16:45",
       phase: "exit",
-      density: Math.round((densityVal * 1.1) * 10) / 10,
+      density: Math.round(densityVal * 1.1 * 10) / 10,
       emergency: isStrike ? "RAIL SYSTEM FAULT" : null,
       domeStatus: "closed",
       activePersona: "tourist",
@@ -359,7 +377,7 @@ export class ReplayService {
         : "Maintain maximum express rail dispatch intervals.",
       agentsLog: isStrike
         ? "TransitAgent: Shuttles load-balanced."
-        : "Coordinator: Egress concluded successfully."
+        : "Coordinator: Egress concluded successfully.",
     });
 
     return steps;

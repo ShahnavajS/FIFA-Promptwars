@@ -4,16 +4,16 @@ import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { 
-  Sun, 
-  CloudRain, 
-  Sparkles, 
-  Heart, 
-  Activity, 
-  Flame, 
-  Volume2, 
+import {
+  Sun,
+  CloudRain,
+  Sparkles,
+  Heart,
+  Activity,
+  Flame,
+  Volume2,
   VolumeX,
-  Wind
+  Wind,
 } from "lucide-react";
 
 interface JourneyStage {
@@ -37,8 +37,10 @@ export function MatchdayJourney() {
   const [activeStage, setActiveStage] = useState<number>(0);
   const [isAudioMuted, setIsAudioMuted] = useState<boolean>(true);
   const [celebrateTrigger, setCelebrateTrigger] = useState<boolean>(false);
-  const [confettiArray, setConfettiArray] = useState<{ id: number; left: number; top: number; delay: number }[]>([]);
-  
+  const [confettiArray, setConfettiArray] = useState<
+    { id: number; left: number; top: number; delay: number }[]
+  >([]);
+
   // Parallax Mouse tracking
   const imageCardRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -68,9 +70,10 @@ export function MatchdayJourney() {
       metricValue: "42 mins",
       stressLevel: "Calm",
       stressColor: "text-cyber-green",
-      aiDialogue: "\"Welcome to the tournament! Your step-free parking spot next to Elevator Gate A is reserved. Drive slowly, there is no rush.\"",
+      aiDialogue:
+        '"Welcome to the tournament! Your step-free parking spot next to Elevator Gate A is reserved. Drive slowly, there is no rush."',
       stadiumAction: "Load Family Profiles",
-      illustrationDesc: "MetLife stadium silhouette lit by a warm morning sunrise grid."
+      illustrationDesc: "MetLife stadium silhouette lit by a warm morning sunrise grid.",
     },
     {
       id: 1,
@@ -84,9 +87,10 @@ export function MatchdayJourney() {
       metricValue: "0ms latency",
       stressLevel: "Moderate",
       stressColor: "text-victory-gold",
-      aiDialogue: "\"こんにちは! The Shuttle leaves from Platform 3 in 5 minutes. Direct wheelchair boarding ramps are available at the front carriage.\"",
+      aiDialogue:
+        '"こんにちは! The Shuttle leaves from Platform 3 in 5 minutes. Direct wheelchair boarding ramps are available at the front carriage."',
       stadiumAction: "Translate Speech",
-      illustrationDesc: "Transit rails glowing in digital cyan, routing train vectors."
+      illustrationDesc: "Transit rails glowing in digital cyan, routing train vectors.",
     },
     {
       id: 2,
@@ -100,9 +104,10 @@ export function MatchdayJourney() {
       metricValue: "4 mins detour",
       stressLevel: "Stressed",
       stressColor: "text-rose-500",
-      aiDialogue: "\"It's raining, but don't worry. Rerouting your family to the covered Gate A elevators now. Elevator B West is step-free.\"",
+      aiDialogue:
+        "\"It's raining, but don't worry. Rerouting your family to the covered Gate A elevators now. Elevator B West is step-free.\"",
       stadiumAction: "Reroute Step-Free Path",
-      illustrationDesc: "Rain telemetry dots running down neon red grid paths."
+      illustrationDesc: "Rain telemetry dots running down neon red grid paths.",
     },
     {
       id: 3,
@@ -116,9 +121,10 @@ export function MatchdayJourney() {
       metricValue: "2 mins queue",
       stressLevel: "Calm",
       stressColor: "text-cyber-green",
-      aiDialogue: "\"You are seated in Sector 112, Row F. Concessions in Sector 103 currently have a 2-minute wait time if you need drinks.\"",
+      aiDialogue:
+        '"You are seated in Sector 112, Row F. Concessions in Sector 103 currently have a 2-minute wait time if you need drinks."',
       stadiumAction: "Activate Seat HUD Map",
-      illustrationDesc: "Stadium floodlights casting gold rays down onto the pitch."
+      illustrationDesc: "Stadium floodlights casting gold rays down onto the pitch.",
     },
     {
       id: 4,
@@ -132,9 +138,10 @@ export function MatchdayJourney() {
       metricValue: "Ecstatic 99%",
       stressLevel: "Calm",
       stressColor: "text-cyber-green",
-      aiDialogue: "\"GOAL scored! Celebrate the moment! The stadium light show is synchronized with your LED seat band. Enjoy the victory!\"",
+      aiDialogue:
+        '"GOAL scored! Celebrate the moment! The stadium light show is synchronized with your LED seat band. Enjoy the victory!"',
       stadiumAction: "Trigger Seat LED Sync",
-      illustrationDesc: "Golden confetti particles and fireworks lighting up the screen."
+      illustrationDesc: "Golden confetti particles and fireworks lighting up the screen.",
     },
     {
       id: 5,
@@ -148,9 +155,10 @@ export function MatchdayJourney() {
       metricValue: "CLOSING SEQUENCE",
       stressLevel: "Stressed",
       stressColor: "text-rose-500",
-      aiDialogue: "\"A high wind warning is active. Close dome roof sequence has been initiated. Operations remain 100% stable.\"",
+      aiDialogue:
+        '"A high wind warning is active. Close dome roof sequence has been initiated. Operations remain 100% stable."',
       stadiumAction: "Initiate Dome Close",
-      illustrationDesc: "Digital warnings flashing: Storm approaching MetLife Arena."
+      illustrationDesc: "Digital warnings flashing: Storm approaching MetLife Arena.",
     },
     {
       id: 6,
@@ -164,10 +172,11 @@ export function MatchdayJourney() {
       metricValue: "98.2%",
       stressLevel: "Moderate",
       stressColor: "text-victory-gold",
-      aiDialogue: "\"Egress transit flow is high. Delaying Shuttle Coach E departures by 6 minutes to clear the Gate B bottlenecks. Lane 4 open for EMT dispatch.\"",
+      aiDialogue:
+        '"Egress transit flow is high. Delaying Shuttle Coach E departures by 6 minutes to clear the Gate B bottlenecks. Lane 4 open for EMT dispatch."',
       stadiumAction: "Orchestrate Dispatches",
-      illustrationDesc: "Digital green arrows routing exit flow channels to transit stations."
-    }
+      illustrationDesc: "Digital green arrows routing exit flow channels to transit stations.",
+    },
   ];
 
   const active = stages[activeStage];
@@ -190,8 +199,10 @@ export function MatchdayJourney() {
   };
 
   return (
-    <section id="matchday-journey" className="py-28 bg-[#020204] border-t border-neutral-900 px-6 relative overflow-hidden text-left scroll-mt-16">
-      
+    <section
+      id="matchday-journey"
+      className="py-28 bg-[#020204] border-t border-neutral-900 px-6 relative overflow-hidden text-left scroll-mt-16"
+    >
       {/* Dynamic atmospheric color backdrop glows */}
       <div className="absolute inset-0 pointer-events-none -z-10 transition-colors duration-1000">
         {active.weather === "sunny" && (
@@ -231,7 +242,6 @@ export function MatchdayJourney() {
       )}
 
       <div className="max-w-6xl mx-auto space-y-12">
-        
         {/* Header Block */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-4 max-w-2xl text-left">
@@ -243,7 +253,8 @@ export function MatchdayJourney() {
               Empathetic Assistance for Every Role
             </h2>
             <p className="text-neutral-400 text-sm sm:text-base leading-relaxed">
-              Step through the stages of a complete World Cup matchday. See the stadium atmosphere shift and audit the AI companion support.
+              Step through the stages of a complete World Cup matchday. See the stadium atmosphere
+              shift and audit the AI companion support.
             </p>
           </div>
 
@@ -254,7 +265,11 @@ export function MatchdayJourney() {
               className="flex items-center gap-2 px-3.5 py-2.5 rounded-2xl border border-neutral-850 bg-neutral-950/40 text-xs font-bold text-neutral-400 hover:text-white transition-all focus:outline-none cursor-pointer"
               aria-label="Toggle ambient noise"
             >
-              {isAudioMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4 text-cyber-green animate-pulse" />}
+              {isAudioMuted ? (
+                <VolumeX className="h-4 w-4" />
+              ) : (
+                <Volume2 className="h-4 w-4 text-cyber-green animate-pulse" />
+              )}
               <span>{isAudioMuted ? "Sound: Off" : "Ambient: Live"}</span>
             </button>
           </div>
@@ -269,8 +284,8 @@ export function MatchdayJourney() {
                 key={s.id}
                 onClick={() => setActiveStage(idx)}
                 className={`flex-shrink-0 px-4.5 py-3 rounded-2xl border font-bold text-xs uppercase tracking-wider transition-all focus:outline-none cursor-pointer ${
-                  isActive 
-                    ? "bg-neutral-900 border-neutral-700 text-white shadow-xl" 
+                  isActive
+                    ? "bg-neutral-900 border-neutral-700 text-white shadow-xl"
                     : "bg-neutral-950/20 border-neutral-905 text-neutral-500 hover:text-neutral-300 hover:border-neutral-850"
                 }`}
               >
@@ -282,18 +297,24 @@ export function MatchdayJourney() {
 
         {/* Simulator Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-          
           {/* LEFT: Persona Details & Selector Controls (Order 2 on Mobile, Order 1 on Desktop) */}
           <div className="order-2 lg:order-1 lg:col-span-5 flex flex-col gap-6 justify-between">
-            
-            <Card variant="glass" className="p-6 border-neutral-900 bg-neutral-950/40 text-left relative overflow-hidden flex flex-col justify-between flex-grow">
+            <Card
+              variant="glass"
+              className="p-6 border-neutral-900 bg-neutral-950/40 text-left relative overflow-hidden flex flex-col justify-between flex-grow"
+            >
               <div className="space-y-6">
-                
                 {/* Persona Header Info */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="h-10 w-10 rounded-full overflow-hidden border border-neutral-850 flex-shrink-0">
-                      <Image src={active.avatar} alt={active.persona} width={40} height={40} className="h-full w-full object-cover" />
+                      <Image
+                        src={active.avatar}
+                        alt={active.persona}
+                        width={40}
+                        height={40}
+                        className="h-full w-full object-cover"
+                      />
                     </div>
                     <div>
                       <div className="px-2 py-0.5 rounded border border-victory-gold/20 text-victory-gold bg-victory-gold/5 text-[9px] font-bold uppercase tracking-wider inline-block">
@@ -303,8 +324,12 @@ export function MatchdayJourney() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="text-[8px] text-neutral-500 font-bold uppercase block tracking-wider font-mono">Stress Index</span>
-                    <span className={`text-xs font-bold font-mono ${active.stressColor}`}>{active.stressLevel}</span>
+                    <span className="text-[8px] text-neutral-500 font-bold uppercase block tracking-wider font-mono">
+                      Stress Index
+                    </span>
+                    <span className={`text-xs font-bold font-mono ${active.stressColor}`}>
+                      {active.stressLevel}
+                    </span>
                   </div>
                 </div>
 
@@ -315,9 +340,7 @@ export function MatchdayJourney() {
                     <Heart className="h-3.5 w-3.5 text-cyber-green animate-pulse" />
                     EMPATHETIC AI COMPANION
                   </div>
-                  <p className="leading-relaxed font-medium italic">
-                    {active.aiDialogue}
-                  </p>
+                  <p className="leading-relaxed font-medium italic">{active.aiDialogue}</p>
                 </div>
 
                 {/* Environment Monitor Box */}
@@ -327,31 +350,51 @@ export function MatchdayJourney() {
                     <span className="text-cyber-green font-mono">ONLINE</span>
                   </div>
                   <div className="flex items-center gap-3">
-                    {active.weather === "sunny" && <Sun className="h-8 w-8 text-amber-500 animate-spin-slow" />}
-                    {active.weather === "rainy" && <CloudRain className="h-8 w-8 text-blue-400 animate-bounce" />}
-                    {active.weather === "night" && <Flame className="h-8 w-8 text-purple-400 animate-pulse" />}
-                    {active.weather === "celebration" && <Sparkles className="h-8 w-8 text-victory-gold animate-bounce" />}
-                    {active.weather === "storm" && <Wind className="h-8 w-8 text-rose-500 animate-pulse" />}
+                    {active.weather === "sunny" && (
+                      <Sun className="h-8 w-8 text-amber-500 animate-spin-slow" />
+                    )}
+                    {active.weather === "rainy" && (
+                      <CloudRain className="h-8 w-8 text-blue-400 animate-bounce" />
+                    )}
+                    {active.weather === "night" && (
+                      <Flame className="h-8 w-8 text-purple-400 animate-pulse" />
+                    )}
+                    {active.weather === "celebration" && (
+                      <Sparkles className="h-8 w-8 text-victory-gold animate-bounce" />
+                    )}
+                    {active.weather === "storm" && (
+                      <Wind className="h-8 w-8 text-rose-500 animate-pulse" />
+                    )}
                     <div>
-                      <div className="text-white text-xs font-bold font-mono">{active.atmosphereTitle}</div>
-                      <p className="text-[10px] text-neutral-500 mt-0.5">{active.illustrationDesc}</p>
+                      <div className="text-white text-xs font-bold font-mono">
+                        {active.atmosphereTitle}
+                      </div>
+                      <p className="text-[10px] text-neutral-500 mt-0.5">
+                        {active.illustrationDesc}
+                      </p>
                     </div>
                   </div>
                 </div>
-
               </div>
 
               {/* Lower dashboard bar */}
               <div className="border-t border-neutral-900 pt-4 mt-6 flex items-center justify-between text-xs">
                 <div>
-                  <div className="text-[8px] text-neutral-500 font-bold uppercase tracking-wider font-mono">{active.metricLabel}</div>
-                  <div className="text-sm font-extrabold text-white font-mono">{active.metricValue}</div>
+                  <div className="text-[8px] text-neutral-500 font-bold uppercase tracking-wider font-mono">
+                    {active.metricLabel}
+                  </div>
+                  <div className="text-sm font-extrabold text-white font-mono">
+                    {active.metricValue}
+                  </div>
                 </div>
-                
+
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => {
-                      if (active.stadiumAction.includes("Celebration") || active.stadiumAction.includes("Goal")) {
+                      if (
+                        active.stadiumAction.includes("Celebration") ||
+                        active.stadiumAction.includes("Goal")
+                      ) {
                         triggerCelebration();
                       }
                     }}
@@ -359,7 +402,7 @@ export function MatchdayJourney() {
                   >
                     {active.stadiumAction}
                   </button>
-                  
+
                   {active.weather === "celebration" && (
                     <button
                       onClick={triggerCelebration}
@@ -371,14 +414,12 @@ export function MatchdayJourney() {
                 </div>
               </div>
             </Card>
-
           </div>
 
           {/* RIGHT: The Premium Accessibility Visual Card (Order 1 on Mobile, Order 2 on Desktop) */}
           <div className="order-1 lg:order-2 lg:col-span-7 flex flex-col">
-            
             {/* Visual Card Container */}
-            <div 
+            <div
               ref={imageCardRef}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
@@ -386,7 +427,7 @@ export function MatchdayJourney() {
             >
               {/* Subtle emerald glow behind the card */}
               <div className="absolute -top-24 -left-24 w-[350px] h-[350px] rounded-full bg-emerald-500/10 blur-[120px] pointer-events-none group-hover:bg-emerald-500/15 transition-colors duration-500" />
-              
+
               {/* Internal Radial Gradient Overlay */}
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.04),transparent_65%)] pointer-events-none z-10" />
 
@@ -415,17 +456,19 @@ export function MatchdayJourney() {
 
               {/* Animated HUD Overlay Elements */}
               <div className="absolute inset-0 pointer-events-none z-20">
-                
                 {/* Emerald Light Sweep Animation */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-emerald-400/8 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out" />
-                
+
                 {/* Pulsing SVG path simulation */}
-                <svg className="absolute inset-0 w-full h-full opacity-65 group-hover:opacity-85 transition-opacity duration-500" xmlns="http://www.w3.org/2000/svg">
-                  <path 
-                    d="M 120 450 Q 280 400 320 280 T 480 180" 
-                    fill="none" 
-                    stroke="#10b981" 
-                    strokeWidth="3.5" 
+                <svg
+                  className="absolute inset-0 w-full h-full opacity-65 group-hover:opacity-85 transition-opacity duration-500"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M 120 450 Q 280 400 320 280 T 480 180"
+                    fill="none"
+                    stroke="#10b981"
+                    strokeWidth="3.5"
                     strokeLinecap="round"
                     className="animate-dash"
                     style={{
@@ -441,7 +484,7 @@ export function MatchdayJourney() {
                   <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-ping" />
                   Live Path Overlay
                 </span>
-                
+
                 <span className="text-[9px] font-mono text-neutral-400 font-bold uppercase tracking-wider">
                   METLIFE SEC 134 // STEP-FREE
                 </span>
@@ -472,7 +515,6 @@ export function MatchdayJourney() {
                   </span>
                 </div>
               </div>
-
             </div>
 
             {/* Accessibility Tagline */}
@@ -481,11 +523,8 @@ export function MatchdayJourney() {
                 &ldquo;Accessibility isn&apos;t a feature. It&apos;s a promise.&rdquo;
               </p>
             </div>
-
           </div>
-
         </div>
-
       </div>
 
       <style jsx global>{`

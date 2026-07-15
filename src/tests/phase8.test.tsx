@@ -6,7 +6,6 @@ import { GeminiWrapperService } from "@/services/google/gemini.service";
 import { MatchMemory } from "@/components/ui/match-memory";
 
 describe("Phase 8 Match Day Celebration & Emotional UX Test Suite", () => {
-  
   test("MatchExperienceService resolves stadium moods accurately", () => {
     const config = MatchExperienceService.getStadiumMood("full-time", null);
     expect(config.mood).toBe("Celebrating");
@@ -37,14 +36,14 @@ describe("Phase 8 Match Day Celebration & Emotional UX Test Suite", () => {
       temp: 28.5,
       wind: "NW 14kmh",
       domeStatus: "open",
-      persona: { 
-        type: "fan", 
-        label: "General Fan", 
-        tone: "enthusiastic", 
+      persona: {
+        type: "fan",
+        label: "General Fan",
+        tone: "enthusiastic",
         priorityPreferences: [],
         description: "General tournament fan",
-        accessibilityNeeds: []
-      }
+        accessibilityNeeds: [],
+      },
     });
 
     expect(reply).toContain("GOAL SURGE CELEBRATION");
@@ -67,14 +66,14 @@ describe("Phase 8 Match Day Celebration & Emotional UX Test Suite", () => {
       temp: 28.5,
       wind: "NW 14kmh",
       domeStatus: "open",
-      persona: { 
-        type: "fan", 
-        label: "General Fan", 
-        tone: "enthusiastic", 
+      persona: {
+        type: "fan",
+        label: "General Fan",
+        tone: "enthusiastic",
         priorityPreferences: [],
         description: "General tournament fan",
-        accessibilityNeeds: []
-      }
+        accessibilityNeeds: [],
+      },
     });
 
     expect(reply).toContain("FAREWELL COMPANION");

@@ -2,10 +2,7 @@ export class GoogleAnalyticsWrapperService {
   /**
    * Logs tournament and dispatcher events to console and formats schemas ready for BigQuery sync.
    */
-  public static logTelemetryEvent(
-    eventName: string,
-    params: Record<string, unknown>
-  ): void {
+  public static logTelemetryEvent(eventName: string, params: Record<string, unknown>): void {
     const timestamp = new Date().toISOString();
     const eventPayload = {
       event_name: eventName,

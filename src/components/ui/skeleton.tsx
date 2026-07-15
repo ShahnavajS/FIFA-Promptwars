@@ -1,12 +1,7 @@
 import React from "react";
 
 export function Skeleton({ className = "", ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div
-      className={`animate-pulse rounded-xl bg-neutral-800/60 ${className}`}
-      {...props}
-    />
-  );
+  return <div className={`animate-pulse rounded-xl bg-neutral-800/60 ${className}`} {...props} />;
 }
 
 export function CardSkeleton() {

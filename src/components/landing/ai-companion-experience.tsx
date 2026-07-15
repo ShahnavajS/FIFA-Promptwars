@@ -3,15 +3,7 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { 
-  Compass, 
-  Train, 
-  Languages, 
-  Accessibility, 
-  Sparkles,
-  Users,
-  Bell
-} from "lucide-react";
+import { Compass, Train, Languages, Accessibility, Sparkles, Users, Bell } from "lucide-react";
 
 export function AICompanionExperience() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -30,11 +22,10 @@ export function AICompanionExperience() {
   };
 
   return (
-    <section 
-      id="ai-companion-experience" 
+    <section
+      id="ai-companion-experience"
       className="py-28 bg-[#020204] border-t border-neutral-900 px-6 scroll-mt-16 relative overflow-hidden text-left"
     >
-      
       {/* Visual Section Transitions (Connecting green telemetry lines) */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1.5px] h-24 bg-gradient-to-b from-cyber-green/50 to-transparent pointer-events-none" />
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1.5px] h-24 bg-gradient-to-t from-cyber-green/50 to-transparent pointer-events-none" />
@@ -42,7 +33,7 @@ export function AICompanionExperience() {
       {/* Background Gradients & Tech Grid */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(16,185,129,0.015),transparent_75%)] pointer-events-none" />
       <div className="absolute inset-0 bg-grid opacity-[0.012] pointer-events-none" />
-      
+
       {/* Subtle emerald glow behind phone image */}
       <div className="absolute top-1/2 left-[10%] -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-emerald-500/5 blur-[120px] pointer-events-none" />
 
@@ -53,15 +44,12 @@ export function AICompanionExperience() {
       </div>
 
       <div className="max-w-6xl mx-auto space-y-16 relative z-10">
-        
         {/* Main Grid: Desktop 55/45 Split, Tablet stacked, Mobile Image first */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
           {/* LEFT COLUMN: Smartphone Navigation Image (55% Width, Order 1 on Mobile, Order 1 on Desktop) */}
           <div className="order-1 lg:col-span-7 flex justify-center">
-            
             {/* Image Container Card with phone floating animation */}
-            <div 
+            <div
               ref={containerRef}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
@@ -99,27 +87,34 @@ export function AICompanionExperience() {
               <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/0 via-emerald-500/0 to-emerald-400/5 opacity-10 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-10" />
 
               {/* Telemetry line overlays (SVG Dash Line Animation) */}
-              <svg className="absolute inset-0 w-full h-full opacity-60 group-hover:opacity-90 transition-opacity duration-500 z-15 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
-                <path 
-                  d="M 100 450 Q 280 400 350 280 T 500 180" 
-                  fill="none" 
-                  stroke="#10b981" 
-                  strokeWidth="2.5" 
+              <svg
+                className="absolute inset-0 w-full h-full opacity-60 group-hover:opacity-90 transition-opacity duration-500 z-15 pointer-events-none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M 100 450 Q 280 400 350 280 T 500 180"
+                  fill="none"
+                  stroke="#10b981"
+                  strokeWidth="2.5"
                   strokeDasharray="6, 12"
                   className="animate-route-dash"
                 />
               </svg>
 
               {/* FLOATING HUD CARDS */}
-              
+
               {/* Top Left: AI Navigation */}
               <div className="absolute top-[8%] left-[6%] z-25 bg-neutral-950/75 border border-[#ffffff10] backdrop-blur-md px-2 py-1.5 sm:px-3.5 sm:py-2.5 rounded-xl sm:rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-lg group-hover:-translate-y-1 transition-transform duration-300">
                 <div className="p-1 sm:p-1.5 rounded-lg bg-cyber-green/15 text-cyber-green">
                   <Compass className="h-3 w-3 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">🧭 AI Navigation</span>
-                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">Active</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">
+                    🧭 AI Navigation
+                  </span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">
+                    Active
+                  </span>
                 </div>
               </div>
 
@@ -129,8 +124,12 @@ export function AICompanionExperience() {
                   <Train className="h-3 w-3 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">🚇 Next Train</span>
-                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">2 min</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">
+                    🚇 Next Train
+                  </span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">
+                    2 min
+                  </span>
                 </div>
               </div>
 
@@ -140,8 +139,12 @@ export function AICompanionExperience() {
                   <Users className="h-3 w-3 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">👥 Crowd</span>
-                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">Moderate</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">
+                    👥 Crowd
+                  </span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">
+                    Moderate
+                  </span>
                 </div>
               </div>
 
@@ -151,8 +154,12 @@ export function AICompanionExperience() {
                   <Accessibility className="h-3 w-3 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">♿ Step-Free</span>
-                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">Enabled</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">
+                    ♿ Step-Free
+                  </span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">
+                    Enabled
+                  </span>
                 </div>
               </div>
 
@@ -161,14 +168,11 @@ export function AICompanionExperience() {
                 <Bell className="h-3 w-3 sm:h-4 sm:w-4 text-emerald-400 animate-bounce" />
                 <span>Route updated automatically</span>
               </div>
-
             </div>
-
           </div>
 
           {/* RIGHT COLUMN: Content + Four Feature Cards (45% Width, Order 2 on Mobile, Order 2 on Desktop) */}
           <div className="order-2 lg:col-span-5 space-y-8 flex flex-col justify-center">
-            
             <div className="space-y-4">
               {/* Section Label */}
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyber-green/10 border border-cyber-green/20 text-cyber-green text-xs font-semibold uppercase tracking-widest font-mono">
@@ -184,7 +188,9 @@ export function AICompanionExperience() {
 
               {/* Description */}
               <p className="text-neutral-400 text-sm leading-relaxed max-w-lg">
-                Whether you&apos;re finding your seat, avoiding crowded gates, locating accessible routes, or catching the fastest train home, StadiumPulse AI becomes your personal tournament companion.
+                Whether you&apos;re finding your seat, avoiding crowded gates, locating accessible
+                routes, or catching the fastest train home, StadiumPulse AI becomes your personal
+                tournament companion.
               </p>
               <p className="text-neutral-400 text-sm leading-relaxed max-w-lg">
                 Not just navigation. Real-time understanding.
@@ -193,7 +199,6 @@ export function AICompanionExperience() {
 
             {/* Feature Cards Grid (Stacked) */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              
               {/* Card 1: Live AI Navigation */}
               <div className="p-4 rounded-2xl border border-neutral-900 bg-neutral-950/40 space-y-2 hover:border-neutral-800 transition-all hover:-translate-y-0.5">
                 <div className="flex items-center gap-2 font-mono text-[10px] font-extrabold text-cyber-green uppercase tracking-wider">
@@ -237,13 +242,9 @@ export function AICompanionExperience() {
                   Every journey adapts to personal mobility and step-free needs.
                 </p>
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
 
       <style jsx global>{`

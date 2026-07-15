@@ -23,7 +23,8 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: "StadiumPulse AI | FIFA World Cup 2026",
-  description: "Real-time AI crowd flow, operations, and multilingual concierge companion for the FIFA World Cup 2026.",
+  description:
+    "Real-time AI crowd flow, operations, and multilingual concierge companion for the FIFA World Cup 2026.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,

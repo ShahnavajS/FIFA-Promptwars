@@ -2,7 +2,8 @@ import { MatchPhase } from "@/stores/useMatchStore";
 
 export interface AgentAdvisory {
   agentName: string;
-  category: "navigation" | "crowd" | "transport" | "accessibility" | "security" | "weather" | "emergency";
+  category:
+    "navigation" | "crowd" | "transport" | "accessibility" | "security" | "weather" | "emergency";
   message: string;
   severity: "info" | "warning" | "critical";
 }
@@ -11,10 +12,24 @@ export interface AgentAdvisory {
 export class NavigationAgent {
   public static evaluate(phase: MatchPhase): AgentAdvisory[] {
     if (phase === "arrival") {
-      return [{ agentName: "NavAgent", category: "navigation", message: "Suggesting Gate A North; average walkway travel time is 4 mins.", severity: "info" }];
+      return [
+        {
+          agentName: "NavAgent",
+          category: "navigation",
+          message: "Suggesting Gate A North; average walkway travel time is 4 mins.",
+          severity: "info",
+        },
+      ];
     }
     if (phase === "exit") {
-      return [{ agentName: "NavAgent", category: "navigation", message: "Directing egress routes to Platform 3 transit platform.", severity: "info" }];
+      return [
+        {
+          agentName: "NavAgent",
+          category: "navigation",
+          message: "Directing egress routes to Platform 3 transit platform.",
+          severity: "info",
+        },
+      ];
     }
     return [];
   }
@@ -24,9 +39,23 @@ export class NavigationAgent {
 export class CrowdAgent {
   public static evaluate(density: number): AgentAdvisory[] {
     if (density >= 1.5) {
-      return [{ agentName: "CrowdAgent", category: "crowd", message: `Turnstiles flow limits reached (${Math.round(density * 100)}%). Redirection macros active.`, severity: "warning" }];
+      return [
+        {
+          agentName: "CrowdAgent",
+          category: "crowd",
+          message: `Turnstiles flow limits reached (${Math.round(density * 100)}%). Redirection macros active.`,
+          severity: "warning",
+        },
+      ];
     }
-    return [{ agentName: "CrowdAgent", category: "crowd", message: "Concourse densities normal.", severity: "info" }];
+    return [
+      {
+        agentName: "CrowdAgent",
+        category: "crowd",
+        message: "Concourse densities normal.",
+        severity: "info",
+      },
+    ];
   }
 }
 
@@ -34,10 +63,24 @@ export class CrowdAgent {
 export class TransportAgent {
   public static evaluate(phase: MatchPhase, emergency: string | null): AgentAdvisory[] {
     if (emergency === "RAIL EXPRESS STRIKE") {
-      return [{ agentName: "TransitAgent", category: "transport", message: "Meadowlands Rail Express suspended. Rerouting buses to platform 5.", severity: "critical" }];
+      return [
+        {
+          agentName: "TransitAgent",
+          category: "transport",
+          message: "Meadowlands Rail Express suspended. Rerouting buses to platform 5.",
+          severity: "critical",
+        },
+      ];
     }
     if (phase === "exit") {
-      return [{ agentName: "TransitAgent", category: "transport", message: "Manhattan shuttle buses reporting delays. Recommend rail lines.", severity: "warning" }];
+      return [
+        {
+          agentName: "TransitAgent",
+          category: "transport",
+          message: "Manhattan shuttle buses reporting delays. Recommend rail lines.",
+          severity: "warning",
+        },
+      ];
     }
     return [];
   }
@@ -47,10 +90,24 @@ export class TransportAgent {
 export class AccessibilityAgent {
   public static evaluate(wheelchairMode: boolean, emergency: string | null): AgentAdvisory[] {
     if (emergency === "ELEVATOR FAULT") {
-      return [{ agentName: "AccessAgent", category: "accessibility", message: "Lift Core West offline. Rerouting step-free traffic to East Core.", severity: "critical" }];
+      return [
+        {
+          agentName: "AccessAgent",
+          category: "accessibility",
+          message: "Lift Core West offline. Rerouting step-free traffic to East Core.",
+          severity: "critical",
+        },
+      ];
     }
     if (wheelchairMode) {
-      return [{ agentName: "AccessAgent", category: "accessibility", message: "Wheelchair step-free routes active. West Lift Core active.", severity: "info" }];
+      return [
+        {
+          agentName: "AccessAgent",
+          category: "accessibility",
+          message: "Wheelchair step-free routes active. West Lift Core active.",
+          severity: "info",
+        },
+      ];
     }
     return [];
   }
@@ -60,9 +117,23 @@ export class AccessibilityAgent {
 export class WeatherAgent {
   public static evaluate(domeStatus: string): AgentAdvisory[] {
     if (domeStatus === "closed") {
-      return [{ agentName: "WeatherAgent", category: "weather", message: "Dome closed due to heavy rain. Eco climate systems adjusted.", severity: "warning" }];
+      return [
+        {
+          agentName: "WeatherAgent",
+          category: "weather",
+          message: "Dome closed due to heavy rain. Eco climate systems adjusted.",
+          severity: "warning",
+        },
+      ];
     }
-    return [{ agentName: "WeatherAgent", category: "weather", message: "Roof open. Temp: 28°C.", severity: "info" }];
+    return [
+      {
+        agentName: "WeatherAgent",
+        category: "weather",
+        message: "Roof open. Temp: 28°C.",
+        severity: "info",
+      },
+    ];
   }
 }
 
@@ -70,7 +141,14 @@ export class WeatherAgent {
 export class SecurityAgent {
   public static evaluate(emergency: string | null): AgentAdvisory[] {
     if (emergency === "LOST CHILD SEC 110") {
-      return [{ agentName: "SecurityAgent", category: "security", message: "Child separation report. Dispatching Sector 110 search grid.", severity: "critical" }];
+      return [
+        {
+          agentName: "SecurityAgent",
+          category: "security",
+          message: "Child separation report. Dispatching Sector 110 search grid.",
+          severity: "critical",
+        },
+      ];
     }
     return [];
   }
@@ -80,7 +158,14 @@ export class SecurityAgent {
 export class EmergencyAgent {
   public static evaluate(emergency: string | null): AgentAdvisory[] {
     if (emergency === "MEDICAL INJURY SEC 112") {
-      return [{ agentName: "EmergencyAgent", category: "emergency", message: "Medical incident Sector 112. First Aid squad dispatched.", severity: "critical" }];
+      return [
+        {
+          agentName: "EmergencyAgent",
+          category: "emergency",
+          message: "Medical incident Sector 112. First Aid squad dispatched.",
+          severity: "critical",
+        },
+      ];
     }
     return [];
   }

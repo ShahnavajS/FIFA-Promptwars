@@ -7,7 +7,6 @@ import { OperationalInsights } from "@/components/ui/operational-insights";
 import ReplayPage from "@/app/dashboard/replay/page";
 
 describe("Phase 9 AI Replay & Continuous Learning Test Suite", () => {
-  
   test("ReplayService stores 10 sequential matchday ticks", () => {
     const steps = ReplayService.getReplaySteps();
     expect(steps.length).toBe(10);

@@ -52,7 +52,6 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[#030303] text-neutral-50 flex flex-col font-sans overflow-x-hidden selection:bg-cyber-green selection:text-black relative">
-      
       {/* Dynamic Telemetry Particles Background */}
       <LivingBackground />
 
@@ -65,7 +64,10 @@ export default function LandingPage() {
           <Link href="/" className="flex items-center gap-2.5">
             <Activity className="h-5 w-5 text-cyber-green animate-pulse" />
             <span className="font-display font-bold text-base tracking-wider text-white uppercase">
-              StadiumPulse <span className="text-cyber-green font-sans font-light text-xs align-super border border-cyber-green/20 px-1.5 py-0.5 rounded-full">AI</span>
+              StadiumPulse{" "}
+              <span className="text-cyber-green font-sans font-light text-xs align-super border border-cyber-green/20 px-1.5 py-0.5 rounded-full">
+                AI
+              </span>
             </span>
           </Link>
         </div>
@@ -103,17 +105,19 @@ export default function LandingPage() {
                     }`}
                   >
                     {r} View
-                    {currentRole === r && <div className="h-1.5 w-1.5 rounded-full bg-cyber-green" />}
+                    {currentRole === r && (
+                      <div className="h-1.5 w-1.5 rounded-full bg-cyber-green" />
+                    )}
                   </button>
                 ))}
               </div>
             )}
           </div>
 
-          <Button 
+          <Button
             onClick={startDemo}
-            variant="glass" 
-            size="sm" 
+            variant="glass"
+            size="sm"
             className="hidden sm:inline-flex rounded-xl font-semibold border-neutral-850"
           >
             Start Command Center

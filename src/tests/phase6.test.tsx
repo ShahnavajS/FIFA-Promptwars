@@ -6,7 +6,6 @@ import { SmartAssistanceService } from "@/services/smart-assistance.service";
 import { StoryService } from "@/services/stories/story.service";
 
 describe("Phase 6 Human-Centered Experience Test Suite", () => {
-  
   test("PersonaEngine maps family profile to protective tone", () => {
     const config = PersonaEngine.getPersona("family");
     expect(config.tone).toBe("protective");
@@ -21,7 +20,7 @@ describe("Phase 6 Human-Centered Experience Test Suite", () => {
       favoriteTeam: "Germany",
       stressLevel: "high",
       journeyStage: "ingress",
-      preferences: ["Avoid stairs", "Eco parking"]
+      preferences: ["Avoid stairs", "Eco parking"],
     };
 
     const compiled = getHumanContext(contextData);
@@ -34,7 +33,7 @@ describe("Phase 6 Human-Centered Experience Test Suite", () => {
   test("JourneyMemory registers queries and caps history logs", () => {
     JourneyMemoryService.resetMemory();
     JourneyMemoryService.addInteraction("Where is restroom?", "Go to Sector 103.");
-    
+
     const memory = JourneyMemoryService.getMemory();
     expect(memory.previousInteractions.length).toBe(1);
     expect(memory.previousInteractions[0].query).toBe("Where is restroom?");
@@ -49,7 +48,7 @@ describe("Phase 6 Human-Centered Experience Test Suite", () => {
       "senior"
     );
 
-    expect(alerts.some(a => a.includes("Lift Core West"))).toBe(true);
+    expect(alerts.some((a) => a.includes("Lift Core West"))).toBe(true);
   });
 
   test("StoryService resolves family storytelling steps", () => {

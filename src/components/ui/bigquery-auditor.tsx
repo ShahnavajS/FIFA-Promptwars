@@ -14,25 +14,34 @@ export function BigQueryAuditor() {
   const handleExport = () => {
     setIsExporting(true);
     addToast("Streaming telemetry payload to BigQuery...", "info");
-    
+
     setTimeout(() => {
       setIsExporting(false);
       setExported(true);
-      addToast("Successfully ingested 5 event records into bigquery-stadiumpulse.telemetry.events", "success");
+      addToast(
+        "Successfully ingested 5 event records into bigquery-stadiumpulse.telemetry.events",
+        "success"
+      );
     }, 1500);
   };
 
   return (
-    <Card variant="glass" className="border-neutral-800 bg-neutral-950/60 backdrop-blur-xl text-left font-sans">
+    <Card
+      variant="glass"
+      className="border-neutral-800 bg-neutral-950/60 backdrop-blur-xl text-left font-sans"
+    >
       <CardHeader className="pb-3 border-b border-neutral-900 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-1.5 text-stadium-blue font-bold text-xs uppercase tracking-wider font-display">
             <Database className="h-4 w-4 text-stadium-blue" />
             Google Cloud BigQuery Integration
           </div>
-          <CardTitle className="text-white text-base">BigQuery Telemetry Pipeline Auditor</CardTitle>
+          <CardTitle className="text-white text-base">
+            BigQuery Telemetry Pipeline Auditor
+          </CardTitle>
           <CardDescription className="text-neutral-400 text-xs">
-            Audit raw data warehouse schemas and stream operations logs to BigQuery for tournament-wide BI.
+            Audit raw data warehouse schemas and stream operations logs to BigQuery for
+            tournament-wide BI.
           </CardDescription>
         </div>
 
@@ -90,13 +99,16 @@ export function BigQueryAuditor() {
             <div className="p-3.5 rounded-lg bg-neutral-900/50 border border-neutral-850 font-mono text-[10px] text-left text-neutral-200 overflow-x-auto min-h-[100px] flex items-center">
               {exported ? (
                 <code className="text-emerald-400">
-                  INSERT INTO `noblegym.telemetry.event_stream` (timestamp, tick_index, phase_name, crowd_density, emergency_code) <br />
-                  VALUES (CURRENT_TIMESTAMP(), 3, 'halftime', 1.6, NULL);
+                  INSERT INTO `noblegym.telemetry.event_stream` (timestamp, tick_index, phase_name,
+                  crowd_density, emergency_code) <br />
+                  VALUES (CURRENT_TIMESTAMP(), 3, &apos;halftime&apos;, 1.6, NULL);
                 </code>
               ) : (
                 <code className="text-neutral-500">
-                  -- Awaiting Event Stream Export action...<br />
-                  -- Click 'Export Event Stream' to trigger Google BigQuery SQL streaming payload.
+                  -- Awaiting Event Stream Export action...
+                  <br />
+                  -- Click &apos;Export Event Stream&apos; to trigger Google BigQuery SQL streaming
+                  payload.
                 </code>
               )}
             </div>
@@ -104,7 +116,9 @@ export function BigQueryAuditor() {
 
           <div className="flex items-center justify-between text-[10px] text-neutral-400 font-mono border-t border-neutral-900/60 pt-3">
             <div className="flex items-center gap-1.5">
-              <span className={`h-2 w-2 rounded-full ${exported ? "bg-emerald-500" : "bg-amber-500 animate-pulse"}`} />
+              <span
+                className={`h-2 w-2 rounded-full ${exported ? "bg-emerald-500" : "bg-amber-500 animate-pulse"}`}
+              />
               <span>Status: {exported ? "SYNCED" : "UNSYNCED"}</span>
             </div>
             <div>

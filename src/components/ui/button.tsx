@@ -16,13 +16,15 @@ export function Button({
   disabled,
   ...props
 }: ButtonProps) {
-  const baseStyles = "inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:pointer-events-none";
-  
+  const baseStyles =
+    "inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:pointer-events-none";
+
   const variants = {
     primary: "bg-cyber-green text-black hover:bg-emerald-400 focus:ring-cyber-green",
     secondary: "bg-white text-black hover:bg-neutral-200 focus:ring-white",
     danger: "bg-pulsing-coral text-white hover:bg-rose-500 focus:ring-pulsing-coral",
-    ghost: "bg-transparent text-neutral-300 hover:text-white hover:bg-neutral-800/40 focus:ring-neutral-500",
+    ghost:
+      "bg-transparent text-neutral-300 hover:text-white hover:bg-neutral-800/40 focus:ring-neutral-500",
     glass: "glass-panel-interactive text-white hover:border-neutral-700 focus:ring-electric-cyan",
   };
 

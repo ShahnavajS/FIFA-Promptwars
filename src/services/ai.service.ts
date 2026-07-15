@@ -60,7 +60,9 @@ export class AIService {
 
       const chat = model.startChat({
         history: formattedHistory,
-        systemInstruction: systemInstruction ? { parts: [{ text: systemInstruction }], role: "system" } : undefined,
+        systemInstruction: systemInstruction
+          ? { parts: [{ text: systemInstruction }], role: "system" }
+          : undefined,
       });
 
       return chat;

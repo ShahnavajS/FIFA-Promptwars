@@ -4,13 +4,7 @@ import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { 
-  TrendingUp, 
-  BrainCircuit, 
-  Activity, 
-  Database,
-  ArrowRight
-} from "lucide-react";
+import { TrendingUp, BrainCircuit, Activity, Database, ArrowRight } from "lucide-react";
 
 export function ReplayPreview() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -29,11 +23,10 @@ export function ReplayPreview() {
   };
 
   return (
-    <section 
-      id="ai-replay-preview" 
+    <section
+      id="ai-replay-preview"
       className="py-28 bg-[#020203] border-t border-neutral-900 px-6 scroll-mt-16 relative overflow-hidden text-left"
     >
-      
       {/* 1. Glowing timeline connector from previous section (Pipeline -> Learning) */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1.5px] h-24 bg-gradient-to-b from-cyber-green/50 via-emerald-400/30 to-transparent pointer-events-none" />
 
@@ -49,79 +42,93 @@ export function ReplayPreview() {
       </div>
 
       <div className="max-w-6xl mx-auto space-y-16 relative z-10">
-        
         {/* Desktop Split Grid (Desktop 45/55 Split, Tablet stacked, Mobile Image first) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
           {/* LEFT PANEL: Storytelling & Editorial Copy (45% Width) */}
           <div className="order-2 lg:order-1 lg:col-span-5 space-y-8 flex flex-col justify-center">
-            
             <div className="space-y-4">
               {/* Section Label */}
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-cyber-green/10 border border-cyber-green/20 text-cyber-green text-xs font-semibold uppercase tracking-widest font-mono">
                 <BrainCircuit className="h-3.5 w-3.5" />
                 <span>AI Replay & Continuous Learning</span>
               </div>
-              
+
               {/* Heading */}
               <h2 className="text-4xl sm:text-5xl font-extrabold font-display text-white tracking-tight leading-[1.08] select-none">
                 Every Match Makes <br />
                 The Next One Smarter.
               </h2>
-              
+
               {/* Description */}
               <p className="text-neutral-400 text-sm leading-relaxed max-w-lg">
-                Unlike traditional stadium systems that forget after every event, StadiumPulse AI continuously learns from every match, crowd movement, emergency, and operational decision.
+                Unlike traditional stadium systems that forget after every event, StadiumPulse AI
+                continuously learns from every match, crowd movement, emergency, and operational
+                decision.
               </p>
               <p className="text-neutral-400 text-sm leading-relaxed max-w-lg">
-                The AI improves routing, resource allocation, crowd prediction, and emergency response over time.
+                The AI improves routing, resource allocation, crowd prediction, and emergency
+                response over time.
               </p>
             </div>
 
             {/* Premium Metric Cards Stack */}
             <div className="grid grid-cols-3 gap-4 border-t border-neutral-900 pt-6">
-              
               {/* Metric 1 */}
               <div className="space-y-1.5 text-left font-mono">
-                <span className="text-[7.5px] text-neutral-500 font-bold uppercase tracking-wider block">📈 Queue Predict</span>
-                <span className="text-xl sm:text-2xl font-extrabold text-white leading-none">98.2%</span>
-                <span className="text-[7px] text-cyber-green font-bold uppercase block tracking-widest">Accuracy</span>
+                <span className="text-[7.5px] text-neutral-500 font-bold uppercase tracking-wider block">
+                  📈 Queue Predict
+                </span>
+                <span className="text-xl sm:text-2xl font-extrabold text-white leading-none">
+                  98.2%
+                </span>
+                <span className="text-[7px] text-cyber-green font-bold uppercase block tracking-widest">
+                  Accuracy
+                </span>
               </div>
 
               {/* Metric 2 */}
               <div className="space-y-1.5 text-left font-mono">
-                <span className="text-[7.5px] text-neutral-500 font-bold uppercase tracking-wider block">⚡ Emergency Resp</span>
-                <span className="text-xl sm:text-2xl font-extrabold text-cyber-green leading-none">+32%</span>
-                <span className="text-[7px] text-neutral-500 font-bold uppercase block tracking-widest">Improved</span>
+                <span className="text-[7.5px] text-neutral-500 font-bold uppercase tracking-wider block">
+                  ⚡ Emergency Resp
+                </span>
+                <span className="text-xl sm:text-2xl font-extrabold text-cyber-green leading-none">
+                  +32%
+                </span>
+                <span className="text-[7px] text-neutral-500 font-bold uppercase block tracking-widest">
+                  Improved
+                </span>
               </div>
 
               {/* Metric 3 */}
               <div className="space-y-1.5 text-left font-mono">
-                <span className="text-[7.5px] text-neutral-500 font-bold uppercase tracking-wider block">🚇 Transit Flow</span>
-                <span className="text-xl sm:text-2xl font-extrabold text-white leading-none">+26%</span>
-                <span className="text-[7px] text-neutral-500 font-bold uppercase block tracking-widest">Optimized</span>
+                <span className="text-[7.5px] text-neutral-500 font-bold uppercase tracking-wider block">
+                  🚇 Transit Flow
+                </span>
+                <span className="text-xl sm:text-2xl font-extrabold text-white leading-none">
+                  +26%
+                </span>
+                <span className="text-[7px] text-neutral-500 font-bold uppercase block tracking-widest">
+                  Optimized
+                </span>
               </div>
-
             </div>
 
             {/* CTA Button */}
             <div className="pt-2 text-left">
-              <Button 
-                variant="glass" 
+              <Button
+                variant="glass"
                 className="rounded-2xl font-semibold border-neutral-850 hover:border-cyber-green/50 text-white flex items-center gap-2 group transition-all"
               >
                 <span>Explore Replay Center</span>
                 <ArrowRight className="h-4 w-4 text-cyber-green transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
             </div>
-
           </div>
 
           {/* RIGHT PANEL: Replay Command Center Image (55% Width) */}
           <div className="order-1 lg:order-2 lg:col-span-7 flex justify-center">
-            
             {/* Visual Card Container */}
-            <div 
+            <div
               ref={containerRef}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
@@ -164,8 +171,12 @@ export function ReplayPreview() {
                   <BrainCircuit className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">🧠 AI Replay</span>
-                  <span className="text-[9px] sm:text-[10px] font-extrabold text-white mt-0.5 block leading-none">Watching Match #128</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">
+                    🧠 AI Replay
+                  </span>
+                  <span className="text-[9px] sm:text-[10px] font-extrabold text-white mt-0.5 block leading-none">
+                    Watching Match #128
+                  </span>
                 </div>
               </div>
 
@@ -175,8 +186,12 @@ export function ReplayPreview() {
                   <TrendingUp className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">📊 Learning Conf</span>
-                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">96%</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">
+                    📊 Learning Conf
+                  </span>
+                  <span className="text-[9px] sm:text-xs font-extrabold text-white mt-0.5 block leading-none">
+                    96%
+                  </span>
                 </div>
               </div>
 
@@ -186,8 +201,12 @@ export function ReplayPreview() {
                   <Database className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">⚽ Event Telemetry</span>
-                  <span className="text-[8px] sm:text-[10px] font-extrabold text-white mt-0.5 block leading-none">12,840 Events</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">
+                    ⚽ Event Telemetry
+                  </span>
+                  <span className="text-[8px] sm:text-[10px] font-extrabold text-white mt-0.5 block leading-none">
+                    12,840 Events
+                  </span>
                 </div>
               </div>
 
@@ -197,17 +216,17 @@ export function ReplayPreview() {
                   <Activity className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </div>
                 <div className="text-left font-mono">
-                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">🔄 Model Updated</span>
-                  <span className="text-[9px] sm:text-[10px] font-extrabold text-white mt-0.5 block leading-none">2 mins ago</span>
+                  <span className="text-[5.5px] sm:text-[7px] text-neutral-400 uppercase block font-bold tracking-wider leading-none">
+                    🔄 Model Updated
+                  </span>
+                  <span className="text-[9px] sm:text-[10px] font-extrabold text-white mt-0.5 block leading-none">
+                    2 mins ago
+                  </span>
                 </div>
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
 
       <style jsx global>{`

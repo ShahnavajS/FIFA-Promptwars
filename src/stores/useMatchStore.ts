@@ -58,18 +58,73 @@ const PHASE_METRICS: Record<
     aiConfidence: number;
   }
 > = {
-  "pre-match": { timeRemaining: "120 min to Kickoff", attendance: 0, crowdMood: "calm", aiConfidence: 99 },
-  arrival: { timeRemaining: "90 min to Kickoff", attendance: 12000, crowdMood: "excited", aiConfidence: 96 },
-  security: { timeRemaining: "60 min to Kickoff", attendance: 34000, crowdMood: "tense", aiConfidence: 91 },
-  "gate-entry": { timeRemaining: "30 min to Kickoff", attendance: 58000, crowdMood: "excited", aiConfidence: 94 },
-  "find-seat": { timeRemaining: "15 min to Kickoff", attendance: 76000, crowdMood: "excited", aiConfidence: 97 },
-  "pre-kickoff": { timeRemaining: "5 min to Kickoff", attendance: 80200, crowdMood: "excited", aiConfidence: 99 },
-  kickoff: { timeRemaining: "00:00 (1st Half)", attendance: 82000, crowdMood: "excited", aiConfidence: 98 },
+  "pre-match": {
+    timeRemaining: "120 min to Kickoff",
+    attendance: 0,
+    crowdMood: "calm",
+    aiConfidence: 99,
+  },
+  arrival: {
+    timeRemaining: "90 min to Kickoff",
+    attendance: 12000,
+    crowdMood: "excited",
+    aiConfidence: 96,
+  },
+  security: {
+    timeRemaining: "60 min to Kickoff",
+    attendance: 34000,
+    crowdMood: "tense",
+    aiConfidence: 91,
+  },
+  "gate-entry": {
+    timeRemaining: "30 min to Kickoff",
+    attendance: 58000,
+    crowdMood: "excited",
+    aiConfidence: 94,
+  },
+  "find-seat": {
+    timeRemaining: "15 min to Kickoff",
+    attendance: 76000,
+    crowdMood: "excited",
+    aiConfidence: 97,
+  },
+  "pre-kickoff": {
+    timeRemaining: "5 min to Kickoff",
+    attendance: 80200,
+    crowdMood: "excited",
+    aiConfidence: 99,
+  },
+  kickoff: {
+    timeRemaining: "00:00 (1st Half)",
+    attendance: 82000,
+    crowdMood: "excited",
+    aiConfidence: 98,
+  },
   halftime: { timeRemaining: "Halftime", attendance: 82000, crowdMood: "calm", aiConfidence: 95 },
-  "second-half": { timeRemaining: "45:00 (2nd Half)", attendance: 82000, crowdMood: "excited", aiConfidence: 97 },
-  "full-time": { timeRemaining: "Full Time (ARG 2 - 1 GER)", attendance: 82000, crowdMood: "celebrating", aiConfidence: 99 },
-  exit: { timeRemaining: "Exit Flow Active", attendance: 58000, crowdMood: "calm", aiConfidence: 92 },
-  "post-match": { timeRemaining: "Ops Suspended", attendance: 150, crowdMood: "calm", aiConfidence: 99 },
+  "second-half": {
+    timeRemaining: "45:00 (2nd Half)",
+    attendance: 82000,
+    crowdMood: "excited",
+    aiConfidence: 97,
+  },
+  "full-time": {
+    timeRemaining: "Full Time (ARG 2 - 1 GER)",
+    attendance: 82000,
+    crowdMood: "celebrating",
+    aiConfidence: 99,
+  },
+  exit: {
+    timeRemaining: "Exit Flow Active",
+    attendance: 58000,
+    crowdMood: "calm",
+    aiConfidence: 92,
+  },
+  "post-match": {
+    timeRemaining: "Ops Suspended",
+    attendance: 150,
+    crowdMood: "calm",
+    aiConfidence: 99,
+  },
 };
 
 export const useMatchStore = create<MatchState>((set, get) => ({
@@ -103,7 +158,7 @@ export const useMatchStore = create<MatchState>((set, get) => ({
   },
 
   setDomeStatus: (status) => set({ domeStatus: status }),
-  
+
   setDensityMultiplier: (multiplier) => set({ crowdDensityMultiplier: multiplier }),
 
   advancePhase: () => {

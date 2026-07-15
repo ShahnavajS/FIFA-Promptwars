@@ -5,23 +5,10 @@ import { useMatchStore } from "@/stores/useMatchStore";
 import { useUiStore } from "@/stores/useUiStore";
 import { StadiumHealthEngineService } from "@/services/health-engine.service";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "./card";
-import { 
-  Cpu, 
-  Activity, 
-  HelpCircle, 
-  TrendingUp, 
-  AlertCircle,
-  FileText,
-  Clock
-} from "lucide-react";
+import { Cpu, Activity, HelpCircle, TrendingUp, AlertCircle, FileText, Clock } from "lucide-react";
 
 export function AIStadiumBrain() {
-  const { 
-    currentPhase, 
-    crowdDensityMultiplier, 
-    activeEmergency, 
-    domeStatus 
-  } = useMatchStore();
+  const { currentPhase, crowdDensityMultiplier, activeEmergency, domeStatus } = useMatchStore();
 
   const { selectedLanguage, wheelchairRerouting } = useUiStore();
 
@@ -42,10 +29,10 @@ export function AIStadiumBrain() {
           evidence: [
             "Active Dispatch Emergency: LOST CHILD SEC 110",
             `Ingress Crowd Multiplier: ${Math.round(crowdDensityMultiplier * 100)}%`,
-            "Exit turnstiles lock command active"
+            "Exit turnstiles lock command active",
           ],
           impact: "Locks security perimeter; alerts all 800 volunteers in Sector 110-112 grid.",
-          related: "Gate B turnstile readers load balancing suspended."
+          related: "Gate B turnstile readers load balancing suspended.",
         };
       }
       if (activeEmergency.includes("MEDICAL")) {
@@ -54,10 +41,10 @@ export function AIStadiumBrain() {
           evidence: [
             "Active Dispatch Emergency: MEDICAL INJURY SEC 112",
             "Emergency vehicle corridor sensor active",
-            `Active wheelchair rerouting: ${wheelchairRerouting ? "YES" : "NO"}`
+            `Active wheelchair rerouting: ${wheelchairRerouting ? "YES" : "NO"}`,
           ],
           impact: "Redirects pedestrian flow; maintains clear 3-minute transit road for EMT quads.",
-          related: "Gate A North ingress queue speed adjustments."
+          related: "Gate A North ingress queue speed adjustments.",
         };
       }
       if (activeEmergency.includes("RAIL") || activeEmergency.includes("STRIKE")) {
@@ -66,10 +53,11 @@ export function AIStadiumBrain() {
           evidence: [
             "Active Emergency: RAILWAY EXPRESS STRIKE",
             "Platform 3 departure count: 0",
-            "Shuttle queue bus request: +15 buses"
+            "Shuttle queue bus request: +15 buses",
           ],
-          impact: "Diverts 8,000 exiting fans from rail lines to Platform 5 Shuttle express bus lines.",
-          related: "Rideshare Zone 1 surge alerts pushed to companion apps."
+          impact:
+            "Diverts 8,000 exiting fans from rail lines to Platform 5 Shuttle express bus lines.",
+          related: "Rideshare Zone 1 surge alerts pushed to companion apps.",
         };
       }
     }
@@ -81,10 +69,10 @@ export function AIStadiumBrain() {
           evidence: [
             `Ingress crowd multiplier: ${Math.round(crowdDensityMultiplier * 100)}%`,
             "Gate B wait queue: 28 mins",
-            "Gate A North wait queue: 3 mins"
+            "Gate A North wait queue: 3 mins",
           ],
           impact: "Balances turnstile loads; reduces maximum entry wait times by 11 minutes.",
-          related: "Walkway LED routing arrow screens updated."
+          related: "Walkway LED routing arrow screens updated.",
         };
       case "halftime":
         return {
@@ -92,10 +80,11 @@ export function AIStadiumBrain() {
           evidence: [
             "Concourse Sector 112 queue count: 180 fans",
             "Sector 103 restroom queue wait: 2 mins",
-            `Selected language: ${selectedLanguage.toUpperCase()}`
+            `Selected language: ${selectedLanguage.toUpperCase()}`,
           ],
-          impact: "Load balances restroom facilities; reduces concession-line friction for families.",
-          related: "El Tri Tacos concession queue alerts pushed to seat rows."
+          impact:
+            "Load balances restroom facilities; reduces concession-line friction for families.",
+          related: "El Tri Tacos concession queue alerts pushed to seat rows.",
         };
       case "exit":
         return {
@@ -103,20 +92,21 @@ export function AIStadiumBrain() {
           evidence: [
             `Exit density multiplier: ${Math.round(crowdDensityMultiplier * 100)}%`,
             "Manhattan Express Bus delay: 24 mins",
-            "Meadowlands Rail platform status: open"
+            "Meadowlands Rail platform status: open",
           ],
-          impact: "Clears outer stadium rings 15 minutes faster; coordinates rail express departures.",
-          related: "Subway loop coordination sync active."
+          impact:
+            "Clears outer stadium rings 15 minutes faster; coordinates rail express departures.",
+          related: "Subway loop coordination sync active.",
         };
       default:
         return {
           why: "Operations running smoothly under standard scheduler rules.",
           evidence: [
             "All systems reporting normal offsets",
-            `Stadium dome roof status: ${domeStatus.toUpperCase()}`
+            `Stadium dome roof status: ${domeStatus.toUpperCase()}`,
           ],
           impact: "Preserves carbon offset scores; ensures zero queue backing at checkpoints.",
-          related: "Solar dome power grids charging."
+          related: "Solar dome power grids charging.",
         };
     }
   };
@@ -125,10 +115,12 @@ export function AIStadiumBrain() {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 text-left font-sans">
-      
       {/* 1. Dynamic Stadium Brain Dashboard Panel (8 Columns) */}
       <div className="lg:col-span-8 flex flex-col gap-6">
-        <Card variant="glass" className="border-victory-gold/20 bg-neutral-950/60 backdrop-blur-xl relative overflow-hidden flex-grow glow-gold">
+        <Card
+          variant="glass"
+          className="border-victory-gold/20 bg-neutral-950/60 backdrop-blur-xl relative overflow-hidden flex-grow glow-gold"
+        >
           <CardHeader className="pb-3 flex flex-row items-center justify-between border-b border-neutral-900">
             <div className="flex items-center gap-2">
               <div className="p-2 rounded-xl bg-victory-gold/10 border border-victory-gold/20 text-victory-gold">
@@ -224,7 +216,10 @@ export function AIStadiumBrain() {
 
       {/* 2. Health Engine Stability Metrics Gauges (4 Columns) */}
       <div className="lg:col-span-4 flex flex-col gap-6">
-        <Card variant="glass" className="border-neutral-850 bg-neutral-950/60 backdrop-blur-xl flex-grow flex flex-col justify-between">
+        <Card
+          variant="glass"
+          className="border-neutral-850 bg-neutral-950/60 backdrop-blur-xl flex-grow flex flex-col justify-between"
+        >
           <CardHeader className="pb-2">
             <div className="flex items-center gap-1.5 text-cyber-green font-bold text-xs uppercase tracking-wider font-display">
               <Activity className="h-4 w-4" />
@@ -233,7 +228,6 @@ export function AIStadiumBrain() {
             <CardTitle className="text-white text-base">Stability Metrics</CardTitle>
           </CardHeader>
           <CardContent className="flex-grow flex flex-col gap-4 justify-center">
-            
             {/* Operational Stability slider representation */}
             <div className="space-y-1">
               <div className="flex justify-between text-[10px] font-bold text-neutral-400 uppercase">
@@ -241,8 +235,8 @@ export function AIStadiumBrain() {
                 <span className="text-white">{health.operationalStability}%</span>
               </div>
               <div className="w-full bg-neutral-900 h-2 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-cyber-green transition-all duration-500" 
+                <div
+                  className="h-full bg-cyber-green transition-all duration-500"
                   style={{ width: `${health.operationalStability}%` }}
                 />
               </div>
@@ -255,8 +249,8 @@ export function AIStadiumBrain() {
                 <span className="text-white">{health.recoveryIndex}%</span>
               </div>
               <div className="w-full bg-neutral-900 h-2 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-cyan-400 transition-all duration-500" 
+                <div
+                  className="h-full bg-cyan-400 transition-all duration-500"
                   style={{ width: `${health.recoveryIndex}%` }}
                 />
               </div>
@@ -269,8 +263,8 @@ export function AIStadiumBrain() {
                 <span className="text-white">{health.aiConfidence}%</span>
               </div>
               <div className="w-full bg-neutral-900 h-2 rounded-full overflow-hidden">
-                <div 
-                  className="h-full bg-victory-gold transition-all duration-500 animate-pulse" 
+                <div
+                  className="h-full bg-victory-gold transition-all duration-500 animate-pulse"
                   style={{ width: `${health.aiConfidence}%` }}
                 />
               </div>
@@ -278,7 +272,6 @@ export function AIStadiumBrain() {
           </CardContent>
         </Card>
       </div>
-
     </div>
   );
 }

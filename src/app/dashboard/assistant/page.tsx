@@ -15,41 +15,35 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AIShimmer } from "@/components/ui/loading";
-import { 
-  Bot, 
-  Send, 
-  Mic, 
-  Sparkles, 
+import {
+  Bot,
+  Send,
+  Mic,
+  Sparkles,
   Languages,
   Eye,
   Type,
   Accessibility,
-  HeartHandshake
+  HeartHandshake,
 } from "lucide-react";
 
 export default function AssistantPage() {
-  const { 
-    currentRole, 
-    selectedLanguage, 
-    setLanguage, 
-    fontSize, 
+  const {
+    currentRole,
+    selectedLanguage,
+    setLanguage,
+    fontSize,
     setFontSize,
     highContrastMode,
     setHighContrast,
     wheelchairRerouting,
-    setWheelchairRerouting
+    setWheelchairRerouting,
   } = useUiStore();
 
   const { addToast } = useToastStore();
-  
-  const { 
-    currentPhase, 
-    attendance, 
-    crowdMood, 
-    matchName, 
-    domeStatus, 
-    activeEmergency
-  } = useMatchStore();
+
+  const { currentPhase, attendance, crowdMood, matchName, domeStatus, activeEmergency } =
+    useMatchStore();
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState("");
@@ -68,14 +62,14 @@ export default function AssistantPage() {
         return [
           "Where is the stroller-friendly entry gate?",
           "Meadowlands train platform?",
-          "Route to Gate A (Step-Free)"
+          "Route to Gate A (Step-Free)",
         ];
       case "security":
       case "gate-entry":
         return [
           "Is there an uncrowded gate option?",
           "Reroute to Gate A North",
-          "Bag scanning regulations"
+          "Bag scanning regulations",
         ];
       case "find-seat":
       case "pre-kickoff":
@@ -84,21 +78,17 @@ export default function AssistantPage() {
         return [
           "Where is Lift West elevator?",
           "Locate Row F in Sec 112",
-          "Water station locations"
+          "Water station locations",
         ];
       case "halftime":
-        return [
-          "El Tri Tacos wait times",
-          "Restrooms with step-free lock",
-          "Eco poncho stations"
-        ];
+        return ["El Tri Tacos wait times", "Restrooms with step-free lock", "Eco poncho stations"];
       case "full-time":
       case "exit":
       case "post-match":
         return [
           "Manhattan shuttle delay",
           "Meadowlands Platform 3 rail schedule",
-          "Lost & Found dispatcher"
+          "Lost & Found dispatcher",
         ];
       default:
         return ["Route to Seat 112", "Quiet zones location", "Translate Japanese"];
@@ -108,7 +98,7 @@ export default function AssistantPage() {
   // Generate initial contextual greeting based on active role, phase, and persona
   useEffect(() => {
     let initialGreeting = "";
-    
+
     if (selectedLanguage === "es") {
       initialGreeting = `[CONCIERGE]: ¡Hola! Bienvenido a StadiumPulse AI. Hemos ajustado su asistencia en base al perfil de [${activePersona.label}]. ¿Cómo puedo apoyarle hoy?`;
     } else if (selectedLanguage === "ja") {
@@ -121,17 +111,14 @@ Preferred tone: ${activePersona.tone.toUpperCase()}.
 Ask me anything about stroller access, restrooms queues, or transit routes.`;
     }
 
-    setMessages([
-      { role: "model", text: initialGreeting }
-    ]);
+    setMessages([{ role: "model", text: initialGreeting }]);
 
     // Update in-memory user preferences when persona is updated
     JourneyMemoryService.updateMemory({
       preferredLanguage: selectedLanguage,
       accessibilityEnabled: selectedPersona === "wheelchair" || selectedPersona === "family",
-      transportMode: selectedPersona === "tourist" ? "rail" : "shuttle"
+      transportMode: selectedPersona === "tourist" ? "rail" : "shuttle",
     });
-
   }, [activePersona.label, activePersona.tone, selectedLanguage, currentPhase, selectedPersona]);
 
   // Scroll to bottom of chat
@@ -143,7 +130,7 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
 
   const handleSend = async (text: string) => {
     if (!text.trim()) return;
-    
+
     // Append User Message
     const userMsg: ChatMessage = { role: "user", text };
     setMessages((prev) => [...prev, userMsg]);
@@ -153,12 +140,22 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
     // Formulate human context models
     const humanContextData = {
       language: selectedLanguage,
-      mobility: selectedPersona === "wheelchair" ? ("wheelchair" as const) : selectedPersona === "senior" ? ("limited" as const) : ("standard" as const),
+      mobility:
+        selectedPersona === "wheelchair"
+          ? ("wheelchair" as const)
+          : selectedPersona === "senior"
+            ? ("limited" as const)
+            : ("standard" as const),
       companions: selectedPersona === "family" ? "Family with 2 children" : "Single attendee",
       favoriteTeam: "Argentina",
       stressLevel: activeEmergency ? ("high" as const) : ("calm" as const),
-      journeyStage: currentPhase === "arrival" ? ("ingress" as const) : currentPhase === "exit" ? ("egress" as const) : ("seated" as const),
-      preferences: activePersona.priorityPreferences
+      journeyStage:
+        currentPhase === "arrival"
+          ? ("ingress" as const)
+          : currentPhase === "exit"
+            ? ("egress" as const)
+            : ("seated" as const),
+      preferences: activePersona.priorityPreferences,
     };
 
     // Build context parameters object
@@ -179,13 +176,13 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
       activeEmergency,
       // Human-centric parameters
       persona: activePersona,
-      humanContext: humanContextData
+      humanContext: humanContextData,
     };
 
     try {
       // Execute response generation using our new Gemini Context Engine Wrapper!
       const replyText = await GeminiWrapperService.generateContextReply(text, contextData);
-      
+
       // Save interaction in memory
       JourneyMemoryService.addInteraction(text, replyText);
 
@@ -200,9 +197,11 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
   const handleTranslatePhrase = (phrase: string, targetLang: string) => {
     let translated = phrase;
     if (phrase.includes("help") && targetLang === "es") {
-      translated = "Necesito ayuda médica urgente en el sector 112. (I need urgent medical help in sector 112).";
+      translated =
+        "Necesito ayuda médica urgente en el sector 112. (I need urgent medical help in sector 112).";
     } else if (phrase.includes("minor") && targetLang === "es") {
-      translated = "Tengo un menor separado cerca de las concesiones. (I have a separated minor near the concessions).";
+      translated =
+        "Tengo un menor separado cerca de las concesiones. (I have a separated minor near the concessions).";
     } else if (phrase.includes("restroom") && targetLang === "ja") {
       translated = "車椅子用のトイレはどこですか？ (Where is the wheelchair restroom?)";
     } else if (phrase.includes("gate") && targetLang === "fr") {
@@ -212,14 +211,18 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
     setMessages((prev) => [
       ...prev,
       { role: "user", text: `Translate: "${phrase}"` },
-      { role: "model", text: `TRANSLATED PHRASEBOOK:\n${translated}` }
+      { role: "model", text: `TRANSLATED PHRASEBOOK:\n${translated}` },
     ]);
   };
 
   const activePills = getSuggestedPrompts(currentPhase);
-  
+
   // Query recommendations lists dynamically from engine
-  const recommendations = RecommendationEngine.getRecommendations(currentPhase, activeEmergency, domeStatus);
+  const recommendations = RecommendationEngine.getRecommendations(
+    currentPhase,
+    activeEmergency,
+    domeStatus
+  );
 
   // Poll Proactive Smart Assistance opportunites list
   const proAssistAlerts = SmartAssistanceService.detectOpportunities(
@@ -234,17 +237,21 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
   const sizeClasses = {
     normal: "text-sm",
     large: "text-base",
-    "x-large": "text-lg"
+    "x-large": "text-lg",
   };
 
   return (
-    <div className={`grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-140px)] font-sans ${
-      highContrastMode ? "contrast-125" : ""
-    } ${sizeClasses[fontSize]}`}>
-      
+    <div
+      className={`grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-140px)] font-sans ${
+        highContrastMode ? "contrast-125" : ""
+      } ${sizeClasses[fontSize]}`}
+    >
       {/* 1. Main Chat Terminal Panel (8 Columns) */}
       <div className="lg:col-span-8 flex flex-col h-full">
-        <Card variant="glass" className="flex-grow flex flex-col p-0 overflow-hidden relative border-neutral-800 bg-neutral-950/60 backdrop-blur-xl">
+        <Card
+          variant="glass"
+          className="flex-grow flex flex-col p-0 overflow-hidden relative border-neutral-800 bg-neutral-950/60 backdrop-blur-xl"
+        >
           {/* Header Controls Bar */}
           <div className="border-b border-neutral-900 bg-neutral-950/40 px-5 py-4 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
@@ -259,7 +266,9 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-cyber-green"></span>
                   </span>
                 </h3>
-                <p className="text-[10px] text-neutral-400 capitalize">Empathetic World Cup Companion</p>
+                <p className="text-[10px] text-neutral-400 capitalize">
+                  Empathetic World Cup Companion
+                </p>
               </div>
             </div>
 
@@ -287,7 +296,9 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
               <button
                 onClick={() => setHighContrast(!highContrastMode)}
                 className={`p-2 rounded-xl border transition-colors ${
-                  highContrastMode ? "bg-white text-black border-white" : "border-neutral-800 text-neutral-400 hover:text-white"
+                  highContrastMode
+                    ? "bg-white text-black border-white"
+                    : "border-neutral-800 text-neutral-400 hover:text-white"
                 }`}
                 aria-label="Toggle High Contrast Mode"
                 title="Toggle High Contrast"
@@ -297,7 +308,11 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
 
               {/* FontSize Toggle */}
               <button
-                onClick={() => setFontSize(fontSize === "normal" ? "large" : fontSize === "large" ? "x-large" : "normal")}
+                onClick={() =>
+                  setFontSize(
+                    fontSize === "normal" ? "large" : fontSize === "large" ? "x-large" : "normal"
+                  )
+                }
                 className="p-2 rounded-xl border border-neutral-800 text-neutral-400 hover:text-white flex items-center gap-1"
                 aria-label="Toggle Font Size"
                 title="Toggle Font Size"
@@ -310,7 +325,9 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
               <button
                 onClick={() => setWheelchairRerouting(!wheelchairRerouting)}
                 className={`p-2 rounded-xl border transition-colors ${
-                  wheelchairRerouting ? "bg-purple-900 border-purple-800 text-white" : "border-neutral-800 text-neutral-400 hover:text-white"
+                  wheelchairRerouting
+                    ? "bg-purple-900 border-purple-800 text-white"
+                    : "border-neutral-800 text-neutral-400 hover:text-white"
                 }`}
                 aria-label="Toggle Wheelchair Routing"
                 title="Toggle Wheelchair Routing"
@@ -355,20 +372,37 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
             {messages.map((msg, idx) => {
               const isModel = msg.role === "model";
               return (
-                <div key={idx} className={`flex items-start gap-3.5 ${isModel ? "" : "flex-row-reverse"}`}>
+                <div
+                  key={idx}
+                  className={`flex items-start gap-3.5 ${isModel ? "" : "flex-row-reverse"}`}
+                >
                   <div className="flex h-8 w-8 rounded-full overflow-hidden border border-neutral-800/80 flex-shrink-0">
                     {isModel ? (
-                      <Image src="/images/tourist_avatar.jpg" alt="AI Concierge" width={32} height={32} className="h-full w-full object-cover" />
+                      <Image
+                        src="/images/tourist_avatar.jpg"
+                        alt="AI Concierge"
+                        width={32}
+                        height={32}
+                        className="h-full w-full object-cover"
+                      />
                     ) : (
-                      <Image src="/images/family_avatar.jpg" alt="User Avatar" width={32} height={32} className="h-full w-full object-cover" />
+                      <Image
+                        src="/images/family_avatar.jpg"
+                        alt="User Avatar"
+                        width={32}
+                        height={32}
+                        className="h-full w-full object-cover"
+                      />
                     )}
                   </div>
 
-                  <div className={`max-w-md p-4 rounded-2xl leading-relaxed text-left ${
-                    isModel
-                      ? "bg-neutral-900/60 border border-neutral-800/80 text-neutral-200"
-                      : "bg-cyan-950/60 border border-cyan-850/80 text-white"
-                  }`}>
+                  <div
+                    className={`max-w-md p-4 rounded-2xl leading-relaxed text-left ${
+                      isModel
+                        ? "bg-neutral-900/60 border border-neutral-800/80 text-neutral-200"
+                        : "bg-cyan-950/60 border border-cyan-850/80 text-white"
+                    }`}
+                  >
                     <p className="whitespace-pre-line">{msg.text}</p>
                   </div>
                 </div>
@@ -378,7 +412,13 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
             {isTyping && (
               <div className="flex items-start gap-3.5">
                 <div className="flex h-8 w-8 rounded-full overflow-hidden border border-neutral-800/80 flex-shrink-0">
-                  <Image src="/images/tourist_avatar.jpg" alt="AI Concierge" width={32} height={32} className="h-full w-full object-cover" />
+                  <Image
+                    src="/images/tourist_avatar.jpg"
+                    alt="AI Concierge"
+                    width={32}
+                    height={32}
+                    className="h-full w-full object-cover"
+                  />
                 </div>
                 <div className="max-w-md w-full p-4 rounded-2xl bg-neutral-900/40 border border-neutral-800/40">
                   <AIShimmer />
@@ -424,8 +464,8 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
             >
               <Mic className="h-4 w-4" />
             </Button>
-            <Button 
-              variant="primary" 
+            <Button
+              variant="primary"
               onClick={() => handleSend(inputValue)}
               className="px-5 py-3 font-bold"
               aria-label="Send message"
@@ -438,9 +478,11 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
 
       {/* 2. Side Panel: Contextual Recommendations & Phrasebooks (4 Columns) */}
       <div className="lg:col-span-4 flex flex-col gap-6 h-full overflow-y-auto">
-        
         {/* Recommendation Checklist Feed */}
-        <Card variant="glass" className="text-left border-neutral-800 bg-neutral-950/60 backdrop-blur-xl">
+        <Card
+          variant="glass"
+          className="text-left border-neutral-800 bg-neutral-950/60 backdrop-blur-xl"
+        >
           <CardHeader>
             <div className="flex items-center gap-1.5 text-cyber-green font-bold text-xs uppercase tracking-wider font-display">
               <Sparkles className="h-4 w-4 animate-pulse" />
@@ -453,10 +495,19 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
           </CardHeader>
           <CardContent className="flex flex-col gap-2.5">
             {recommendations.map((rec, idx) => (
-              <div key={idx} className="p-3 rounded-xl border border-neutral-900 bg-neutral-950/40 text-xs text-neutral-200 leading-normal flex items-start gap-2 relative overflow-hidden">
-                <div className={`absolute left-0 top-0 w-1 h-full ${
-                  rec.includes("WEATHER") ? "bg-sky-400" : rec.includes("CRITICAL") ? "bg-rose-500" : "bg-cyber-green"
-                }`} />
+              <div
+                key={idx}
+                className="p-3 rounded-xl border border-neutral-900 bg-neutral-950/40 text-xs text-neutral-200 leading-normal flex items-start gap-2 relative overflow-hidden"
+              >
+                <div
+                  className={`absolute left-0 top-0 w-1 h-full ${
+                    rec.includes("WEATHER")
+                      ? "bg-sky-400"
+                      : rec.includes("CRITICAL")
+                        ? "bg-rose-500"
+                        : "bg-cyber-green"
+                  }`}
+                />
                 <span>{rec}</span>
               </div>
             ))}
@@ -464,7 +515,10 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
         </Card>
 
         {/* Translation Emergency Phrasebook */}
-        <Card variant="glass" className="text-left border-neutral-800 bg-neutral-950/60 backdrop-blur-xl">
+        <Card
+          variant="glass"
+          className="text-left border-neutral-800 bg-neutral-950/60 backdrop-blur-xl"
+        >
           <CardHeader>
             <div className="flex items-center gap-1.5 text-victory-gold font-bold text-xs uppercase tracking-wider font-display">
               <Languages className="h-4 w-4" />
@@ -474,40 +528,57 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
           </CardHeader>
           <CardContent className="flex flex-col gap-2">
             <button
-              onClick={() => handleTranslatePhrase("I need urgent medical help in sector 112", "es")}
+              onClick={() =>
+                handleTranslatePhrase("I need urgent medical help in sector 112", "es")
+              }
               className="w-full text-left p-2.5 rounded-lg border border-neutral-900 bg-neutral-900/40 hover:bg-neutral-900/60 transition-colors text-[11px]"
             >
-              <div className="font-semibold text-neutral-300">&quot;I need medical help&quot; to Spanish</div>
-              <div className="text-[10px] text-neutral-500">Volunteers first response translation</div>
+              <div className="font-semibold text-neutral-300">
+                &quot;I need medical help&quot; to Spanish
+              </div>
+              <div className="text-[10px] text-neutral-500">
+                Volunteers first response translation
+              </div>
             </button>
 
             <button
-              onClick={() => handleTranslatePhrase("I have a separated minor near the concessions", "es")}
+              onClick={() =>
+                handleTranslatePhrase("I have a separated minor near the concessions", "es")
+              }
               className="w-full text-left p-2.5 rounded-lg border border-neutral-900 bg-neutral-900/40 hover:bg-neutral-900/60 transition-colors text-[11px]"
             >
-              <div className="font-semibold text-neutral-300">&quot;I have a separated minor&quot; to Spanish</div>
-              <div className="text-[10px] text-neutral-500">Lost child perimeter protocol dispatch</div>
+              <div className="font-semibold text-neutral-300">
+                &quot;I have a separated minor&quot; to Spanish
+              </div>
+              <div className="text-[10px] text-neutral-500">
+                Lost child perimeter protocol dispatch
+              </div>
             </button>
 
             <button
               onClick={() => handleTranslatePhrase("Where is the wheelchair restroom?", "ja")}
               className="w-full text-left p-2.5 rounded-lg border border-neutral-900 bg-neutral-900/40 hover:bg-neutral-900/60 transition-colors text-[11px]"
             >
-              <div className="font-semibold text-neutral-300">&quot;Where is wheelchair restroom?&quot; to Japanese</div>
-              <div className="text-[10px] text-neutral-500">Accessible restroom wayfinding guide</div>
+              <div className="font-semibold text-neutral-300">
+                &quot;Where is wheelchair restroom?&quot; to Japanese
+              </div>
+              <div className="text-[10px] text-neutral-500">
+                Accessible restroom wayfinding guide
+              </div>
             </button>
 
             <button
               onClick={() => handleTranslatePhrase("Where is exit gate A?", "fr")}
               className="w-full text-left p-2.5 rounded-lg border border-neutral-900 bg-neutral-900/40 hover:bg-neutral-900/60 transition-colors text-[11px]"
             >
-              <div className="font-semibold text-neutral-300">&quot;Where is exit gate A?&quot; to French</div>
+              <div className="font-semibold text-neutral-300">
+                &quot;Where is exit gate A?&quot; to French
+              </div>
               <div className="text-[10px] text-neutral-500">Transit egress directions guide</div>
             </button>
           </CardContent>
         </Card>
       </div>
-
     </div>
   );
 }

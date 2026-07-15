@@ -13,7 +13,7 @@ export function Card({
   ...props
 }: CardProps) {
   const baseStyles = "rounded-2xl border p-5 overflow-hidden relative";
-  
+
   const variants = {
     default: "bg-neutral-900 border-neutral-800 text-white",
     glass: "glass-panel text-white",
@@ -25,10 +25,7 @@ export function Card({
     : "";
 
   return (
-    <div
-      className={`${baseStyles} ${variants[variant]} ${hoverStyles} ${className}`}
-      {...props}
-    >
+    <div className={`${baseStyles} ${variants[variant]} ${hoverStyles} ${className}`} {...props}>
       {variant === "glowing" && (
         <div className="absolute top-0 right-0 w-24 h-24 bg-cyber-green/5 rounded-full blur-2xl pointer-events-none" />
       )}

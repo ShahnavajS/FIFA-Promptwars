@@ -8,9 +8,7 @@ describe("AssistantPage Component", () => {
     render(<AssistantPage />);
 
     expect(screen.getByText("StadiumPulse Concierge")).toBeInTheDocument();
-    expect(
-      screen.getByPlaceholderText(/ask your tournament companion/i)
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/ask your tournament companion/i)).toBeInTheDocument();
   });
 
   test("renders quick suggested prompts pills", () => {
@@ -19,13 +17,16 @@ describe("AssistantPage Component", () => {
     expect(screen.getByText("Route to Gate A (Step-Free)")).toBeInTheDocument();
   });
 
-  test("clicking a suggested prompt updates messages feed", () => {
+  test("clicking a suggested prompt updates messages feed", async () => {
     render(<AssistantPage />);
 
     const promptBtn = screen.getByText("Route to Gate A (Step-Free)");
     fireEvent.click(promptBtn);
 
-    const bubbles = screen.getAllByText("Route to Gate A (Step-Free)");
+    const bubbles = await screen.findAllByText("Route to Gate A (Step-Free)");
     expect(bubbles.length).toBeGreaterThan(0);
+
+    // Wait for the async model response to render, preventing act warning
+    await screen.findByText(/STADIUM PULSE COMPANION/i);
   });
 });

@@ -17,27 +17,27 @@ import { AIReasoningTimeline } from "@/components/ui/reasoning-timeline";
 import { AgentCollaboration } from "@/components/ui/agent-collaboration";
 import { MatchMemory } from "@/components/ui/match-memory";
 import { PredictiveCrowdService } from "@/services/predictive-crowd.service";
-import { 
-  mockConcessions, 
-  mockGates, 
-  mockIncidents, 
-  mockTransportOptions, 
+import {
+  mockConcessions,
+  mockGates,
+  mockIncidents,
+  mockTransportOptions,
   ConcessionState,
   GateState,
   Incident,
-  TransportOption
+  TransportOption,
 } from "@/lib/demo";
-import { 
-  MapPin, 
-  Users, 
-  Accessibility, 
-  Flame, 
-  Bus, 
-  Utensils, 
-  Activity, 
+import {
+  MapPin,
+  Users,
+  Accessibility,
+  Flame,
+  Bus,
+  Utensils,
+  Activity,
   ShieldAlert,
   Ticket,
-  Clock
+  Clock,
 } from "lucide-react";
 
 const NODES = {
@@ -45,24 +45,63 @@ const NODES = {
   start_north: { id: "start_north", x: 50, y: 8, label: "Transit Hub North", isAccessible: true },
   gate_a: { id: "gate_a", x: 18, y: 50, label: "Gate A (Stairs)", isAccessible: false },
   gate_b: { id: "gate_b", x: 82, y: 50, label: "Gate B (Stairs)", isAccessible: false },
-  gate_a_north: { id: "gate_a_north", x: 30, y: 15, label: "Gate A North (Accessible Ramp)", isAccessible: true },
-  elevator_west: { id: "elevator_west", x: 32, y: 50, label: "Elevator West Core", isAccessible: true },
-  elevator_east: { id: "elevator_east", x: 68, y: 50, label: "Elevator East Core", isAccessible: true },
+  gate_a_north: {
+    id: "gate_a_north",
+    x: 30,
+    y: 15,
+    label: "Gate A North (Accessible Ramp)",
+    isAccessible: true,
+  },
+  elevator_west: {
+    id: "elevator_west",
+    x: 32,
+    y: 50,
+    label: "Elevator West Core",
+    isAccessible: true,
+  },
+  elevator_east: {
+    id: "elevator_east",
+    x: 68,
+    y: 50,
+    label: "Elevator East Core",
+    isAccessible: true,
+  },
   seating_112: { id: "seating_112", x: 44, y: 64, label: "Seat Sector 112", isAccessible: true },
-  restroom_112: { id: "restroom_112", x: 34, y: 72, label: "Restroom Sector 112 (Stairs)", isAccessible: false },
-  restroom_accessible: { id: "restroom_accessible", x: 34, y: 28, label: "Accessible Restroom Sector 103", isAccessible: true }
+  restroom_112: {
+    id: "restroom_112",
+    x: 34,
+    y: 72,
+    label: "Restroom Sector 112 (Stairs)",
+    isAccessible: false,
+  },
+  restroom_accessible: {
+    id: "restroom_accessible",
+    x: 34,
+    y: 28,
+    label: "Accessible Restroom Sector 103",
+    isAccessible: true,
+  },
 };
 
-const EDGES = [
+type NodeId = keyof typeof NODES;
+
+interface Edge {
+  from: NodeId;
+  to: NodeId;
+  cost: number;
+  isAccessible: boolean;
+}
+
+const EDGES: Edge[] = [
   // South transit leads to Gate A, Gate B, or Elevator East
   { from: "start_south", to: "gate_a", cost: 40, isAccessible: false },
   { from: "start_south", to: "gate_b", cost: 40, isAccessible: false },
   { from: "start_south", to: "elevator_east", cost: 50, isAccessible: true },
-  
+
   // North transit leads to Gate A North or Gate A
   { from: "start_north", to: "gate_a_north", cost: 20, isAccessible: true },
   { from: "start_north", to: "gate_a", cost: 40, isAccessible: false },
-  
+
   // Gates connections to concourse elevator cores
   { from: "gate_a", to: "elevator_west", cost: 20, isAccessible: true },
   { from: "gate_b", to: "elevator_east", cost: 20, isAccessible: true },
@@ -74,18 +113,20 @@ const EDGES = [
   { from: "elevator_west", to: "restroom_accessible", cost: 30, isAccessible: true },
 
   // Elevator east leads to seating bowl
-  { from: "elevator_east", to: "seating_112", cost: 30, isAccessible: true }
+  { from: "elevator_east", to: "seating_112", cost: 30, isAccessible: true },
 ];
 
-function findShortestPath(startId: string, endId: string, wheelchairOnly: boolean) {
-  const queue: { node: string; path: string[]; cost: number }[] = [{ node: startId, path: [startId], cost: 0 }];
-  const visited = new Set<string>();
-  let shortest: { path: string[]; cost: number } | null = null;
+function findShortestPath(startId: NodeId, endId: NodeId, wheelchairOnly: boolean) {
+  const queue: { node: NodeId; path: NodeId[]; cost: number }[] = [
+    { node: startId, path: [startId], cost: 0 },
+  ];
+  const visited = new Set<NodeId>();
+  let shortest: { path: NodeId[]; cost: number } | null = null;
 
   while (queue.length > 0) {
     queue.sort((a, b) => a.cost - b.cost);
     const curr = queue.shift()!;
-    
+
     if (curr.node === endId) {
       if (!shortest || curr.cost < shortest.cost) {
         shortest = curr;
@@ -96,7 +137,7 @@ function findShortestPath(startId: string, endId: string, wheelchairOnly: boolea
     if (visited.has(curr.node)) continue;
     visited.add(curr.node);
 
-    const outgoing = EDGES.filter(e => {
+    const outgoing = EDGES.filter((e) => {
       const match = e.from === curr.node || e.to === curr.node;
       const accessibleOk = !wheelchairOnly || e.isAccessible;
       return match && accessibleOk;
@@ -108,13 +149,13 @@ function findShortestPath(startId: string, endId: string, wheelchairOnly: boolea
         queue.push({
           node: neighbor,
           path: [...curr.path, neighbor],
-          cost: curr.cost + edge.cost
+          cost: curr.cost + edge.cost,
         });
       }
     }
   }
 
-  return shortest ? shortest.path.map(id => NODES[id as keyof typeof NODES]) : [];
+  return shortest ? shortest.path.map((id) => NODES[id]) : [];
 }
 
 export default function DigitalTwinPage() {
@@ -135,7 +176,10 @@ export default function DigitalTwinPage() {
     const updated = { ...layers, [layerKey]: !layers[layerKey] };
     setLayers(updated);
     TelemetryPublisher.publish("MAP_LAYER_TOGGLED", { layer: layerKey, active: updated[layerKey] });
-    addToast(`${layerKey.toUpperCase()} map layer toggled ${updated[layerKey] ? "ON" : "OFF"}`, "info");
+    addToast(
+      `${layerKey.toUpperCase()} map layer toggled ${updated[layerKey] ? "ON" : "OFF"}`,
+      "info"
+    );
   };
 
   // Adjust layer defaults automatically depending on match lifecycle phase
@@ -175,20 +219,20 @@ export default function DigitalTwinPage() {
   );
 
   const isPredictiveAlertActive = forecast.safetyOverflowTimeMins < 10;
-  const isGoalSurge = currentPhase === "full-time" || (currentPhase === "kickoff" && crowdDensityMultiplier > 1.3);
+  const isGoalSurge =
+    currentPhase === "full-time" || (currentPhase === "kickoff" && crowdDensityMultiplier > 1.3);
 
   // Dynamic Journey Path Calculation
-  const startNode = currentPhase === "arrival" || currentPhase === "gate-entry" ? "start_south" : "start_north";
-  const endNode = currentPhase === "halftime" ? "restroom_accessible" : "seating_112";
+  const startNode: NodeId =
+    currentPhase === "arrival" || currentPhase === "gate-entry" ? "start_south" : "start_north";
+  const endNode: NodeId = currentPhase === "halftime" ? "restroom_accessible" : "seating_112";
   const computedPath = findShortestPath(startNode, endNode, wheelchairRerouting);
-  
-  const pathD = computedPath.length > 1 
-    ? `M ${computedPath.map(n => `${n.x} ${n.y}`).join(" L ")}`
-    : "";
+
+  const pathD =
+    computedPath.length > 1 ? `M ${computedPath.map((n) => `${n.x} ${n.y}`).join(" L ")}` : "";
 
   return (
     <div className="flex flex-col gap-6 font-sans pb-10">
-      
       {/* 1. Live Stadium Hero Status (Top Header Widget) */}
       <StadiumHero />
 
@@ -200,7 +244,6 @@ export default function DigitalTwinPage() {
 
       {/* 4. Main Work Cockpit Area (12 Columns) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        
         {/* Left Side: Journey Planner (3 Columns) */}
         <div className="lg:col-span-3">
           <JourneyPlanner />
@@ -208,7 +251,10 @@ export default function DigitalTwinPage() {
 
         {/* Center: Digital Twin SVG Map Blueprint (6 Columns) */}
         <div className="lg:col-span-6 flex flex-col">
-          <Card variant="glass" className="flex-grow flex flex-col p-0 overflow-hidden relative min-h-[460px] border-neutral-800 bg-neutral-950/60 backdrop-blur-xl">
+          <Card
+            variant="glass"
+            className="flex-grow flex flex-col p-0 overflow-hidden relative min-h-[460px] border-neutral-800 bg-neutral-950/60 backdrop-blur-xl"
+          >
             {/* Header Status Overlays */}
             <div className="absolute top-4 left-4 z-10 flex items-center gap-2 p-2 bg-neutral-950/80 backdrop-blur-md border border-neutral-800 rounded-xl text-xs text-white font-semibold shadow-lg">
               <MapPin className="h-4 w-4 text-cyber-green animate-pulse" />
@@ -262,23 +308,64 @@ export default function DigitalTwinPage() {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 {/* Stadium Perimeter */}
-                <ellipse cx="50" cy="50" rx="46" ry="38" fill="none" stroke="currentColor" strokeWidth="1" />
-                <ellipse cx="50" cy="50" rx="42" ry="34" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2 2" />
+                <ellipse
+                  cx="50"
+                  cy="50"
+                  rx="46"
+                  ry="38"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                />
+                <ellipse
+                  cx="50"
+                  cy="50"
+                  rx="42"
+                  ry="34"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="0.5"
+                  strokeDasharray="2 2"
+                />
 
                 {/* Seating Bowls */}
-                <ellipse cx="50" cy="50" rx="32" ry="24" fill="none" stroke="currentColor" strokeWidth="1" />
-                <ellipse cx="50" cy="50" rx="26" ry="18" fill="none" stroke="currentColor" strokeWidth="0.5" />
+                <ellipse
+                  cx="50"
+                  cy="50"
+                  rx="32"
+                  ry="24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                />
+                <ellipse
+                  cx="50"
+                  cy="50"
+                  rx="26"
+                  ry="18"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="0.5"
+                />
 
                 {/* Central Football Pitch */}
-                <rect 
-                  x="36" 
-                  y="38" 
-                  width="28" 
-                  height="24" 
-                  fill={["kickoff", "second-half"].includes(currentPhase) ? "rgba(0, 230, 118, 0.08)" : "rgba(0, 230, 118, 0.03)"} 
-                  stroke={["kickoff", "second-half"].includes(currentPhase) ? "#00e676" : "currentColor"} 
-                  strokeWidth="0.75" 
-                  className={["kickoff", "second-half"].includes(currentPhase) ? "animate-pulse" : ""}
+                <rect
+                  x="36"
+                  y="38"
+                  width="28"
+                  height="24"
+                  fill={
+                    ["kickoff", "second-half"].includes(currentPhase)
+                      ? "rgba(0, 230, 118, 0.08)"
+                      : "rgba(0, 230, 118, 0.03)"
+                  }
+                  stroke={
+                    ["kickoff", "second-half"].includes(currentPhase) ? "#00e676" : "currentColor"
+                  }
+                  strokeWidth="0.75"
+                  className={
+                    ["kickoff", "second-half"].includes(currentPhase) ? "animate-pulse" : ""
+                  }
                 />
                 <circle cx="50" cy="50" r="4" fill="none" stroke="currentColor" strokeWidth="0.5" />
                 <line x1="50" y1="38" x2="50" y2="62" stroke="currentColor" strokeWidth="0.5" />
@@ -318,27 +405,46 @@ export default function DigitalTwinPage() {
 
                 {/* Security Perimeter highlight */}
                 {layers.crowd && currentPhase === "security" && (
-                  <ellipse cx="50" cy="50" rx="44" ry="36" fill="none" stroke="#ea580c" strokeWidth="2" strokeDasharray="3 3" opacity="0.6" className="animate-pulse" />
+                  <ellipse
+                    cx="50"
+                    cy="50"
+                    rx="44"
+                    ry="36"
+                    fill="none"
+                    stroke="#ea580c"
+                    strokeWidth="2"
+                    strokeDasharray="3 3"
+                    opacity="0.6"
+                    className="animate-pulse"
+                  />
                 )}
 
                 {/* Gate Entry Warning & Rerouting Arrow */}
                 {(currentPhase === "gate-entry" || isPredictiveAlertActive) && (
                   <g>
                     {/* Gate B Congestion Alert (Flashes Red if predictive alert triggers) */}
-                    <circle 
-                      cx="86" 
-                      cy="50" 
-                      r={isPredictiveAlertActive ? 9 * crowdDensityMultiplier : 6 * crowdDensityMultiplier} 
-                      fill="rgba(255, 23, 68, 0.15)" 
-                      className="animate-pulse" 
+                    <circle
+                      cx="86"
+                      cy="50"
+                      r={
+                        isPredictiveAlertActive
+                          ? 9 * crowdDensityMultiplier
+                          : 6 * crowdDensityMultiplier
+                      }
+                      fill="rgba(255, 23, 68, 0.15)"
+                      className="animate-pulse"
                     />
-                    <circle 
-                      cx="86" 
-                      cy="50" 
-                      r={isPredictiveAlertActive ? 4 * crowdDensityMultiplier : 3 * crowdDensityMultiplier} 
-                      fill="#ff1744" 
+                    <circle
+                      cx="86"
+                      cy="50"
+                      r={
+                        isPredictiveAlertActive
+                          ? 4 * crowdDensityMultiplier
+                          : 3 * crowdDensityMultiplier
+                      }
+                      fill="#ff1744"
                     />
-                    
+
                     {/* Ingress direction arrows to Gate A */}
                     <path
                       d="M 80 50 A 30 22 0 0 0 54 13"
@@ -357,7 +463,7 @@ export default function DigitalTwinPage() {
                   <g>
                     <circle cx="34" cy="28" r="2" fill="#f59e0b" className="animate-ping" />
                     <circle cx="34" cy="28" r="1.5" fill="#f59e0b" />
-                    
+
                     <circle cx="66" cy="28" r="2" fill="#f59e0b" className="animate-ping" />
                     <circle cx="66" cy="28" r="1.5" fill="#f59e0b" />
 
@@ -368,14 +474,40 @@ export default function DigitalTwinPage() {
 
                 {/* Ingress Seating Glow */}
                 {currentPhase === "find-seat" && (
-                  <ellipse cx="50" cy="50" rx="29" ry="21" fill="none" stroke="#00e5ff" strokeWidth="2" opacity="0.5" className="animate-pulse" />
+                  <ellipse
+                    cx="50"
+                    cy="50"
+                    rx="29"
+                    ry="21"
+                    fill="none"
+                    stroke="#00e5ff"
+                    strokeWidth="2"
+                    opacity="0.5"
+                    className="animate-pulse"
+                  />
                 )}
 
                 {/* Emergency evacuation vectors */}
                 {opsStatus === "critical" && (
                   <g>
-                    <line x1="50" y1="26" x2="50" y2="4" stroke="#dc2626" strokeWidth="2" strokeDasharray="2 2" />
-                    <line x1="26" y1="50" x2="6" y2="50" stroke="#dc2626" strokeWidth="2" strokeDasharray="2 2" />
+                    <line
+                      x1="50"
+                      y1="26"
+                      x2="50"
+                      y2="4"
+                      stroke="#dc2626"
+                      strokeWidth="2"
+                      strokeDasharray="2 2"
+                    />
+                    <line
+                      x1="26"
+                      y1="50"
+                      x2="6"
+                      y2="50"
+                      stroke="#dc2626"
+                      strokeWidth="2"
+                      strokeDasharray="2 2"
+                    />
                     <circle cx="26" cy="50" r="3" fill="#dc2626" className="animate-ping" />
                   </g>
                 )}
@@ -413,7 +545,9 @@ export default function DigitalTwinPage() {
                         cy={node.y}
                         r={idx === 0 || idx === computedPath.length - 1 ? 2.5 : 1.5}
                         fill={wheelchairRerouting ? "#e9d5ff" : "#e0f2fe"}
-                        className={idx === 0 || idx === computedPath.length - 1 ? "animate-ping" : ""}
+                        className={
+                          idx === 0 || idx === computedPath.length - 1 ? "animate-ping" : ""
+                        }
                       />
                     ))}
                   </g>
@@ -434,7 +568,6 @@ export default function DigitalTwinPage() {
 
         {/* Right Side: Role Widgets & Activity Feed (3 Columns) */}
         <div className="lg:col-span-3 flex flex-col gap-6">
-          
           {/* Fan Widget */}
           {currentRole === "fan" && (
             <Card variant="glass" className="text-left border-cyber-green/20 glow-green">
@@ -448,9 +581,15 @@ export default function DigitalTwinPage() {
               <CardContent className="flex flex-col gap-3.5">
                 <div className="p-3.5 rounded-xl border border-neutral-800 bg-neutral-950/60 font-mono text-center relative overflow-hidden">
                   <div className="absolute top-0 left-0 w-1.5 h-full bg-cyber-green" />
-                  <div className="text-[9px] text-neutral-500 font-bold uppercase tracking-wider">Ticket Code</div>
-                  <div className="text-base font-bold text-white tracking-widest my-1">TKT-128456-M89D</div>
-                  <div className="text-[10px] text-cyber-green font-semibold">GATE A · SEC 112 · ROW F · SEAT 12</div>
+                  <div className="text-[9px] text-neutral-500 font-bold uppercase tracking-wider">
+                    Ticket Code
+                  </div>
+                  <div className="text-base font-bold text-white tracking-widest my-1">
+                    TKT-128456-M89D
+                  </div>
+                  <div className="text-[10px] text-cyber-green font-semibold">
+                    GATE A · SEC 112 · ROW F · SEAT 12
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -460,9 +599,14 @@ export default function DigitalTwinPage() {
                   </div>
                   <div className="flex flex-col gap-1.5">
                     {mockConcessions.slice(0, 3).map((c: ConcessionState) => (
-                      <div key={c.id} className="flex items-center justify-between p-2 rounded-lg bg-neutral-900/40 border border-neutral-800 text-[11px]">
+                      <div
+                        key={c.id}
+                        className="flex items-center justify-between p-2 rounded-lg bg-neutral-900/40 border border-neutral-800 text-[11px]"
+                      >
                         <span className="font-semibold text-neutral-200">{c.name}</span>
-                        <span className={`font-bold ${c.crowdLevel === "high" ? "text-rose-400" : "text-cyber-green"}`}>
+                        <span
+                          className={`font-bold ${c.crowdLevel === "high" ? "text-rose-400" : "text-cyber-green"}`}
+                        >
                           {Math.round(c.waitTimeMinutes * crowdDensityMultiplier)} min queue
                         </span>
                       </div>
@@ -489,18 +633,27 @@ export default function DigitalTwinPage() {
                     const queueCount = Math.round(g.currentQueueCount * crowdDensityMultiplier);
                     const waitTime = Math.round(g.waitTimeMinutes * crowdDensityMultiplier);
                     const status = waitTime > 15 ? "congested" : "open";
-                    
+
                     return (
-                      <div key={g.id} className="p-2.5 rounded-xl border border-neutral-800 bg-neutral-900/40 flex flex-col gap-1 text-[11px]">
+                      <div
+                        key={g.id}
+                        className="p-2.5 rounded-xl border border-neutral-800 bg-neutral-900/40 flex flex-col gap-1 text-[11px]"
+                      >
                         <div className="flex items-center justify-between font-semibold">
                           <span className="text-neutral-200">{g.name}</span>
-                          <span className={status === "congested" ? "text-rose-400 font-bold" : "text-cyber-green font-bold"}>
+                          <span
+                            className={
+                              status === "congested"
+                                ? "text-rose-400 font-bold"
+                                : "text-cyber-green font-bold"
+                            }
+                          >
                             {waitTime}m wait
                           </span>
                         </div>
                         <div className="w-full bg-neutral-950 h-1 rounded-full overflow-hidden">
-                          <div 
-                            className={`h-full ${status === "congested" ? "bg-rose-500" : "bg-cyber-green"}`} 
+                          <div
+                            className={`h-full ${status === "congested" ? "bg-rose-500" : "bg-cyber-green"}`}
                             style={{ width: `${Math.min((queueCount / 1000) * 100, 100)}%` }}
                           />
                         </div>
@@ -527,16 +680,25 @@ export default function DigitalTwinPage() {
               </CardHeader>
               <CardContent className="flex flex-col gap-2.5">
                 {mockIncidents.map((inc: Incident) => (
-                  <div key={inc.id} className="p-2.5 rounded-xl border border-neutral-900 bg-neutral-900/40 flex flex-col gap-1 text-[11px]">
+                  <div
+                    key={inc.id}
+                    className="p-2.5 rounded-xl border border-neutral-900 bg-neutral-900/40 flex flex-col gap-1 text-[11px]"
+                  >
                     <div className="flex items-center justify-between font-bold">
                       <span className="text-white">{inc.title}</span>
-                      <span className={`text-[9px] uppercase px-1.5 py-0.5 rounded-md ${
-                        inc.severity === "high" ? "bg-rose-950 text-rose-400 border border-rose-900" : "bg-amber-950 text-amber-400 border border-amber-900"
-                      }`}>
+                      <span
+                        className={`text-[9px] uppercase px-1.5 py-0.5 rounded-md ${
+                          inc.severity === "high"
+                            ? "bg-rose-950 text-rose-400 border border-rose-900"
+                            : "bg-amber-950 text-amber-400 border border-amber-900"
+                        }`}
+                      >
                         {inc.severity}
                       </span>
                     </div>
-                    <p className="text-neutral-400 text-[10px] leading-relaxed">{inc.description}</p>
+                    <p className="text-neutral-400 text-[10px] leading-relaxed">
+                      {inc.description}
+                    </p>
                     <div className="flex items-center justify-between text-[9px] text-neutral-500 pt-1 border-t border-neutral-800/40">
                       <span>{inc.location}</span>
                       <span className="capitalize text-cyan-400 font-semibold">{inc.status}</span>
@@ -559,14 +721,19 @@ export default function DigitalTwinPage() {
               </CardHeader>
               <CardContent className="flex flex-col gap-2.5">
                 {mockTransportOptions.map((t: TransportOption) => (
-                  <div key={t.id} className="p-2.5 rounded-xl border border-neutral-800 bg-neutral-900/40 flex flex-col gap-1 text-[11px]">
+                  <div
+                    key={t.id}
+                    className="p-2.5 rounded-xl border border-neutral-800 bg-neutral-900/40 flex flex-col gap-1 text-[11px]"
+                  >
                     <div className="flex items-center justify-between font-semibold">
                       <span className="text-white">{t.name}</span>
-                      <span className={`px-1.5 py-0.5 rounded-md text-[9px] uppercase font-bold ${
-                        t.status === "on-time" 
-                          ? "bg-emerald-950 text-emerald-400 border border-emerald-900" 
-                          : "bg-rose-950 text-rose-400 border border-rose-900"
-                      }`}>
+                      <span
+                        className={`px-1.5 py-0.5 rounded-md text-[9px] uppercase font-bold ${
+                          t.status === "on-time"
+                            ? "bg-emerald-950 text-emerald-400 border border-emerald-900"
+                            : "bg-rose-950 text-rose-400 border border-rose-900"
+                        }`}
+                      >
                         {t.status}
                       </span>
                     </div>
@@ -583,7 +750,6 @@ export default function DigitalTwinPage() {
           {/* Operations Activity Feed */}
           <ActivityFeed />
         </div>
-
       </div>
 
       {/* 5. AI Reasoning Pipeline & Agent Collaboration Grid (Connected Subsystems) - Professional View */}
@@ -603,17 +769,21 @@ export default function DigitalTwinPage() {
 
       {/* 7. Goal Celebration Overlays */}
       {isGoalSurge && (
-        <div role="region" aria-live="polite" className="fixed inset-0 pointer-events-none z-50 overflow-hidden flex items-center justify-center bg-victory-gold/5 animate-pulse">
+        <div
+          role="region"
+          aria-live="polite"
+          className="fixed inset-0 pointer-events-none z-50 overflow-hidden flex items-center justify-center bg-victory-gold/5 animate-pulse"
+        >
           {/* Sparkles particle stream */}
           <div className="absolute inset-0 flex justify-around">
             {[...Array(20)].map((_, i) => (
-              <div 
-                key={i} 
-                className="w-2 h-2 bg-victory-gold rounded-full opacity-60 animate-bounce" 
-                style={{ 
-                  animationDelay: `${i * 0.15}s`, 
-                  animationDuration: `${1.2 + (i % 3) * 0.4}s` 
-                }} 
+              <div
+                key={i}
+                className="w-2 h-2 bg-victory-gold rounded-full opacity-60 animate-bounce"
+                style={{
+                  animationDelay: `${i * 0.15}s`,
+                  animationDuration: `${1.2 + (i % 3) * 0.4}s`,
+                }}
               />
             ))}
           </div>
@@ -625,7 +795,6 @@ export default function DigitalTwinPage() {
 
       {/* Floatable Dev Cockpit Control Panel */}
       <DemoControl />
-      
     </div>
   );
 }

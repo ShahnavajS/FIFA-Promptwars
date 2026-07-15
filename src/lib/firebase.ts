@@ -1,6 +1,10 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from "firebase/firestore";
+import {
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+} from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getAnalytics, isSupported } from "firebase/analytics";
 import { env } from "@/config/env";
@@ -27,8 +31,9 @@ const db = initializeFirestore(app, {
 
 const storage = getStorage(app);
 
-const analytics = typeof window !== "undefined"
-  ? isSupported().then((supported) => (supported ? getAnalytics(app) : null))
-  : Promise.resolve(null);
+const analytics =
+  typeof window !== "undefined"
+    ? isSupported().then((supported) => (supported ? getAnalytics(app) : null))
+    : Promise.resolve(null);
 
 export { app, auth, db, storage, analytics };

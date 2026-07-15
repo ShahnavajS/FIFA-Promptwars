@@ -32,13 +32,13 @@ export function LivingBackground() {
         x: Math.random() * width,
         y: Math.random() * 0.15 * height + 0.05 * height, // Top road strip
         speed: Math.random() * 0.5 + 0.2,
-        lane: 0
+        lane: 0,
       });
       traffic.push({
         x: Math.random() * width,
         y: Math.random() * 0.15 * height + 0.8 * height, // Bottom road strip
         speed: Math.random() * 0.5 + 0.2,
-        lane: 1
+        lane: 1,
       });
     }
 
@@ -162,7 +162,7 @@ export function LivingBackground() {
         flashes.push({
           x: centerStadium.x + Math.cos(angle) * radius,
           y: centerStadium.y + Math.sin(angle) * radius,
-          age: 0
+          age: 0,
         });
       }
 
@@ -195,7 +195,10 @@ export function LivingBackground() {
     <div className="fixed inset-0 -z-20 pointer-events-none">
       {/* Ambient slowly moving radial aurora gradients */}
       <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] rounded-full bg-cyan-950/10 blur-[130px] animate-pulse-slow pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-victory-gold/5 blur-[120px] animate-pulse-slow pointer-events-none" style={{ animationDelay: "3s" }} />
+      <div
+        className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-victory-gold/5 blur-[120px] animate-pulse-slow pointer-events-none"
+        style={{ animationDelay: "3s" }}
+      />
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-70" />
     </div>
   );

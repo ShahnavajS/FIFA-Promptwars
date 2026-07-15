@@ -3,14 +3,14 @@
 @theme {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
-  
+
   --color-obsidian: #0b0c10;
   --color-cyber-green: #00e676;
   --color-electric-cyan: #00e5ff;
   --color-pulsing-coral: #ff1744;
   --color-dark-glass: rgba(11, 12, 16, 0.6);
   --color-card-border: rgba(255, 255, 255, 0.08);
-  
+
   /* Semantic Tokens for Phase 2 */
   --color-stadium-blue: #0284c7;
   --color-victory-gold: #f59e0b;
@@ -26,13 +26,24 @@
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 @keyframes radar {
-  0% { transform: scale(0.95); opacity: 0.8; }
-  100% { transform: scale(2.2); opacity: 0; }
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
 }
 
 :root {
@@ -48,7 +59,9 @@
 body {
   background-color: var(--background);
   color: var(--foreground);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 ::-webkit-scrollbar {

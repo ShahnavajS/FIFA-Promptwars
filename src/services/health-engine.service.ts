@@ -42,7 +42,7 @@ export class StadiumHealthEngineService {
       pulse -= 35;
       stability -= 25;
       confidence -= 6;
-      
+
       if (emergency.includes("LOST CHILD")) {
         recovery = 60;
         forecast = "Lost child search grid Sector 110 active. Turnstiles frozen.";
@@ -72,7 +72,7 @@ export class StadiumHealthEngineService {
       operationalStability: Math.max(5, stability),
       recoveryIndex: Math.max(5, recovery),
       aiConfidence: Math.max(50, confidence),
-      forecast
+      forecast,
     };
   }
 }

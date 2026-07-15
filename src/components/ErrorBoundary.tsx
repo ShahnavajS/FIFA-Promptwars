@@ -31,7 +31,7 @@ export class ErrorBoundary extends Component<Props, State> {
       return (
         <main className="flex min-h-screen flex-col items-center justify-center bg-neutral-950 p-6 text-center select-none font-sans">
           <div className="absolute top-1/4 left-1/2 -z-10 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-rose-500/10 blur-3xl" />
-          
+
           <div className="max-w-md w-full border border-neutral-800 bg-neutral-900/60 backdrop-blur-xl p-8 rounded-2xl shadow-xl flex flex-col items-center gap-6">
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-rose-500/15 border border-rose-500/20 text-rose-500">
               <AlertTriangle className="h-8 w-8" />
@@ -42,7 +42,8 @@ export class ErrorBoundary extends Component<Props, State> {
                 Something went wrong
               </h1>
               <p className="text-sm text-neutral-400">
-                An unexpected interface rendering crash occurred. Our operations logging hub has registered the incident.
+                An unexpected interface rendering crash occurred. Our operations logging hub has
+                registered the incident.
               </p>
             </div>
 

@@ -21,27 +21,29 @@ export class PredictiveCrowdService {
       return {
         bottlenecks: [
           `EVACUATION CONGESTION: Egress pathways towards Gate A are saturated due to [${activeEmergency}].`,
-          "MEDICAL ROADBLOCK: Emergency lane Sector 112 blocked by fan movement."
+          "MEDICAL ROADBLOCK: Emergency lane Sector 112 blocked by fan movement.",
         ],
         queueMinutesGrowth: 0,
         safetyOverflowTimeMins: 0,
-        exitBottleneckScore: 95
+        exitBottleneckScore: 95,
       };
     }
 
     // 2. Ingress Phase Inflow Forecast
     if (phase === "gate-entry" || phase === "security") {
       const isCritical = densityMultiplier >= 1.5;
-      const overflowTime = isCritical ? Math.round(8 / densityMultiplier) : Math.round(18 / densityMultiplier);
-      
+      const overflowTime = isCritical
+        ? Math.round(8 / densityMultiplier)
+        : Math.round(18 / densityMultiplier);
+
       return {
         bottlenecks: [
           "Gate B turnstiles queue growth exceeding threshold limits.",
-          "North perimeter bag scanning lanes backing up."
+          "North perimeter bag scanning lanes backing up.",
         ],
         queueMinutesGrowth: Math.round(6 * densityMultiplier),
         safetyOverflowTimeMins: Math.max(1, overflowTime),
-        exitBottleneckScore: 10
+        exitBottleneckScore: 10,
       };
     }
 
@@ -50,11 +52,11 @@ export class PredictiveCrowdService {
       return {
         bottlenecks: [
           "Sector 112 restroom queue exceeding target duration by 18%.",
-          "Sector 115 Maple Bites beverage line clearance rate dropping."
+          "Sector 115 Maple Bites beverage line clearance rate dropping.",
         ],
         queueMinutesGrowth: Math.round(4 * densityMultiplier),
         safetyOverflowTimeMins: Math.round(15 / densityMultiplier),
-        exitBottleneckScore: 20
+        exitBottleneckScore: 20,
       };
     }
 
@@ -64,11 +66,11 @@ export class PredictiveCrowdService {
       return {
         bottlenecks: [
           "Meadowlands rail express Platform 3 boarding density high.",
-          "Rideshare Zone 1 pick-up queues surge."
+          "Rideshare Zone 1 pick-up queues surge.",
         ],
         queueMinutesGrowth: 0,
         safetyOverflowTimeMins: 999,
-        exitBottleneckScore: score
+        exitBottleneckScore: score,
       };
     }
 
@@ -77,7 +79,7 @@ export class PredictiveCrowdService {
       bottlenecks: [],
       queueMinutesGrowth: 0,
       safetyOverflowTimeMins: 999,
-      exitBottleneckScore: 0
+      exitBottleneckScore: 0,
     };
   }
 }

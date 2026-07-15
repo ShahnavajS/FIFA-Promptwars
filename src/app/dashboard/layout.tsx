@@ -8,20 +8,20 @@ import { useToastStore } from "@/stores/useToastStore";
 import { TelemetryPublisher } from "@/lib/event-bus/event.publisher";
 import { UserRole } from "@/domain/user.entity";
 import { Button } from "@/components/ui/button";
-import { 
-  LayoutDashboard, 
-  Bot, 
-  Menu, 
-  X, 
-  Wifi, 
-  WifiOff, 
+import {
+  LayoutDashboard,
+  Bot,
+  Menu,
+  X,
+  Wifi,
+  WifiOff,
   CloudSun,
   ShieldAlert,
   User,
   ChevronDown,
   Activity,
   Cloud,
-  History
+  History,
 } from "lucide-react";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -40,7 +40,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const navItems = [
     { name: "Digital Twin Map", href: "/dashboard", icon: <LayoutDashboard className="h-4 w-4" /> },
     { name: "AI Concierge", href: "/dashboard/assistant", icon: <Bot className="h-4 w-4" /> },
-    { name: "GCP Architecture", href: "/dashboard/architecture", icon: <Cloud className="h-4 w-4" /> },
+    {
+      name: "GCP Architecture",
+      href: "/dashboard/architecture",
+      icon: <Cloud className="h-4 w-4" />,
+    },
     { name: "Replay Cockpit", href: "/dashboard/replay", icon: <History className="h-4 w-4" /> },
   ];
 
@@ -124,7 +128,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     }`}
                   >
                     {r} View
-                    {currentRole === r && <div className="h-1.5 w-1.5 rounded-full bg-cyber-green" />}
+                    {currentRole === r && (
+                      <div className="h-1.5 w-1.5 rounded-full bg-cyber-green" />
+                    )}
                   </button>
                 ))}
               </div>
@@ -166,15 +172,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               SOS Dispatcher
             </div>
             <p className="text-[10px] text-neutral-400 leading-normal">
-              Direct connection to medical & safety hubs. In case of evacuation or medical alerts, tap the alert button.
+              Direct connection to medical & safety hubs. In case of evacuation or medical alerts,
+              tap the alert button.
             </p>
             <Button
               variant="danger"
               size="sm"
               className="w-full font-bold uppercase tracking-wider py-2 rounded-xl glow-red"
               onClick={() => {
-                TelemetryPublisher.publish("EMERGENCY_ALARM_TRIGGERED", { location: "Current GPS Location" });
-                addToast("Emergency Alert Broadcasted to Stadium security commanders!", "error", 6000);
+                TelemetryPublisher.publish("EMERGENCY_ALARM_TRIGGERED", {
+                  location: "Current GPS Location",
+                });
+                addToast(
+                  "Emergency Alert Broadcasted to Stadium security commanders!",
+                  "error",
+                  6000
+                );
               }}
             >
               Broadcast Alert
@@ -189,7 +202,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           />
         )}
 
-        <main className={`flex-grow overflow-y-auto p-6 transition-all duration-300 border-t-2 ${roleGlows[currentRole]}`}>
+        <main
+          className={`flex-grow overflow-y-auto p-6 transition-all duration-300 border-t-2 ${roleGlows[currentRole]}`}
+        >
           {children}
         </main>
       </div>

@@ -11,7 +11,7 @@ interface UiState {
   highContrastMode: boolean;
   voiceNavigation: boolean;
   wheelchairRerouting: boolean;
-  
+
   // Actions
   setRole: (role: UserRole) => void;
   setActiveTab: (tab: "home" | "map" | "bridge" | "sos") => void;

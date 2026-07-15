@@ -8,10 +8,7 @@ export class UserRepository extends BaseRepository<UserProfile> {
   }
 
   async getProfileByEmail(email: string): Promise<UserProfile | null> {
-    const results = await this.query([
-      where("email", "==", email),
-      limit(1)
-    ]);
+    const results = await this.query([where("email", "==", email), limit(1)]);
     return results[0] || null;
   }
 }

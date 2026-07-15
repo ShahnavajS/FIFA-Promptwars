@@ -17,7 +17,7 @@ export function PwaProvider({ children }: { children: React.ReactNode }) {
           .register("/sw.js")
           .then((registration) => {
             console.log("PWA Service Worker registered with scope: ", registration.scope);
-            
+
             registration.onupdatefound = () => {
               const installingWorker = registration.installing;
               if (installingWorker) {

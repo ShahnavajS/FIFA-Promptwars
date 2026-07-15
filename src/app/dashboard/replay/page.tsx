@@ -8,10 +8,10 @@ import { AILearningEngine } from "@/components/ui/learning-engine";
 import { OperationalInsights } from "@/components/ui/operational-insights";
 import { BigQueryAuditor } from "@/components/ui/bigquery-auditor";
 import { useToastStore } from "@/stores/useToastStore";
-import { 
-  Play, 
-  Pause, 
-  SkipForward, 
+import {
+  Play,
+  Pause,
+  SkipForward,
   RotateCcw,
   Activity,
   Cpu,
@@ -19,7 +19,7 @@ import {
   MapPin,
   CloudSun,
   Sparkles,
-  Loader2
+  Loader2,
 } from "lucide-react";
 
 export default function ReplayPage() {
@@ -60,14 +60,15 @@ export default function ReplayPage() {
       setSteps(generated);
       setCurrentTick(0);
       addToast("Dynamic simulation timeline loaded successfully!", "success");
-    } catch (error) {
+    } catch {
       addToast("Failed to generate dynamic simulation", "error");
     } finally {
       setIsSimulating(false);
     }
   };
 
-  const activeStep: ReplayStep = steps[Math.max(0, Math.min(currentTick, steps.length - 1))] || steps[0];
+  const activeStep: ReplayStep =
+    steps[Math.max(0, Math.min(currentTick, steps.length - 1))] || steps[0];
 
   // Map layer toggles depending on active step settings
   const hasTransit = ["arrival", "exit", "post-match"].includes(activeStep.phase);
@@ -76,18 +77,23 @@ export default function ReplayPage() {
 
   return (
     <div className="flex flex-col gap-6 text-left font-sans pb-10">
-      
       {/* 1. Header Hero Panel */}
-      <Card variant="glass" className="border-neutral-800 bg-neutral-950/60 backdrop-blur-xl relative overflow-hidden">
+      <Card
+        variant="glass"
+        className="border-neutral-800 bg-neutral-950/60 backdrop-blur-xl relative overflow-hidden"
+      >
         <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <div className="flex items-center gap-1.5 text-victory-gold font-bold text-xs uppercase tracking-wider font-display">
               <Activity className="h-4 w-4 text-rose-500 animate-pulse" />
               Tournament Replay Center
             </div>
-            <CardTitle className="text-white text-2xl font-bold">Interactive Command Center Replay</CardTitle>
+            <CardTitle className="text-white text-2xl font-bold">
+              Interactive Command Center Replay
+            </CardTitle>
             <CardDescription className="text-neutral-400 text-xs">
-              Scrub or auto-play historical tournament records to audit cognitive AI decisions, map sensors, and agent logs.
+              Scrub or auto-play historical tournament records to audit cognitive AI decisions, map
+              sensors, and agent logs.
             </CardDescription>
           </div>
 
@@ -99,10 +105,14 @@ export default function ReplayPage() {
               onClick={() => setIsPlaying(!isPlaying)}
               className="text-xs py-1.5 bg-neutral-900 border-neutral-800 text-white font-bold gap-1"
             >
-              {isPlaying ? <Pause className="h-3.5 w-3.5 text-amber-400" /> : <Play className="h-3.5 w-3.5 text-cyber-green fill-current" />}
+              {isPlaying ? (
+                <Pause className="h-3.5 w-3.5 text-amber-400" />
+              ) : (
+                <Play className="h-3.5 w-3.5 text-cyber-green fill-current" />
+              )}
               <span>{isPlaying ? "Pause" : "Auto Play"}</span>
             </Button>
-            
+
             <Button
               variant="glass"
               size="sm"
@@ -133,7 +143,10 @@ export default function ReplayPage() {
           <div className="space-y-2">
             <div className="flex justify-between text-[10px] text-neutral-400 font-bold uppercase tracking-wider font-mono">
               <span>Timeline Ticks (Scrub Slider)</span>
-              <span className="text-white font-sans">Tick {currentTick} of {steps.length - 1} · Stage: {activeStep.label} ({activeStep.time})</span>
+              <span className="text-white font-sans">
+                Tick {currentTick} of {steps.length - 1} · Stage: {activeStep.label} (
+                {activeStep.time})
+              </span>
             </div>
             <input
               type="range"
@@ -156,7 +169,10 @@ export default function ReplayPage() {
       </Card>
 
       {/* Generative AI Scenario Sandbox */}
-      <Card variant="glass" className="border-neutral-800 bg-neutral-950/60 backdrop-blur-xl relative overflow-hidden">
+      <Card
+        variant="glass"
+        className="border-neutral-800 bg-neutral-950/60 backdrop-blur-xl relative overflow-hidden"
+      >
         <CardHeader className="pb-3 border-b border-neutral-900">
           <div className="flex items-center gap-2">
             <div className="p-1.5 rounded-lg bg-victory-gold/10 border border-victory-gold/20 text-victory-gold">
@@ -165,7 +181,8 @@ export default function ReplayPage() {
             <div>
               <CardTitle className="text-white text-base">Generative AI Scenario Sandbox</CardTitle>
               <CardDescription className="text-neutral-400 text-xs">
-                Select parameters to dynamically reconstruct the tournament SRE logs and recommendations using Gemini.
+                Select parameters to dynamically reconstruct the tournament SRE logs and
+                recommendations using Gemini.
               </CardDescription>
             </div>
           </div>
@@ -173,7 +190,9 @@ export default function ReplayPage() {
         <CardContent className="pt-4 grid grid-cols-1 md:grid-cols-4 gap-4 items-end text-xs">
           {/* Preset Selector */}
           <div className="flex flex-col gap-1.5 text-left">
-            <label className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider font-mono">Operations Preset</label>
+            <label className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider font-mono">
+              Operations Preset
+            </label>
             <select
               value={preset}
               onChange={(e) => setPreset(e.target.value)}
@@ -188,7 +207,9 @@ export default function ReplayPage() {
 
           {/* Attendance Selector */}
           <div className="flex flex-col gap-1.5 text-left">
-            <label className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider font-mono">Attendance Load</label>
+            <label className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider font-mono">
+              Attendance Load
+            </label>
             <select
               value={attendance}
               onChange={(e) => setAttendance(e.target.value)}
@@ -202,7 +223,9 @@ export default function ReplayPage() {
 
           {/* Weather Selector */}
           <div className="flex flex-col gap-1.5 text-left">
-            <label className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider font-mono">Weather Condition</label>
+            <label className="text-[10px] text-neutral-400 font-bold uppercase tracking-wider font-mono">
+              Weather Condition
+            </label>
             <select
               value={weather}
               onChange={(e) => setWeather(e.target.value)}
@@ -233,10 +256,12 @@ export default function ReplayPage() {
 
       {/* 2. Synchronized Workspace (SVG Map & Cognitive Brain) */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        
         {/* Left Side: SVG Digital Twin map (6 Columns) */}
         <div className="lg:col-span-6 flex flex-col">
-          <Card variant="glass" className="flex-grow flex flex-col p-0 overflow-hidden relative border-neutral-800 bg-neutral-950/60 backdrop-blur-xl min-h-[380px]">
+          <Card
+            variant="glass"
+            className="flex-grow flex flex-col p-0 overflow-hidden relative border-neutral-800 bg-neutral-950/60 backdrop-blur-xl min-h-[380px]"
+          >
             <div className="absolute top-4 left-4 z-10 flex items-center gap-2 p-2 bg-neutral-950/80 border border-neutral-800 rounded-xl text-xs text-white font-semibold shadow-lg">
               <MapPin className="h-4 w-4 text-cyber-green animate-pulse" />
               <span>Map Replay · {activeStep.label}</span>
@@ -255,19 +280,48 @@ export default function ReplayPage() {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 {/* Stadium Outer Bowl */}
-                <ellipse cx="50" cy="50" rx="46" ry="38" fill="none" stroke="currentColor" strokeWidth="1" />
-                <ellipse cx="50" cy="50" rx="42" ry="34" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2 2" />
-                <ellipse cx="50" cy="50" rx="32" ry="24" fill="none" stroke="currentColor" strokeWidth="1" />
+                <ellipse
+                  cx="50"
+                  cy="50"
+                  rx="46"
+                  ry="38"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                />
+                <ellipse
+                  cx="50"
+                  cy="50"
+                  rx="42"
+                  ry="34"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="0.5"
+                  strokeDasharray="2 2"
+                />
+                <ellipse
+                  cx="50"
+                  cy="50"
+                  rx="32"
+                  ry="24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1"
+                />
 
                 {/* Central Field */}
-                <rect 
-                  x="36" 
-                  y="38" 
-                  width="28" 
-                  height="24" 
-                  fill={activeStep.phase === "kickoff" ? "rgba(0, 230, 118, 0.06)" : "rgba(0, 230, 118, 0.02)"} 
-                  stroke={activeStep.phase === "kickoff" ? "#00e676" : "currentColor"} 
-                  strokeWidth="0.75" 
+                <rect
+                  x="36"
+                  y="38"
+                  width="28"
+                  height="24"
+                  fill={
+                    activeStep.phase === "kickoff"
+                      ? "rgba(0, 230, 118, 0.06)"
+                      : "rgba(0, 230, 118, 0.02)"
+                  }
+                  stroke={activeStep.phase === "kickoff" ? "#00e676" : "currentColor"}
+                  strokeWidth="0.75"
                 />
                 <circle cx="50" cy="50" r="4" fill="none" stroke="currentColor" strokeWidth="0.5" />
 
@@ -276,33 +330,82 @@ export default function ReplayPage() {
                 {/* Transit Platform Loops */}
                 {hasTransit && (
                   <g>
-                    <path d="M 50 1 L 50 12" fill="none" stroke="#06b6d4" strokeWidth="2" strokeDasharray="2 2" className="animate-[dash_2s_linear_infinite]" />
-                    <path d="M 50 99 L 50 88" fill="none" stroke="#06b6d4" strokeWidth="2" strokeDasharray="2 2" className="animate-[dash_2s_linear_infinite]" />
+                    <path
+                      d="M 50 1 L 50 12"
+                      fill="none"
+                      stroke="#06b6d4"
+                      strokeWidth="2"
+                      strokeDasharray="2 2"
+                      className="animate-[dash_2s_linear_infinite]"
+                    />
+                    <path
+                      d="M 50 99 L 50 88"
+                      fill="none"
+                      stroke="#06b6d4"
+                      strokeWidth="2"
+                      strokeDasharray="2 2"
+                      className="animate-[dash_2s_linear_infinite]"
+                    />
                   </g>
                 )}
 
                 {/* Gate B Congestion Redirection */}
                 {currentTick === 1 && (
                   <g>
-                    <circle cx="86" cy="50" r="8" fill="rgba(255, 23, 68, 0.2)" className="animate-pulse" />
+                    <circle
+                      cx="86"
+                      cy="50"
+                      r="8"
+                      fill="rgba(255, 23, 68, 0.2)"
+                      className="animate-pulse"
+                    />
                     <circle cx="86" cy="50" r="4.5" fill="#ff1744" />
-                    <path d="M 80 50 A 30 22 0 0 0 54 13" fill="none" stroke="#00e676" strokeWidth="1.5" strokeDasharray="3 3" />
+                    <path
+                      d="M 80 50 A 30 22 0 0 0 54 13"
+                      fill="none"
+                      stroke="#00e676"
+                      strokeWidth="1.5"
+                      strokeDasharray="3 3"
+                    />
                   </g>
                 )}
 
                 {/* Medical Incident */}
                 {currentTick === 3 && (
                   <g>
-                    <circle cx="68" cy="74" r="5" fill="rgba(239, 68, 68, 0.2)" className="animate-ping" />
+                    <circle
+                      cx="68"
+                      cy="74"
+                      r="5"
+                      fill="rgba(239, 68, 68, 0.2)"
+                      className="animate-ping"
+                    />
                     <circle cx="68" cy="74" r="3" fill="#ef4444" />
-                    <line x1="68" y1="74" x2="26" y2="74" stroke="#dc2626" strokeWidth="1.5" strokeDasharray="2 2" />
+                    <line
+                      x1="68"
+                      y1="74"
+                      x2="26"
+                      y2="74"
+                      stroke="#dc2626"
+                      strokeWidth="1.5"
+                      strokeDasharray="2 2"
+                    />
                   </g>
                 )}
 
                 {/* Goal Confetti / Bounce */}
                 {currentTick === 5 && (
                   <g>
-                    <ellipse cx="50" cy="50" rx="30" ry="22" fill="rgba(245, 158, 11, 0.05)" stroke="#f59e0b" strokeWidth="1.5" className="animate-pulse" />
+                    <ellipse
+                      cx="50"
+                      cy="50"
+                      rx="30"
+                      ry="22"
+                      fill="rgba(245, 158, 11, 0.05)"
+                      stroke="#f59e0b"
+                      strokeWidth="1.5"
+                      className="animate-pulse"
+                    />
                     <circle cx="34" cy="28" r="1.5" fill="#f59e0b" className="animate-bounce" />
                     <circle cx="66" cy="28" r="1.5" fill="#f59e0b" className="animate-bounce" />
                   </g>
@@ -322,7 +425,10 @@ export default function ReplayPage() {
 
         {/* Right Side: Synchronized AI Brain & Agent Logs (6 Columns) */}
         <div className="lg:col-span-6 flex flex-col gap-6">
-          <Card variant="glass" className="border-neutral-850 bg-neutral-950/60 backdrop-blur-xl flex-grow flex flex-col justify-between text-xs">
+          <Card
+            variant="glass"
+            className="border-neutral-850 bg-neutral-950/60 backdrop-blur-xl flex-grow flex flex-col justify-between text-xs"
+          >
             <CardHeader className="pb-3 border-b border-neutral-900 flex flex-row items-center justify-between">
               <div className="flex items-center gap-2">
                 <div className="p-2 rounded-xl bg-victory-gold/10 border border-victory-gold/20 text-victory-gold">
@@ -347,13 +453,14 @@ export default function ReplayPage() {
             </CardHeader>
 
             <CardContent className="pt-4 flex flex-col gap-4 text-left leading-relaxed">
-              
               {/* Situation */}
               <div>
                 <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider block mb-1">
                   Replay Situation Analysis
                 </span>
-                <p className="text-white font-medium text-xs">&quot;{activeStep.explanation}&quot;</p>
+                <p className="text-white font-medium text-xs">
+                  &quot;{activeStep.explanation}&quot;
+                </p>
               </div>
 
               {/* Action */}
@@ -361,7 +468,9 @@ export default function ReplayPage() {
                 <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider block mb-1">
                   AI Recommendation Decided
                 </span>
-                <p className="text-victory-gold font-semibold text-xs">&quot;{activeStep.recommendedAction}&quot;</p>
+                <p className="text-victory-gold font-semibold text-xs">
+                  &quot;{activeStep.recommendedAction}&quot;
+                </p>
               </div>
 
               {/* Coordinated Sub-agent message */}
@@ -377,19 +486,23 @@ export default function ReplayPage() {
               {/* Details grid */}
               <div className="grid grid-cols-2 gap-3 pt-3 border-t border-neutral-900/60 text-[10px] text-neutral-400 font-semibold font-mono">
                 <div>
-                  <span className="text-[9px] text-neutral-500 uppercase block font-sans">Active Phase</span>
-                  <span className="text-white capitalize">{activeStep.phase.replace("-", " ")}</span>
+                  <span className="text-[9px] text-neutral-500 uppercase block font-sans">
+                    Active Phase
+                  </span>
+                  <span className="text-white capitalize">
+                    {activeStep.phase.replace("-", " ")}
+                  </span>
                 </div>
                 <div>
-                  <span className="text-[9px] text-neutral-500 uppercase block font-sans">Density Multiplier</span>
+                  <span className="text-[9px] text-neutral-500 uppercase block font-sans">
+                    Density Multiplier
+                  </span>
                   <span className="text-white">{activeStep.density}x</span>
                 </div>
               </div>
-
             </CardContent>
           </Card>
         </div>
-
       </div>
 
       {/* 3. Continuous Learning Engine Loop & Decision History Auditor */}
@@ -400,7 +513,6 @@ export default function ReplayPage() {
 
       {/* 5. BigQuery Telemetry Pipeline Auditor */}
       <BigQueryAuditor />
-
     </div>
   );
 }
