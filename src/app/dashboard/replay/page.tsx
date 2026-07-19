@@ -52,14 +52,28 @@ export default function ReplayPage() {
     setIsPlaying(false);
     addToast("Initializing generative AI simulation...", "info");
     try {
-      const generated = await ReplayService.generateDynamicTimeline({
-        preset,
-        attendance,
-        weather,
+      const response = await fetch("/api/replay", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ preset, attendance, weather }),
       });
-      setSteps(generated);
+      const data = (await response.json()) as {
+        steps?: ReplayStep[];
+        provider?: "gemini" | "local-safety-fallback";
+        error?: string;
+      };
+      if (!response.ok || !data.steps) {
+        throw new Error(data.error || "Replay generation failed.");
+      }
+
+      setSteps(data.steps);
       setCurrentTick(0);
-      addToast("Dynamic simulation timeline loaded successfully!", "success");
+      addToast(
+        data.provider === "gemini"
+          ? "Gemini simulation timeline loaded."
+          : "Local safety simulation loaded; add GEMINI_API_KEY for Gemini output.",
+        "success"
+      );
     } catch {
       addToast("Failed to generate dynamic simulation", "error");
     } finally {
@@ -269,7 +283,7 @@ export default function ReplayPage() {
 
             <div className="absolute top-4 right-4 z-10 flex items-center gap-1.5 px-3 py-1.5 bg-neutral-950/80 border border-neutral-800 rounded-xl text-[10px] text-neutral-400 font-mono font-bold uppercase shadow-lg">
               <CloudSun className="h-4 w-4 text-amber-400" />
-              <span>Dome Status: {activeStep.domeStatus.toUpperCase()}</span>
+              <span>Weather Protocol: {activeStep.domeStatus.toUpperCase()}</span>
             </div>
 
             {/* Interactive SVG Canvas */}

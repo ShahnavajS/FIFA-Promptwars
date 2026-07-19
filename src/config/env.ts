@@ -11,7 +11,6 @@ const envSchema = z.object({
     .min(1, "Firebase Messaging Sender ID is required"),
   NEXT_PUBLIC_FIREBASE_APP_ID: z.string().min(1, "Firebase App ID is required"),
   NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: z.string().optional(),
-  NEXT_PUBLIC_GEMINI_API_KEY: z.string().min(1, "Gemini API Key is required"),
   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: z.string().min(1, "Google Maps API Key is required"),
   NEXT_PUBLIC_BIGQUERY_PROJECT_ID: z.string().optional(),
 });
@@ -25,7 +24,6 @@ const processEnv = {
   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   NEXT_PUBLIC_FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
-  NEXT_PUBLIC_GEMINI_API_KEY: process.env.NEXT_PUBLIC_GEMINI_API_KEY,
   NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
   NEXT_PUBLIC_BIGQUERY_PROJECT_ID: process.env.NEXT_PUBLIC_BIGQUERY_PROJECT_ID,
 };
@@ -41,7 +39,6 @@ const parsedEnv = (() => {
       NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: "mock-sender",
       NEXT_PUBLIC_FIREBASE_APP_ID: "mock-app-id",
       NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: "mock-measurement",
-      NEXT_PUBLIC_GEMINI_API_KEY: "mock-gemini-key",
       NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: "mock-maps-key",
       NEXT_PUBLIC_BIGQUERY_PROJECT_ID: "mock-bq-project",
     };
@@ -65,7 +62,6 @@ const parsedEnv = (() => {
         NEXT_PUBLIC_FIREBASE_APP_ID: processEnv.NEXT_PUBLIC_FIREBASE_APP_ID || "1:1234:web:abcd",
         NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID:
           processEnv.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "G-DEVMEASURE",
-        NEXT_PUBLIC_GEMINI_API_KEY: processEnv.NEXT_PUBLIC_GEMINI_API_KEY || "dev-gemini-api-key",
         NEXT_PUBLIC_GOOGLE_MAPS_API_KEY:
           processEnv.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "dev-maps-api-key",
         NEXT_PUBLIC_BIGQUERY_PROJECT_ID:
@@ -87,7 +83,6 @@ const parsedEnv = (() => {
         NEXT_PUBLIC_FIREBASE_APP_ID: processEnv.NEXT_PUBLIC_FIREBASE_APP_ID || "1:1234:web:abcd",
         NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID:
           processEnv.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || "G-PRODMEASURE",
-        NEXT_PUBLIC_GEMINI_API_KEY: processEnv.NEXT_PUBLIC_GEMINI_API_KEY || "prod-gemini-api-key",
         NEXT_PUBLIC_GOOGLE_MAPS_API_KEY:
           processEnv.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "prod-maps-api-key",
         NEXT_PUBLIC_BIGQUERY_PROJECT_ID:

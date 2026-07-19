@@ -1,6 +1,52 @@
 import { MatchPhase } from "@/stores/useMatchStore";
-import { AIService } from "@/services/ai.service";
-import { env } from "@/config/env";
+import { ReplayRequest } from "@/lib/ai/replay-request";
+import { z } from "zod";
+
+const MATCH_PHASES = [
+  "pre-match",
+  "arrival",
+  "security",
+  "gate-entry",
+  "find-seat",
+  "pre-kickoff",
+  "kickoff",
+  "halftime",
+  "second-half",
+  "full-time",
+  "exit",
+  "post-match",
+] as const;
+
+const REPLAY_PERSONAS = ["fan", "family", "senior", "tourist", "wheelchair", "volunteer"] as const;
+
+const replayStepSchema = z.object({
+  tick: z.number().int().min(0),
+  label: z.string().min(1).max(80),
+  time: z.string().min(1).max(16),
+  phase: z.enum(MATCH_PHASES),
+  density: z.number().min(0).max(3),
+  emergency: z.string().min(1).max(120).nullable(),
+  domeStatus: z.enum(["open", "closed"]),
+  activePersona: z.enum(REPLAY_PERSONAS),
+  explanation: z.string().min(1).max(500),
+  recommendedAction: z.string().min(1).max(500),
+  agentsLog: z.string().min(1).max(500),
+});
+
+const replayTimelineSchema = z
+  .array(replayStepSchema)
+  .length(5)
+  .superRefine((steps, ctx) => {
+    steps.forEach((step, index) => {
+      if (step.tick !== index) {
+        ctx.addIssue({
+          code: "custom",
+          message: `Replay step tick must match its array index (${index}).`,
+          path: [index, "tick"],
+        });
+      }
+    });
+  });
 
 export interface ReplayStep {
   tick: number;
@@ -189,82 +235,39 @@ export class ReplayService {
   ];
 
   public static getReplaySteps(): ReplayStep[] {
-    return this.replaySteps;
+    return this.replaySteps.map((step) => ({ ...step }));
   }
 
   public static getReplayStep(tick: number): ReplayStep {
-    return this.replaySteps[Math.max(0, Math.min(tick, this.replaySteps.length - 1))];
+    return { ...this.replaySteps[Math.max(0, Math.min(tick, this.replaySteps.length - 1))] };
   }
 
   public static getLearningRecords(): LearningRecord[] {
-    return this.learningRecords;
+    return this.learningRecords.map((record) => ({ ...record }));
+  }
+
+  public static parseGeneratedTimeline(rawJsonText: string): ReplayStep[] | null {
+    let cleanedJson = rawJsonText.trim();
+    if (cleanedJson.startsWith("```")) {
+      cleanedJson = cleanedJson
+        .replace(/^```(?:json)?\s*/i, "")
+        .replace(/\s*```$/, "")
+        .trim();
+    }
+
+    try {
+      const parsed = JSON.parse(cleanedJson);
+      const result = replayTimelineSchema.safeParse(parsed);
+      return result.success ? result.data : null;
+    } catch {
+      return null;
+    }
   }
 
   /**
-   * Generates a dynamic 5-tick operations simulation timeline using the Gemini API,
-   * falling back to programmatic generation if no API key is present or if the call fails.
+   * Produces a deterministic scenario when Gemini is not configured or returns invalid data.
    */
-  public static async generateDynamicTimeline(params: {
-    preset: string;
-    attendance: string;
-    weather: string;
-  }): Promise<ReplayStep[]> {
-    const isRealKey =
-      env.NEXT_PUBLIC_GEMINI_API_KEY &&
-      env.NEXT_PUBLIC_GEMINI_API_KEY.startsWith("AIzaSy") &&
-      env.NEXT_PUBLIC_GEMINI_API_KEY.length > 20;
-
-    if (isRealKey) {
-      try {
-        const systemPrompt =
-          "You are a stadium operations simulator for MetLife Arena during FIFA World Cup 2026. " +
-          "Your task is to generate a custom 5-tick operations timeline. " +
-          "You must output ONLY a valid JSON array of exactly 5 ReplayStep objects. " +
-          "Do not include markdown tags, code block wrappers, or explanation comments. " +
-          "Keys for each ReplayStep MUST be exactly:\n" +
-          "- tick: number (0, 1, 2, 3, 4)\n" +
-          "- label: string (concise title, max 30 chars)\n" +
-          "- time: string (hour format like '14:00', '14:30', etc.)\n" +
-          "- phase: string ('arrival' | 'gate-entry' | 'pre-kickoff' | 'kickoff' | 'halftime' | 'second-half' | 'exit' | 'post-match')\n" +
-          "- density: number (density multiplier, e.g. 0.8 to 1.9)\n" +
-          "- emergency: string | null (short description if active, or null)\n" +
-          "- domeStatus: string ('open' | 'closed')\n" +
-          "- activePersona: string ('fan' | 'family' | 'senior' | 'tourist' | 'wheelchair' | 'volunteer')\n" +
-          "- explanation: string (situation details)\n" +
-          "- recommendedAction: string (action recommendation)\n" +
-          "- agentsLog: string (sub-agent dialogue log)\n" +
-          "Incorporate the following parameters into the timeline:\n" +
-          `- Incident Preset Scenario: ${params.preset}\n` +
-          `- Attendance Capacity: ${params.attendance}\n` +
-          `- Weather: ${params.weather}\n` +
-          "Ensure actions align with the ERGP (Explain, Reassure, Guide, Predict) framework.";
-
-        const prompt = `Generate a 5-step simulation timeline for World Cup MetLife operations under: Preset: ${params.preset}, Attendance: ${params.attendance}, Weather: ${params.weather}. Output JSON list only.`;
-
-        const rawJsonText = await AIService.generateText(prompt, systemPrompt);
-
-        // Clean markdown backticks if returned
-        let cleanedJson = rawJsonText.trim();
-        if (cleanedJson.startsWith("```")) {
-          cleanedJson = cleanedJson
-            .replace(/^```(json)?/, "")
-            .replace(/```$/, "")
-            .trim();
-        }
-
-        const parsedSteps = JSON.parse(cleanedJson) as ReplayStep[];
-        if (Array.isArray(parsedSteps) && parsedSteps.length === 5) {
-          return parsedSteps;
-        }
-      } catch (error) {
-        console.warn(
-          "[Gemini Timeline Generator failed, using local programmatic builder]:",
-          error
-        );
-      }
-    }
-
-    // Programmatic Fallback Generator
+  public static generateFallbackTimeline(params: ReplayRequest): ReplayStep[] {
     const steps: ReplayStep[] = [];
     const isStorm =
       params.weather.includes("Rain") || params.preset.toLowerCase().includes("weather");

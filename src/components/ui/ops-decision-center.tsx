@@ -1,12 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useMatchStore } from "@/stores/useMatchStore";
 import { useUiStore } from "@/stores/useUiStore";
+import { useToastStore } from "@/stores/useToastStore";
 import { MultiAgentOrchestrator } from "@/services/multi-agent/orchestrator";
 import { PlaybookService } from "@/services/playbooks/playbook.service";
+import { SustainabilityService } from "@/services/sustainability.service";
 import { TelemetryPublisher } from "@/lib/event-bus/event.publisher";
+import { Button } from "./button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "./card";
 import {
   Activity,
@@ -16,13 +19,18 @@ import {
   CheckSquare,
   Users,
   ArrowRight,
+  CheckCircle2,
+  Clock3,
+  ShieldCheck,
 } from "lucide-react";
 
 export function OpsDecisionCenter() {
-  const { currentPhase, crowdDensityMultiplier, activeEmergency, domeStatus, attendance } =
-    useMatchStore();
+  const { currentPhase, crowdDensityMultiplier, activeEmergency, domeStatus } = useMatchStore();
 
   const { wheelchairRerouting } = useUiStore();
+  const { addToast } = useToastStore();
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [decisionState, setDecisionState] = useState<"pending" | "approved" | "held">("pending");
 
   // 1. Calculate Stadium Health index
   const getStadiumHealth = (): { score: number; color: string; label: string } => {
@@ -65,21 +73,7 @@ export function OpsDecisionCenter() {
   // 3. Resolve active Incident Playbook
   const activePlaybook = activeEmergency ? PlaybookService.getPlaybook(activeEmergency) : null;
 
-  // 5. Calculate Sustainability offsets
-  const getSustainabilityMetrics = () => {
-    // Carbon saved calculations based on attendance and phase
-    const baseSavings = Math.round(attendance * 0.05 * crowdDensityMultiplier);
-    return {
-      transitAdoptionPercentage: Math.min(Math.round(72 * crowdDensityMultiplier), 95),
-      emissionsSavedKg: baseSavings,
-      wasteCapacityPercentage: Math.min(Math.round(38 * crowdDensityMultiplier), 100),
-      waterLoadPercentage: Math.min(Math.round(82 * crowdDensityMultiplier), 100),
-    };
-  };
-
-  const sustainability = getSustainabilityMetrics();
-
-  // 6. Generate Proactive operational narrative
+  // 5. Generate a proactive operational narrative.
   const getProactiveNarrative = () => {
     if (activeEmergency) {
       return {
@@ -131,6 +125,33 @@ export function OpsDecisionCenter() {
   };
 
   const narrative = getProactiveNarrative();
+  const sustainability = SustainabilityService.getRecommendation(
+    currentPhase,
+    crowdDensityMultiplier
+  );
+  const requiresApproval =
+    Boolean(activeEmergency) ||
+    crowdDensityMultiplier >= 1.3 ||
+    currentPhase === "gate-entry" ||
+    currentPhase === "exit";
+
+  const holdDecision = () => {
+    setDecisionState("held");
+    setReviewOpen(false);
+    TelemetryPublisher.publish("OPS_DECISION_HELD", { recommendation: narrative.recommendation });
+    addToast("Decision held. No dispatch was issued.", "warning");
+  };
+
+  const approveDecision = () => {
+    setDecisionState("approved");
+    setReviewOpen(false);
+    TelemetryPublisher.publish("OPS_DECISION_APPROVED", {
+      recommendation: narrative.recommendation,
+      confidence: narrative.confidence,
+      requiresApproval,
+    });
+    addToast("Decision approved and logged in the simulation audit trail.", "success");
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-12 gap-6 text-left font-sans">
@@ -200,29 +221,76 @@ export function OpsDecisionCenter() {
               </div>
             </div>
 
-            {/* Recommended action action banner */}
-            <div className="p-4 rounded-xl border border-cyber-green/20 bg-cyber-green/5 flex items-center justify-between gap-4">
+            {/* Recommended action with an explicit human review checkpoint. */}
+            <div className="p-4 rounded-xl border border-cyber-green/20 bg-cyber-green/5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
                 <div className="text-[9px] text-cyber-green font-bold uppercase tracking-wider mb-0.5">
-                  Recommended Dispatch Command
+                  Recommended Dispatch Command{" "}
+                  {requiresApproval ? "· Approval Required" : "· Review Logged"}
                 </div>
                 <p className="text-white font-semibold text-xs leading-normal">
                   {narrative.recommendation}
                 </p>
+                <p className="mt-1 text-[10px] text-neutral-400">
+                  Sources: simulated gate counters, transit status & accessibility route model ·
+                  Scenario tick: current
+                </p>
               </div>
-              <button
+              <Button
+                variant={decisionState === "approved" ? "secondary" : "primary"}
+                size="sm"
                 onClick={() => {
-                  TelemetryPublisher.publish("CROWD_LEVEL_CHANGED", {
-                    type: "dispatch_action_executed",
+                  TelemetryPublisher.publish("OPS_DECISION_REVIEWED", {
+                    recommendation: narrative.recommendation,
                   });
-                  alert(`Operations dispatch command broadcasted: ${narrative.recommendation}`);
+                  setReviewOpen(true);
                 }}
-                className="px-3.5 py-2 rounded-xl bg-cyber-green hover:bg-cyber-green-hover text-black font-bold flex items-center gap-1.5 transition-colors text-xs"
+                disabled={decisionState === "approved"}
+                className="shrink-0"
               >
-                Execute
-                <ArrowRight className="h-4 w-4" />
-              </button>
+                {decisionState === "approved" ? (
+                  <CheckCircle2 className="h-4 w-4" />
+                ) : (
+                  <ShieldCheck className="h-4 w-4" />
+                )}
+                {decisionState === "approved" ? "Approved" : "Review Decision"}
+              </Button>
             </div>
+
+            {reviewOpen && (
+              <section
+                className="rounded-xl border border-amber-400/30 bg-amber-400/5 p-4"
+                aria-labelledby="decision-review-title"
+                role="alertdialog"
+                aria-modal="false"
+              >
+                <div className="flex items-start gap-3">
+                  <Clock3 className="h-5 w-5 shrink-0 text-amber-400" aria-hidden="true" />
+                  <div className="min-w-0">
+                    <h3 id="decision-review-title" className="text-sm font-bold text-white">
+                      Human Review Checkpoint
+                    </h3>
+                    <p className="mt-1 text-xs text-neutral-300">
+                      Confirm the operational intent, local conditions, and official incident
+                      channel before approving this simulated dispatch.
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-4 flex flex-wrap justify-end gap-2">
+                  <Button variant="ghost" size="sm" onClick={holdDecision}>
+                    Hold Decision
+                  </Button>
+                  <Button variant="primary" size="sm" onClick={approveDecision}>
+                    Approve & Log
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              </section>
+            )}
+
+            <p className="sr-only" aria-live="polite">
+              Decision status: {decisionState}.
+            </p>
           </CardContent>
         </Card>
 
@@ -296,37 +364,37 @@ export function OpsDecisionCenter() {
               <Leaf className="h-4 w-4" />
               Sustainability Intelligence
             </div>
-            <CardTitle className="text-white text-base">Carbon Offsets</CardTitle>
+            <CardTitle className="text-white text-base">Lower-Impact Travel</CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-3 text-xs">
             <div className="p-3 bg-neutral-900/40 border border-neutral-800 rounded-xl">
-              <div className="text-[9px] text-neutral-500 font-bold uppercase">Transit Share</div>
-              <div className="text-base font-bold text-white mt-0.5">
-                {sustainability.transitAdoptionPercentage}%
+              <div className="text-[9px] text-neutral-500 font-bold uppercase">
+                Recommended Mode
               </div>
-              <div className="text-[9px] text-neutral-400">Rail / Shuttle adoption</div>
+              <div className="text-base font-bold text-white mt-0.5">
+                {sustainability.recommendedMode}
+              </div>
+              <div className="text-[9px] text-neutral-400">
+                ~{sustainability.estimatedMinutes} min scenario time
+              </div>
             </div>
 
             <div className="p-3 bg-neutral-900/40 border border-neutral-800 rounded-xl">
-              <div className="text-[9px] text-neutral-500 font-bold uppercase">Carbon Saved</div>
+              <div className="text-[9px] text-neutral-500 font-bold uppercase">Avoided Impact</div>
               <div className="text-base font-bold text-eco-green mt-0.5">
-                {sustainability.emissionsSavedKg} kg
+                {sustainability.estimatedKgCo2eAvoidedPerThousandFans} kg
               </div>
-              <div className="text-[9px] text-neutral-400">CO2 offset vs cars</div>
+              <div className="text-[9px] text-neutral-400">CO2e per 1,000 fans vs rideshare</div>
             </div>
 
-            <div className="p-3 bg-neutral-900/40 border border-neutral-800 rounded-xl">
-              <div className="text-[9px] text-neutral-500 font-bold uppercase">Waste Volume</div>
-              <div className="text-base font-bold text-white mt-0.5">
-                {sustainability.wasteCapacityPercentage}%
+            <div className="col-span-2 p-3 bg-neutral-900/40 border border-neutral-800 rounded-xl">
+              <div className="text-[9px] text-neutral-500 font-bold uppercase">
+                Operations Benefit
               </div>
-              <div className="text-[9px] text-neutral-400">Bin capacity sensors</div>
-            </div>
-
-            <div className="p-3 bg-neutral-900/40 border border-neutral-800 rounded-xl">
-              <div className="text-[9px] text-neutral-500 font-bold uppercase">Recycling Index</div>
-              <div className="text-base font-bold text-eco-green mt-0.5">A+ Rating</div>
-              <div className="text-[9px] text-neutral-400">Concession rating</div>
+              <p className="mt-0.5 text-[11px] text-neutral-200">
+                {sustainability.operationalBenefit}
+              </p>
+              <p className="mt-1 text-[9px] text-neutral-500">{sustainability.dataLabel}</p>
             </div>
           </CardContent>
         </Card>

@@ -20,7 +20,7 @@ describe("Phase 8 Match Day Celebration & Emotional UX Test Suite", () => {
     expect(screen.getByText("Eco Supporter")).toBeInTheDocument();
   });
 
-  test("GeminiWrapperService outputs goal celebration prompts", async () => {
+  test("GeminiWrapperService returns bounded matchday guidance", async () => {
     const reply = await GeminiWrapperService.generateContextReply("Goal scored!", {
       role: "fan",
       phase: "kickoff",
@@ -46,11 +46,11 @@ describe("Phase 8 Match Day Celebration & Emotional UX Test Suite", () => {
       },
     });
 
-    expect(reply).toContain("GOAL SURGE CELEBRATION");
-    expect(reply).toContain("Argentina has scored");
+    expect(reply).toContain("MATCHDAY COMPANION");
+    expect(reply).toContain("crowd movement");
   });
 
-  test("GeminiWrapperService outputs egress farewell thank-yous", async () => {
+  test("GeminiWrapperService returns safe egress guidance", async () => {
     const reply = await GeminiWrapperService.generateContextReply("How do I exit?", {
       role: "fan",
       phase: "exit",
@@ -76,7 +76,7 @@ describe("Phase 8 Match Day Celebration & Emotional UX Test Suite", () => {
       },
     });
 
-    expect(reply).toContain("FAREWELL COMPANION");
-    expect(reply).toContain("Thank you for sharing");
+    expect(reply).toContain("EGRESS COMPANION");
+    expect(reply).toContain("official transit signage");
   });
 });

@@ -119,14 +119,14 @@ export function StadiumHero() {
             <div className="text-[10px] text-neutral-400">Fans inside bowl</div>
           </div>
 
-          {/* Weather / Dome */}
+          {/* Weather protocol */}
           <div className="p-3 rounded-xl border border-neutral-900 bg-neutral-950/40 text-xs">
             <div className="flex items-center gap-1.5 text-neutral-500 font-bold uppercase tracking-wider text-[10px] mb-1 font-display">
               <CloudSun className="h-3.5 w-3.5" />
-              Dome Status
+              Weather Protocol
             </div>
-            <div className="text-base font-bold text-white capitalize">{domeStatus} Roof</div>
-            <div className="text-[10px] text-neutral-400">Solar offsets active</div>
+            <div className="text-base font-bold text-white capitalize">{domeStatus}</div>
+            <div className="text-[10px] text-neutral-400">Scenario weather response</div>
           </div>
 
           {/* Crowd Mood */}

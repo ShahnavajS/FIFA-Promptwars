@@ -52,6 +52,12 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-[#030303] text-neutral-50 flex flex-col font-sans overflow-x-hidden selection:bg-cyber-green selection:text-black relative">
+      <a
+        href="#main-content"
+        className="sr-only fixed left-4 top-4 z-[60] rounded-lg bg-white px-4 py-2 text-sm font-bold text-black focus:not-sr-only focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyber-green"
+      >
+        Skip to main content
+      </a>
       {/* Dynamic Telemetry Particles Background */}
       <LivingBackground />
 
@@ -126,7 +132,7 @@ export default function LandingPage() {
       </header>
 
       {/* 2. Sequential Storyboard sections */}
-      <main className="flex-grow">
+      <main id="main-content" className="flex-grow">
         {/* Section 1: The Awakening */}
         <AwakeningHero onLaunchDemo={startDemo} />
 

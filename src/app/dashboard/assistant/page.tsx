@@ -5,12 +5,10 @@ import Image from "next/image";
 import { useUiStore } from "@/stores/useUiStore";
 import { useToastStore } from "@/stores/useToastStore";
 import { useMatchStore, MatchPhase } from "@/stores/useMatchStore";
-import { GeminiWrapperService } from "@/services/google/gemini.service";
 import { RecommendationEngine } from "@/services/recommendation.service";
 import { PersonaEngine, PersonaType, PersonaConfig } from "@/services/persona.service";
 import { SmartAssistanceService } from "@/services/smart-assistance.service";
 import { JourneyMemoryService } from "@/services/journey-memory.service";
-import { ChatMessage } from "@/services/ai.service";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +24,12 @@ import {
   Accessibility,
   HeartHandshake,
 } from "lucide-react";
+
+interface ChatMessage {
+  role: "user" | "model";
+  text: string;
+  provider?: "gemini" | "local-safety-fallback";
+}
 
 export default function AssistantPage() {
   const {
@@ -48,6 +52,9 @@ export default function AssistantPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [lastResponseProvider, setLastResponseProvider] = useState<
+    "gemini" | "local-safety-fallback" | null
+  >(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Persona State Selector (Default general fan)
@@ -129,7 +136,7 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
   }, [messages, isTyping]);
 
   const handleSend = async (text: string) => {
-    if (!text.trim()) return;
+    if (!text.trim() || isTyping) return;
 
     // Append User Message
     const userMsg: ChatMessage = { role: "user", text };
@@ -180,17 +187,34 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
     };
 
     try {
-      // Execute response generation using our new Gemini Context Engine Wrapper!
-      const replyText = await GeminiWrapperService.generateContextReply(text, contextData);
+      const response = await fetch("/api/assistant", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text, context: contextData }),
+      });
+      const data = (await response.json()) as {
+        text?: string;
+        provider?: "gemini" | "local-safety-fallback";
+        error?: string;
+      };
+      if (!response.ok || !data.text || !data.provider) {
+        throw new Error(data.error || "Assistant generation failed.");
+      }
+      const replyText = data.text;
+      const provider = data.provider;
 
       // Save interaction in memory
       JourneyMemoryService.addInteraction(text, replyText);
 
-      setIsTyping(false);
-      setMessages((prev) => [...prev, { role: "model", text: replyText }]);
+      setLastResponseProvider(provider);
+      setMessages((prev) => [...prev, { role: "model", text: replyText, provider }]);
     } catch {
+      addToast(
+        "The assistant could not respond. Use official venue staff for urgent help.",
+        "error"
+      );
+    } finally {
       setIsTyping(false);
-      addToast("Failed to compile prompt", "error");
     }
   };
 
@@ -268,6 +292,11 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
                 </h3>
                 <p className="text-[10px] text-neutral-400 capitalize">
                   Empathetic World Cup Companion
+                </p>
+                <p className="text-[9px] text-neutral-500" aria-live="polite">
+                  {lastResponseProvider === "gemini"
+                    ? "Gemini response with venue-context guardrails"
+                    : "Demo simulation context; Gemini activates with a server secret"}
                 </p>
               </div>
             </div>
@@ -368,7 +397,12 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
           )}
 
           {/* Message History Feed */}
-          <div className="flex-grow overflow-y-auto p-5 space-y-4 text-sm scrollbar-thin">
+          <div
+            className="flex-grow overflow-y-auto p-5 space-y-4 text-sm scrollbar-thin"
+            role="log"
+            aria-live="polite"
+            aria-label="Concierge conversation"
+          >
             {messages.map((msg, idx) => {
               const isModel = msg.role === "model";
               return (
@@ -404,6 +438,11 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
                     }`}
                   >
                     <p className="whitespace-pre-line">{msg.text}</p>
+                    {isModel && msg.provider && (
+                      <p className="mt-2 text-[9px] font-medium uppercase tracking-wide text-neutral-500">
+                        {msg.provider === "gemini" ? "Gemini generated" : "Local safety fallback"}
+                      </p>
+                    )}
                   </div>
                 </div>
               );
@@ -452,6 +491,10 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
                 onKeyDown={(e) => e.key === "Enter" && handleSend(inputValue)}
                 className="w-full bg-neutral-950 border-neutral-800 text-white"
                 id="ai-chat-input"
+                name="assistant-message"
+                autoComplete="off"
+                maxLength={750}
+                aria-label="Ask the StadiumPulse concierge"
               />
             </div>
             <Button
@@ -467,6 +510,7 @@ Ask me anything about stroller access, restrooms queues, or transit routes.`;
             <Button
               variant="primary"
               onClick={() => handleSend(inputValue)}
+              disabled={isTyping || !inputValue.trim()}
               className="px-5 py-3 font-bold"
               aria-label="Send message"
             >

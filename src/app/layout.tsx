@@ -17,8 +17,6 @@ export const viewport: Viewport = {
   themeColor: "#0B0C10",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 };
 
 export const metadata: Metadata = {
@@ -43,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" style={{ colorScheme: "dark" }}>
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} font-sans bg-neutral-950 text-neutral-50 antialiased overflow-x-hidden`}
       >

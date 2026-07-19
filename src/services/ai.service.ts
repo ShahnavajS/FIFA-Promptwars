@@ -1,5 +1,4 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { env } from "@/config/env";
 
 export interface ChatMessage {
   role: "user" | "model" | "system";
@@ -11,7 +10,12 @@ export class AIService {
 
   private static getClient(): GoogleGenerativeAI {
     if (!this.client) {
-      this.client = new GoogleGenerativeAI(env.NEXT_PUBLIC_GEMINI_API_KEY);
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        throw new Error("GEMINI_API_KEY is not configured on the server.");
+      }
+
+      this.client = new GoogleGenerativeAI(apiKey);
     }
     return this.client;
   }
@@ -25,7 +29,7 @@ export class AIService {
     try {
       const client = this.getClient();
       const model = client.getGenerativeModel({
-        model: "gemini-1.5-flash",
+        model: "gemini-2.5-flash",
       });
 
       const result = await model.generateContent({

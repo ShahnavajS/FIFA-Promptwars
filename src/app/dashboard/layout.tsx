@@ -66,6 +66,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="min-h-screen bg-neutral-950 text-neutral-50 flex flex-col font-sans selection:bg-cyan-500 selection:text-black">
+      <a
+        href="#main-content"
+        className="sr-only fixed left-4 top-4 z-[60] rounded-lg bg-white px-4 py-2 text-sm font-bold text-black focus:not-sr-only focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyber-green"
+      >
+        Skip to main content
+      </a>
       <header className="sticky top-0 z-45 w-full border-b border-neutral-900 bg-neutral-950/80 backdrop-blur-md px-6 h-16 flex items-center justify-between">
         <div className="flex items-center gap-4">
           <button
@@ -99,7 +105,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             ) : (
               <>
                 <Wifi className="h-4 w-4 text-cyber-green" />
-                <span className="text-cyber-green hidden sm:inline-block">Telemetry Connected</span>
+                <span className="text-cyber-green hidden sm:inline-block">
+                  Scenario Data Active
+                </span>
               </>
             )}
           </div>
@@ -203,6 +211,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         )}
 
         <main
+          id="main-content"
           className={`flex-grow overflow-y-auto p-6 transition-all duration-300 border-t-2 ${roleGlows[currentRole]}`}
         >
           {children}

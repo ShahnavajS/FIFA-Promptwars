@@ -1,9 +1,26 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { describe, test, expect } from "vitest";
+import { afterEach, beforeEach, describe, test, expect, vi } from "vitest";
 import AssistantPage from "@/app/dashboard/assistant/page";
 
 describe("AssistantPage Component", () => {
+  beforeEach(() => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({
+          text: "Validated local safety response",
+          provider: "local-safety-fallback",
+        }),
+      })
+    );
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   test("renders concierge header and chat text input", () => {
     render(<AssistantPage />);
 
@@ -26,7 +43,7 @@ describe("AssistantPage Component", () => {
     const bubbles = await screen.findAllByText("Route to Gate A (Step-Free)");
     expect(bubbles.length).toBeGreaterThan(0);
 
-    // Wait for the async model response to render, preventing act warning
-    await screen.findByText(/STADIUM PULSE COMPANION/i);
+    await screen.findByText("Validated local safety response");
+    expect(screen.getByText("Local safety fallback")).toBeInTheDocument();
   });
 });

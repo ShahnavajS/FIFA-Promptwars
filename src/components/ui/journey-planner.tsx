@@ -33,7 +33,7 @@ const CHECKPOINTS: Checkpoint[] = [
   {
     id: "security",
     label: "Security Check",
-    description: "MetLife bag & security scan",
+    description: "Venue bag & security scan",
     phases: ["security"],
     aiGuidance:
       "Bag scanners are experiencing average throughput. Avoid the central terminal corridors; walk around to the North perimeter for shorter lanes.",

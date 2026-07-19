@@ -29,7 +29,8 @@ describe("Phase 4 Intelligent Features Test Suite", () => {
       "[MATCH STATE]: Active match: Argentina vs. Germany. Current lifecycle milestone: ARRIVAL."
     );
     expect(prompt).toContain("[WEATHER & CLIMATE]: Local temperature: 28.5°C.");
-    expect(prompt).toContain('User Prompt: """Test question"""');
+    expect(prompt).toContain("[UNTRUSTED_USER_REQUEST_START]\nTest question");
+    expect(prompt).toContain("[UNTRUSTED_USER_REQUEST_END]");
   });
 
   test("Directions service returns wheelchair stepFree steps", async () => {

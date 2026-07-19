@@ -14,6 +14,29 @@ describe("Phase 9 AI Replay & Continuous Learning Test Suite", () => {
     expect(steps[5].label).toBe("Goal Celebration Surge");
   });
 
+  test("ReplayService validates fenced AI-generated timeline JSON", () => {
+    const generatedTimeline = ReplayService.getReplaySteps()
+      .slice(0, 5)
+      .map((step, index) => ({ ...step, tick: index }));
+
+    const parsed = ReplayService.parseGeneratedTimeline(
+      `\`\`\`json\n${JSON.stringify(generatedTimeline)}\n\`\`\``
+    );
+
+    expect(parsed).not.toBeNull();
+    expect(parsed?.length).toBe(5);
+    expect(parsed?.[0].label).toBe("Stadium Arrivals Open");
+  });
+
+  test("ReplayService rejects generated timelines with invalid tick order", () => {
+    const generatedTimeline = ReplayService.getReplaySteps()
+      .slice(0, 5)
+      .map((step, index) => ({ ...step, tick: index }));
+    generatedTimeline[3].tick = 9;
+
+    expect(ReplayService.parseGeneratedTimeline(JSON.stringify(generatedTimeline))).toBeNull();
+  });
+
   test("AILearningEngine renders reinforcement loop and ledger tables", () => {
     render(<AILearningEngine />);
     expect(screen.getByText("Continuous Training Feedback")).toBeInTheDocument();

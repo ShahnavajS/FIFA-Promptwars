@@ -6,7 +6,10 @@ export type TelemetryEventType =
   | "AI_PROMPT_SUBMITTED"
   | "ROLE_PORTAL_SWITCHED"
   | "MAP_LAYER_TOGGLED"
-  | "EMERGENCY_ALARM_TRIGGERED";
+  | "EMERGENCY_ALARM_TRIGGERED"
+  | "OPS_DECISION_REVIEWED"
+  | "OPS_DECISION_APPROVED"
+  | "OPS_DECISION_HELD";
 
 export interface TelemetryEvent<T = unknown> {
   type: TelemetryEventType;
